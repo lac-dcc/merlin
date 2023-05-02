@@ -10,9 +10,15 @@ else
     INPUT=$1
     OUTPUT=$2
 
+    FILE=$(basename $INPUT)
+    case "${FILE##*.}" in
+        "cc" | "cpp") CC="clang++" ;;
+        "c") CC="clang" ;;
+    esac
+
     mkdir -p output
 
-    clang++ -stdlib=libc++ -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
+    $CC -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
     -Xclang -plugin-arg-merlin  -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
     $INPUT
 fi
