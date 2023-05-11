@@ -32,8 +32,8 @@ public:
 
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter; ///< Object use to rewrite the code and add instrumentation.
-  std::string counter; ///< String that contains the name of the counter being used for instrumentation.
+  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
+  std::string counter;        ///< String that contains the name of the counter being used for instrumentation.
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
   llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
 
@@ -48,11 +48,11 @@ private:
    * \brief Given a location in the program, identify its level of indentation.
    * \param srcMgr SourceManager object.
    * \param loc SourceLocation to be analyzed.
-   * 
+   *
    * \return String with whitespaces correspondent to the location's indentation level.
    */
   std::string getIndentation(clang::SourceManager& srcMgr, clang::SourceLocation& loc);
-  
+
   /**
    * \brief Recursive method used to indicate if an IfStmt is valid for instrumentation.
    * \param stmt Statement being traversed.
@@ -93,10 +93,7 @@ private:
 class InstrumentationAction : public clang::PluginASTAction {
 protected:
   virtual std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(clang::CompilerInstance& Compiler,
-                                                                llvm::StringRef InFile) override {
-    this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
-    return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &rewriter, outputFile);
-  }
+                                                                llvm::StringRef InFile) override;
 
   bool ParseArgs(const clang::CompilerInstance& Compiler, const std::vector<std::string>& args) override;
 

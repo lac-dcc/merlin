@@ -20,7 +20,7 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
-bool InstrumentationVisitor::visitLoop(clang::Stmt* loop, SourceLocation& bodyLoc) {
+bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (this->visitedLoops.find(loop) == this->visitedLoops.end()) {
     this->visitedLoops[loop] = true;
     if (!this->isValidLoop(loop))
@@ -35,7 +35,7 @@ bool InstrumentationVisitor::visitLoop(clang::Stmt* loop, SourceLocation& bodyLo
   return true;
 }
 
-bool InstrumentationVisitor::VisitWhileStmt(clang::WhileStmt* whileStmt) {
+bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
   SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
 
   return this->visitLoop(whileStmt, bodyLoc);
@@ -94,14 +94,19 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
   if (success) {
-    clang::SourceManager& sourceManager = this->rewriter->getSourceMgr();
+    SourceManager& srcMgr = this->rewriter->getSourceMgr();
     std::error_code error_code;
-    llvm::raw_fd_ostream outFile("output/" + this->outputFile, error_code, llvm::sys::fs::FileAccess::FA_Write);
-    this->rewriter->getEditBuffer(sourceManager.getMainFileID()).write(outFile);
+    raw_fd_ostream outFile("output/" + this->outputFile, error_code, sys::fs::FileAccess::FA_Write);
+    this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);
     outFile.close();
   } else {
     errs() << "Unable to instrument the input\n";
   }
+}
+
+std::unique_ptr<ASTConsumer> InstrumentationAction::CreateASTConsumer(CompilerInstance& Compiler, StringRef InFile) {
+  this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
+  return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &rewriter, outputFile);
 }
 
 bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const std::vector<std::string>& args) {
