@@ -35,8 +35,34 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   return true;
 }
 
+void InstrumentationVisitor::getTaintedVars(Stmt* node) {
+  for (auto* child : node->children()) {
+    if (!child)
+      continue;
+
+    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
+      NamedDecl* decl = refExpr->getFoundDecl();
+      if (this->checkedVars.find(decl) == this->checkedVars.end()) {
+        decl->dump();
+        this->checkedVars[decl] = true;
+        if (isa<ParmVarDecl>(decl)) {
+          this->taintedVariables[decl] = decl->getNameAsString();
+        } else if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
+          auto* init = varDecl->getInit();
+          if (init)
+            this->getTaintedVars(init);
+        }
+      }
+      
+    }
+
+    this->getTaintedVars(child);
+  }
+}
+
 bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
   SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
+  this->getTaintedVars(whileStmt->getCond());
 
   return this->visitLoop(whileStmt, bodyLoc);
 }
@@ -62,6 +88,7 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
 
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
+  this->getTaintedVars(forStmt->getCond());
 
   return this->visitLoop(forStmt, bodyLoc);
 }
@@ -94,6 +121,10 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
   if (success) {
+    for (auto const& [_, name] : this->visitor.taintedVariables) {
+      outs() << name << '\n';
+    }
+
     SourceManager& srcMgr = this->rewriter->getSourceMgr();
     std::error_code error_code;
     raw_fd_ostream outFile("output/" + this->outputFile, error_code, sys::fs::FileAccess::FA_Write);

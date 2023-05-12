@@ -17,6 +17,8 @@
  */
 class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
 public:
+  llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables;
+
   /**
    * \brief Constructor method.
    * \param context ASTContext to be used by the visitor.
@@ -36,6 +38,9 @@ private:
   std::string counter;        ///< String that contains the name of the counter being used for instrumentation.
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
   llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
+  llvm::DenseMap<clang::NamedDecl*, bool> checkedVars;
+
+  void getTaintedVars(clang::Stmt* node);
 
   /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.
