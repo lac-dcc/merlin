@@ -3,19 +3,66 @@
 using namespace clang;
 using namespace llvm;
 
-std::string InstrumentationVisitor::getIndentation(SourceManager& srcMgr, SourceLocation& loc) {
-  SourceLocation lineStart = srcMgr.translateLineCol(srcMgr.getFileID(loc), srcMgr.getSpellingLineNumber(loc), 1);
-  const char* startPtr = srcMgr.getCharacterData(lineStart);
-  char* endPtr = const_cast<char*>(startPtr);
-  while (endPtr && *endPtr == ' ' || *endPtr == '\t')
-    ++endPtr;
-  return std::string(startPtr, endPtr - startPtr);
+bool InsertPrintVisitor::VisitReturnStmt(ReturnStmt* retStmt) {
+  this->rewriter->InsertText(retStmt->getBeginLoc(), this->printString, false, true);
+  return true;
+}
+
+std::string InstrumentationVisitor::getPrintString() {
+  std::string format = "%d";
+  std::string variables = this->counter + ",";
+  for (auto const& [decl, name] : this->taintedVariables) {
+    if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
+      if (varDecl->getType().getTypePtr()->isPointerType()) {
+        format += " " + this->formatSpecifier[varDecl->getType().getTypePtr()->getPointeeType().getAsString()];
+        variables += "*temp" + name + ",";
+      } else {
+        format += " " + this->formatSpecifier[varDecl->getType().getAsString()];
+        variables += "temp" + name + ",";
+      }
+    }
+  }
+
+  // Remove last comma
+  variables.pop_back();
+
+  return "printf(\"" + format + "\", " + variables + ");\n";
+}
+
+void InstrumentationVisitor::addTempVariables() {
+  std::string tempVariables = "\n";
+  for (auto const& [decl, name] : this->taintedVariables) {
+    if (auto* varDecl = dyn_cast<VarDecl>(decl))
+      tempVariables += varDecl->getType().getAsString() + " temp" + name + " = " + name + ";\n";
+  }
+
+  auto* body = this->currFunc->getBody();
+  if (body)
+    this->rewriter->InsertTextAfterToken(body->getBeginLoc(), tempVariables);
+}
+
+void InstrumentationVisitor::addPrints() {
+  this->printVisitor.printString = this->getPrintString();
+  this->printVisitor.TraverseDecl(this->currFunc);
+
+  if (this->currFunc->getReturnType().getTypePtr()->isVoidType())
+    this->rewriter->InsertText(this->currFunc->getEndLoc(), this->printVisitor.printString, false, true);
 }
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
+  if (this->currFunc != nullptr) {
+    this->addTempVariables();
+    this->addPrints();
+    this->taintedVariables.clear();
+  }
+
+  this->currFunc = funcDecl;
   this->counter = "counter" + funcDecl->getNameAsString();
   std::string counterDeclaration = "int " + this->counter + " = 0;\n";
-  this->rewriter->InsertText(funcDecl->getBeginLoc(), counterDeclaration, true, true);
+
+  auto* body = funcDecl->getBody();
+  if (body)
+    this->rewriter->InsertTextAfterToken(body->getBeginLoc(), counterDeclaration);
 
   return true;
 }
@@ -29,7 +76,7 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
 
   SourceLocation beginLoc = loop->getBeginLoc();
   SourceManager& srcMgr = this->rewriter->getSourceMgr();
-  std::string increment = "\n" + this->getIndentation(srcMgr, beginLoc) + this->counter + "++;";
+  std::string increment = "\n" + this->counter + "++;";
   this->rewriter->InsertTextAfterToken(bodyLoc, increment);
 
   return true;
@@ -42,18 +89,12 @@ void InstrumentationVisitor::getTaintedVars(Stmt* node) {
 
     if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
       NamedDecl* decl = refExpr->getFoundDecl();
-      if (this->checkedVars.find(decl) == this->checkedVars.end()) {
-        decl->dump();
-        this->checkedVars[decl] = true;
-        if (isa<ParmVarDecl>(decl)) {
-          this->taintedVariables[decl] = decl->getNameAsString();
-        } else if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
-          auto* init = varDecl->getInit();
-          if (init)
-            this->getTaintedVars(init);
+
+      if (this->paramRefs.find(decl) != this->paramRefs.end()) {
+        for (auto* param : this->paramRefs[decl]) {
+          this->taintedVariables[param] = param->getNameAsString();
         }
       }
-      
     }
 
     this->getTaintedVars(child);
@@ -88,6 +129,11 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
 
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
+
+  // Problem: visits this binOp twice
+  BinaryOperator* binOp;
+  if (forStmt->getInit() && (binOp = dyn_cast<BinaryOperator>(forStmt->getInit())))
+    this->VisitBinaryOperator(binOp);
   this->getTaintedVars(forStmt->getCond());
 
   return this->visitLoop(forStmt, bodyLoc);
@@ -117,13 +163,63 @@ bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
   return this->isValidIf(ifStmt);
 }
 
+bool InstrumentationVisitor::containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl) {
+  bool result = false;
+
+  for (auto* child : node->children()) {
+    if (!child)
+      continue;
+
+    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
+      if (auto* param = dyn_cast<ParmVarDecl>(refExpr->getFoundDecl())) {
+        this->paramRefs[decl].push_back(param);
+        result = true;
+      }
+    }
+
+    result |= this->containsRefToParam(child, decl);
+  }
+
+  return result;
+}
+
+bool InstrumentationVisitor::VisitBinaryOperator(clang::BinaryOperator* binOp) {
+  if (!binOp->isAssignmentOp())
+    return true;
+
+  if (auto* ref = dyn_cast<DeclRefExpr>(binOp->getLHS())) {
+    auto* decl = ref->getFoundDecl();
+    this->paramRefs[decl].clear();
+    bool contains = this->containsRefToParam(binOp->getRHS(), decl);
+
+    if (!contains)
+      this->paramRefs.erase(decl);
+  }
+
+  return true;
+}
+
+bool InstrumentationVisitor::VisitVarDecl(clang::VarDecl* decl) {
+  if (auto* param = dyn_cast<ParmVarDecl>(decl)) {
+    this->paramRefs[param].push_back(param);
+  } else if (auto* init = decl->getInit()) {
+    this->paramRefs[decl].clear();
+    bool contains = this->containsRefToParam(init, decl);
+
+    if (!contains)
+      this->paramRefs.erase(decl);
+  }
+
+  return true;
+}
+
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
   if (success) {
-    for (auto const& [_, name] : this->visitor.taintedVariables) {
-      outs() << name << '\n';
-    }
+    // Add temp variables and prints for the last visited function
+    this->visitor.addTempVariables();
+    this->visitor.addPrints();
 
     SourceManager& srcMgr = this->rewriter->getSourceMgr();
     std::error_code error_code;

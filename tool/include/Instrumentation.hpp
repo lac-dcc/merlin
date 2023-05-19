@@ -7,40 +7,113 @@
 #include "clang/Frontend/FrontendPluginRegistry.h"
 #include "clang/Rewrite/Core/Rewriter.h"
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/SmallVector.h"
+#include <string>
+#include <unordered_map>
 
 /**
- * \class InstrumentationVisitor
+ * \class InsertPrintVisitor
  *
  * \brief Implementation of a recursive AST Visitor.
  *
- * This class implements a recursive AST Visitor, using Clang's RecursiveASTVisitor class.
+ * Auxiliary visitor class used to insert printf's before returns in a function.
  */
-class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
+class InsertPrintVisitor : public clang::RecursiveASTVisitor<InsertPrintVisitor> {
 public:
-  llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables;
+  std::string printString;
 
   /**
    * \brief Constructor method.
    * \param context ASTContext to be used by the visitor.
    * \param rewriter Object use to rewrite the code and add instrumentation.
    */
-  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
+  explicit InsertPrintVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
       : context(context), rewriter(rewriter) {}
+
+  bool VisitReturnStmt(clang::ReturnStmt* retStmt);
+
+private:
+  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
+  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
+};
+
+/**
+ * \class InstrumentationVisitor
+ *
+ * \brief Implementation of a recursive AST Visitor.
+ *
+ * Visits the AST to insert instrumentation.
+ */
+class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
+public:
+  /**
+   * \brief Constructor method.
+   * \param context ASTContext to be used by the visitor.
+   * \param rewriter Object use to rewrite the code and add instrumentation.
+   */
+  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
+      : context(context), rewriter(rewriter), printVisitor(context, rewriter) {
+    this->formatSpecifier = {
+        {"int", "%d"}, {"unsigned int", "%u"}, {"long", "%ld"}, {"float", "%f"}, {"double", "%lf"}};
+  }
 
   bool VisitFunctionDecl(clang::FunctionDecl* funcDecl);
   bool VisitForStmt(clang::ForStmt* forStmt);
   bool VisitWhileStmt(clang::WhileStmt* whileStmt);
   bool VisitIfStmt(clang::IfStmt* ifStmt);
+  bool VisitBinaryOperator(clang::BinaryOperator* binOp);
+  bool VisitVarDecl(clang::VarDecl* decl);
+
+  /**
+   * \brief Adds printf's with the counter and the tainted params to the last visited function.
+   */
+  void addPrints();
+
+  /**
+   * \brief Adds temporary variables that are copies of the tainted params.
+   */
+  void addTempVariables();
 
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
   std::string counter;        ///< String that contains the name of the counter being used for instrumentation.
+  clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited
+
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
   llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
-  llvm::DenseMap<clang::NamedDecl*, bool> checkedVars;
 
+  /// @brief Map that associates a declaration to the parameters that it references.
+  llvm::DenseMap<clang::NamedDecl*, clang::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
+  llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables; ///< Map of parameters that influence some loop.
+
+  InsertPrintVisitor printVisitor; ///< Auxiliary visitor used to add printf's before return statements.
+
+  /// @brief Map of type names to format specifiers used in printf.
+  std::unordered_map<std::string, std::string> formatSpecifier;
+
+  /**
+   * \brief Generate the string with the printf statement to be added to the function.
+   * 
+   * \return String with the printf statement to be added to the function.
+   */
+  std::string getPrintString();
+
+  /**
+   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
+   * \param node Statement being considered.
+   */
   void getTaintedVars(clang::Stmt* node);
+
+  /**
+   * \brief Checks whether a statement contains any references to a param. If so, updates the map
+   * paramRefs for the given declaration.
+   * \param node Statement being visited.
+   * \param decl Declaration to consider when updating paramRefs.
+   * 
+   * \return Boolean value that is true if node contains a reference to a param.
+   */
+  bool containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl);
 
   /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.
@@ -48,15 +121,6 @@ private:
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
    */
   bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
-
-  /**
-   * \brief Given a location in the program, identify its level of indentation.
-   * \param srcMgr SourceManager object.
-   * \param loc SourceLocation to be analyzed.
-   *
-   * \return String with whitespaces correspondent to the location's indentation level.
-   */
-  std::string getIndentation(clang::SourceManager& srcMgr, clang::SourceLocation& loc);
 
   /**
    * \brief Recursive method used to indicate if an IfStmt is valid for instrumentation.
