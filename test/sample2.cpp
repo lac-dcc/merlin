@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int foo(int n) {
   if (n % 2 == 0) {
     return 0;

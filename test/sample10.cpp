@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 int main() {
   int i, j, l, n, m, sum, fat, fat2;
   n = 10;

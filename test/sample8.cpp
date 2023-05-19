@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdio.h>
+
 int main() {
   int n, m;
   std::cin >> n >> m;

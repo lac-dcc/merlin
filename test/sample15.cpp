@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 void dis1(int x0, int y0, int n, int m) {
   int x = x0;
   int y = y0;
