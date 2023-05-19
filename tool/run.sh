@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-LIB="./build/src/libMerlin.so"
-
 if [ $# -lt 2 ]
 then
     echo 'Syntax: run.sh input_file output_file'
     exit 1
 else
+    LIB="./build/src/libMerlin.so"
     INPUT=$1
     OUTPUT=$2
 
@@ -27,4 +26,8 @@ else
     $TEMP
 
     rm $TEMP
+
+    if test -f "output/$OUTPUT"; then
+        clang-format "output/$OUTPUT" -i --style="{BasedOnStyle: llvm}" 
+    fi
 fi
