@@ -53,8 +53,9 @@ public:
    */
   explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
       : context(context), rewriter(rewriter), printVisitor(context, rewriter) {
-    this->formatSpecifier = {
-        {"int", "%d"}, {"unsigned int", "%u"}, {"long", "%ld"}, {"float", "%f"}, {"double", "%lf"}};
+    this->formatSpecifier = {{"char", "%c"},         {"int", "%d"},   {"unsigned int", "%u"},
+                             {"unsigned int", "%u"}, {"long", "%ld"}, {"unsigned long", "%ld"},
+                             {"float", "%f"},        {"double", "%f"}};
   }
 
   bool VisitFunctionDecl(clang::FunctionDecl* funcDecl);
@@ -94,7 +95,7 @@ private:
 
   /**
    * \brief Generate the string with the printf statement to be added to the function.
-   * 
+   *
    * \return String with the printf statement to be added to the function.
    */
   std::string getPrintString();
@@ -110,7 +111,7 @@ private:
    * paramRefs for the given declaration.
    * \param node Statement being visited.
    * \param decl Declaration to consider when updating paramRefs.
-   * 
+   *
    * \return Boolean value that is true if node contains a reference to a param.
    */
   bool containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl);
