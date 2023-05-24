@@ -21,7 +21,7 @@ else
     TEMP="temp.${EXT}"
     clang-format $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
     
-    $CC -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
+    $CC -std=c99 -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
     -Xclang -plugin-arg-merlin  -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
     $TEMP
 
