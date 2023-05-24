@@ -13,11 +13,12 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string variables = this->counter + ",";
   for (auto const& [decl, name] : this->taintedVariables) {
     if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
-      if (varDecl->getType().getTypePtr()->isPointerType()) {
-        format += " " + this->formatSpecifier[varDecl->getType().getTypePtr()->getPointeeType().getAsString()];
+      QualType type = varDecl->getType();
+      if (type.getTypePtr()->isPointerType()) {
+        format += " " + this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()];
         variables += "*temp" + name + ",";
       } else {
-        format += " " + this->formatSpecifier[varDecl->getType().getAsString()];
+        format += " " + this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()];
         variables += "temp" + name + ",";
       }
     }
