@@ -135,7 +135,9 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   BinaryOperator* binOp;
   if (forStmt->getInit() && (binOp = dyn_cast<BinaryOperator>(forStmt->getInit())))
     this->VisitBinaryOperator(binOp);
-  this->getTaintedVars(forStmt->getCond());
+  
+  if (Expr* cond = forStmt->getCond())
+    this->getTaintedVars(cond);
 
   return this->visitLoop(forStmt, bodyLoc);
 }
