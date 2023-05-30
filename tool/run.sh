@@ -18,7 +18,7 @@ else
 
     mkdir -p output
 
-    TEMP="temp.${EXT}"
+    TEMP=$FILE
     clang-format $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
     
     $CC -std=c99 -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \

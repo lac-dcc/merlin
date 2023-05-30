@@ -15,7 +15,9 @@ std::string InstrumentationVisitor::getPrintString() {
     if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
       QualType type = varDecl->getType();
       if (type.getTypePtr()->isPointerType()) {
-        format += " " + this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()];
+        format +=
+            " " +
+            this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()];
         variables += "*temp" + name + ",";
       } else {
         format += " " + this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()];
@@ -51,7 +53,7 @@ void InstrumentationVisitor::addPrints() {
 }
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
-  if (this->currFunc != nullptr) {
+  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == functionName) {
     this->addTempVariables();
     this->addPrints();
     this->taintedVariables.clear();
@@ -135,7 +137,7 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   BinaryOperator* binOp;
   if (forStmt->getInit() && (binOp = dyn_cast<BinaryOperator>(forStmt->getInit())))
     this->VisitBinaryOperator(binOp);
-  
+
   if (Expr* cond = forStmt->getCond())
     this->getTaintedVars(cond);
 
@@ -216,15 +218,27 @@ bool InstrumentationVisitor::VisitVarDecl(clang::VarDecl* decl) {
   return true;
 }
 
+std::string InstrumentationConsumer::findFunctionName(std::string inputFile) {
+  size_t start, end;
+  start = inputFile.find(".h");
+  if (start == std::string::npos) {
+    start = inputFile.find(".c");
+  }
+  start += 3;
+
+  end = inputFile.find(".c", start);
+
+  return inputFile.substr(start, end - start);
+}
+
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
+  clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
+  std::string inputFile = srcMgr.getFileEntryForID(srcMgr.getMainFileID())->getName().str();
+  this->visitor.functionName = findFunctionName(inputFile);
+
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
   if (success) {
-    // Add temp variables and prints for the last visited function
-    this->visitor.addTempVariables();
-    this->visitor.addPrints();
-
-    SourceManager& srcMgr = this->rewriter->getSourceMgr();
     std::error_code error_code;
     raw_fd_ostream outFile("output/" + this->outputFile, error_code, sys::fs::FileAccess::FA_Write);
     this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);

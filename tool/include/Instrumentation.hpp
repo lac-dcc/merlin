@@ -75,6 +75,8 @@ public:
    */
   void addTempVariables();
 
+  std::string functionName; ///< Name of the function to be instrumented.
+
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
@@ -149,6 +151,15 @@ public:
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
 private:
+  /**
+   * \brief Assuming that we are testing Merlin on Jotai programs, this method will extract the name of the function to
+   * be instrumented from the input file name.
+   * \param inputFile Name of the input file.
+   *
+   * \return String with the name of the function to be instrumented.
+   */
+  std::string findFunctionName(std::string inputFile);
+
   InstrumentationVisitor visitor;
   clang::Rewriter* rewriter;
   std::string outputFile;
