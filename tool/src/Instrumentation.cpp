@@ -54,18 +54,18 @@ void InstrumentationVisitor::addPrints() {
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == functionName) {
+    std::string counterDeclaration = "int " + this->counter + " = 0;\n";
+
+    if (auto* body = this->currFunc->getBody())
+      this->rewriter->InsertTextAfterToken(body->getBeginLoc(), counterDeclaration);
+
     this->addTempVariables();
     this->addPrints();
     this->taintedVariables.clear();
   }
 
-  this->currFunc = funcDecl;
   this->counter = "counter" + funcDecl->getNameAsString();
-  std::string counterDeclaration = "int " + this->counter + " = 0;\n";
-
-  auto* body = funcDecl->getBody();
-  if (body)
-    this->rewriter->InsertTextAfterToken(body->getBeginLoc(), counterDeclaration);
+  this->currFunc = funcDecl;
 
   return true;
 }
@@ -77,10 +77,12 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
       return false;
   }
 
-  SourceLocation beginLoc = loop->getBeginLoc();
-  SourceManager& srcMgr = this->rewriter->getSourceMgr();
-  std::string increment = "\n" + this->counter + "++;";
-  this->rewriter->InsertTextAfterToken(bodyLoc, increment);
+  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
+    SourceLocation beginLoc = loop->getBeginLoc();
+    SourceManager& srcMgr = this->rewriter->getSourceMgr();
+    std::string increment = "\n" + this->counter + "++;";
+    this->rewriter->InsertTextAfterToken(bodyLoc, increment);
+  }
 
   return true;
 }
@@ -133,7 +135,6 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
 
-  // Problem: visits this binOp twice
   BinaryOperator* binOp;
   if (forStmt->getInit() && (binOp = dyn_cast<BinaryOperator>(forStmt->getInit())))
     this->VisitBinaryOperator(binOp);
@@ -220,9 +221,9 @@ bool InstrumentationVisitor::VisitVarDecl(clang::VarDecl* decl) {
 
 std::string InstrumentationConsumer::findFunctionName(std::string inputFile) {
   size_t start, end;
-  start = inputFile.find(".h");
+  start = inputFile.find(".h_");
   if (start == std::string::npos) {
-    start = inputFile.find(".c");
+    start = inputFile.find(".c_");
   }
   start += 3;
 
