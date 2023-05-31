@@ -3,5 +3,3 @@ build/
 tool/output/
 tool/programs/
 tool/result-100
-tool/runInst.py
-tool/runPrograms.py
