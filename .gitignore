@@ -2,6 +2,7 @@
 build/
 tool/output/
 tool/programs/
+tool/prog_out/
 tool/result-100
 interpolation/obj/
 interpolation/bin/
