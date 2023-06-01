@@ -3,3 +3,6 @@ build/
 tool/output/
 tool/programs/
 tool/result-100
+interpolation/obj/
+interpolation/bin/
+interpolation/input/
