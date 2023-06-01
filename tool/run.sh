@@ -14,8 +14,8 @@ else
     FILE=$(basename $INPUT)
     EXT="${FILE##*.}"
     case $EXT in
-        "cc" | "cpp") CC="clang++" ;;
-        "c") CC="clang" ;;
+        "cc" | "cpp") CC="$LLVM_BUILD_DIR/bin/clang++" ;;
+        "c") CC="$LLVM_BUILD_DIR/bin/clang" ;;
     esac
 
     mkdir -p output
