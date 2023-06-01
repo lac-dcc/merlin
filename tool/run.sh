@@ -5,6 +5,8 @@ then
     echo 'Syntax: run.sh input_file output_file'
     exit 1
 else
+    LLVM_BUILD_DIR="$HOME/llvm-project/build"
+    CLANG_FORMAT="$LLVM_BUILD_DIR/bin/clang-format"
     LIB="./build/src/libMerlin.so"
     INPUT=$1
     OUTPUT=$2
@@ -19,7 +21,7 @@ else
     mkdir -p output
 
     TEMP=$FILE
-    clang-format $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
+    $CLANG_FORMAT $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
     
     $CC -std=c99 -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
     -Xclang -plugin-arg-merlin  -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
@@ -28,6 +30,6 @@ else
     rm $TEMP
 
     if test -f "output/$OUTPUT"; then
-        clang-format "output/$OUTPUT" -i --style="{BasedOnStyle: llvm}" 
+        $CLANG_FORMAT "output/$OUTPUT" -i --style="{BasedOnStyle: llvm}" 
     fi
 fi
