@@ -53,9 +53,8 @@ public:
    */
   explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
       : context(context), rewriter(rewriter), printVisitor(context, rewriter) {
-    this->formatSpecifier = {{"char", "%c"},         {"int", "%d"},   {"unsigned int", "%u"},
-                             {"unsigned int", "%u"}, {"long", "%ld"}, {"unsigned long", "%ld"},
-                             {"float", "%f"},        {"double", "%f"}};
+    this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
+                             {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }
 
   bool VisitFunctionDecl(clang::FunctionDecl* funcDecl);
