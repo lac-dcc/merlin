@@ -1,9 +1,7 @@
 .vscode/
 build/
 tool/output/
-tool/programs/
-tool/prog_out/
-tool/result-100
+tool/sample*/
 interpolation/obj/
 interpolation/bin/
 interpolation/input/
