@@ -54,7 +54,7 @@ void InstrumentationVisitor::addPrints() {
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == functionName) {
-    std::string counterDeclaration = "int " + this->counter + " = 0;\n";
+    std::string counterDeclaration = "unsigned " + this->counter + " = 0;\n";
 
     if (auto* body = this->currFunc->getBody())
       this->rewriter->InsertTextAfterToken(body->getBeginLoc(), counterDeclaration);
