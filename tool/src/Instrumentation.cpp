@@ -9,27 +9,26 @@ bool InsertPrintVisitor::VisitReturnStmt(ReturnStmt* retStmt) {
 }
 
 std::string InstrumentationVisitor::getPrintString() {
-  std::string format = "%d";
-  std::string variables = this->counter + ",";
+  std::string format = "";
+  std::string variables = "";
   for (auto const& [decl, name] : this->taintedVariables) {
     if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
       QualType type = varDecl->getType();
       if (type.getTypePtr()->isPointerType()) {
         format +=
-            " " +
-            this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()];
+            this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()] + " ";
         variables += "*temp" + name + ",";
       } else {
-        format += " " + this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()];
+        format += this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()] + " ";
         variables += "temp" + name + ",";
       }
     }
   }
 
-  // Remove last comma
-  variables.pop_back();
+  format += "%d";
+  variables += this->counter;
 
-  return "printf(\"" + format + "\", " + variables + ");\n";
+  return "printf(\"" + format + "\\n\", " + variables + ");\n";
 }
 
 void InstrumentationVisitor::addTempVariables() {
