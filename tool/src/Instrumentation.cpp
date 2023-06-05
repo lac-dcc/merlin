@@ -134,9 +134,13 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
 
-  BinaryOperator* binOp;
-  if (forStmt->getInit() && (binOp = dyn_cast<BinaryOperator>(forStmt->getInit())))
-    this->VisitBinaryOperator(binOp);
+  if (forStmt->getInit()) {
+    if (auto* binOp = dyn_cast<BinaryOperator>(forStmt->getInit())) {
+      this->VisitBinaryOperator(binOp);
+    } else {
+      this->getTaintedVars(forStmt->getInit());
+    }
+  }
 
   if (Expr* cond = forStmt->getCond())
     this->getTaintedVars(cond);
