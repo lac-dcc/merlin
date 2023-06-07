@@ -27,7 +27,13 @@ else
     -Xclang -plugin-arg-merlin  -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
     $TEMP
 
+    RET_VAL=$?
+
     rm $TEMP
+
+    if [ $RET_VAL -ne 0 ]; then
+        exit 1
+    fi
 
     if test -f "output/$OUTPUT"; then
         $CLANG_FORMAT "output/$OUTPUT" -i --style="{BasedOnStyle: llvm}" 
