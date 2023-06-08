@@ -2,6 +2,7 @@
 build/
 tool/output/
 tool/sample*/
+tool/*.csv
 interpolation/obj/
 interpolation/bin/
 interpolation/input/
