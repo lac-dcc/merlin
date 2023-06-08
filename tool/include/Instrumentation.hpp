@@ -24,17 +24,34 @@ public:
 
   /**
    * \brief Constructor method.
-   * \param context ASTContext to be used by the visitor.
    * \param rewriter Object use to rewrite the code and add instrumentation.
    */
-  explicit InsertPrintVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
-      : context(context), rewriter(rewriter) {}
+  explicit InsertPrintVisitor(clang::Rewriter* rewriter) : rewriter(rewriter) {}
 
   bool VisitReturnStmt(clang::ReturnStmt* retStmt);
 
 private:
-  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
+  clang::Rewriter* rewriter; ///< Object used to rewrite the code and add instrumentation.
+};
+
+/**
+ * \class InsertPrintVisitor
+ *
+ * \brief Implementation of a recursive AST Visitor.
+ *
+ * Auxiliary visitor class used to count the number of nodes in a function's subtree.
+ */
+class NodeCounterVisitor : public clang::RecursiveASTVisitor<NodeCounterVisitor> {
+public:
+  unsigned nodeCount;
+
+  /**
+   * \brief Constructor method.
+   */
+  explicit NodeCounterVisitor() : nodeCount(0) {}
+
+  bool VisitStmt(clang::Stmt* stmt);
+  bool VisitDecl(clang::Decl* decl);
 };
 
 /**
@@ -52,7 +69,7 @@ public:
    * \param rewriter Object use to rewrite the code and add instrumentation.
    */
   explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
-      : context(context), rewriter(rewriter), printVisitor(context, rewriter) {
+      : context(context), rewriter(rewriter), printVisitor(rewriter) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
                              {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }

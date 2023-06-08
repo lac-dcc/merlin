@@ -8,6 +8,16 @@ bool InsertPrintVisitor::VisitReturnStmt(ReturnStmt* retStmt) {
   return true;
 }
 
+bool NodeCounterVisitor::VisitStmt(Stmt* stmt) {
+  this->nodeCount++;
+  return true;
+}
+
+bool NodeCounterVisitor::VisitDecl(Decl* decl) {
+  this->nodeCount++;
+  return true;
+}
+
 std::string InstrumentationVisitor::getPrintString() {
   std::string format = "";
   std::string variables = "";
@@ -16,7 +26,8 @@ std::string InstrumentationVisitor::getPrintString() {
       QualType type = varDecl->getType();
       if (type.getTypePtr()->isPointerType()) {
         format +=
-            this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()] + " ";
+            this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()] +
+            " ";
         variables += "*temp" + name + ",";
       } else {
         format += this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()] + " ";
@@ -52,7 +63,11 @@ void InstrumentationVisitor::addPrints() {
 }
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
-  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == functionName) {
+  if (funcDecl->getNameAsString() == this->functionName) {
+    NodeCounterVisitor countVisitor;
+    countVisitor.TraverseDecl(funcDecl);
+    outs() << countVisitor.nodeCount << '\n';
+  } else if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
     std::string counterDeclaration = "unsigned " + this->counter + " = 0;\n";
 
     if (auto* body = this->currFunc->getBody())
@@ -248,7 +263,7 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
     this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);
     outFile.close();
   } else {
-    errs() << "Unable to instrument the input\n";
+    outs() << "Unable to instrument the input\n";
   }
 }
 
