@@ -33,4 +33,4 @@ if __name__ == '__main__':
 
     columns = ['name', 'func_size', 'instrumented']
     df = pd.DataFrame(data=results, columns=columns)
-    df.to_csv('experimentRQ1.csv', mode='a', header=False, index=False)
+    df.to_csv('experimentRQ1.csv', mode='w', header=False, index=False)
