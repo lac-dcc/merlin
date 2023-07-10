@@ -123,7 +123,7 @@ public:
 private:
   clang::ASTContext* context;                 ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;                  ///< Object used to rewrite the code and add instrumentation.
-  llvm::SmallVector<std::string, 3> counters; ///< Vector with the names of the counters used for instrumentation.
+  llvm::DenseMap<clang::Stmt*, std::string> counters; ///< Vector with the names of the counters used for instrumentation.
   clang::FunctionDecl* currFunc = nullptr;    ///< Pointer to the function being currently visited.
 
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
@@ -131,7 +131,7 @@ private:
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
-  llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables; ///< Map of parameters that influence some loop.
+  llvm::DenseMap<clang::Stmt*, llvm::SmallVector<clang::ParmVarDecl*, 3>> controlVariables;
 
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
@@ -147,7 +147,7 @@ private:
    * \brief Gets all tainted params for a given statement and updates the taintedVars map.
    * \param node Statement being considered.
    */
-  void getTaintedVars(clang::Stmt* node);
+  void getControlVars(clang::Stmt* node, clang::Stmt* loop);
 
   /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.

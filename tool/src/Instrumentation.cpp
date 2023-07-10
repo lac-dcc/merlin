@@ -69,42 +69,48 @@ bool DependenceVisitor::VisitVarDecl(clang::VarDecl* decl) {
 }
 
 std::string InstrumentationVisitor::getPrintString() {
-  std::string format = "";
-  std::string variables = "";
-  for (auto const& [decl, name] : this->taintedVariables) {
-    if (auto* varDecl = dyn_cast<VarDecl>(decl)) {
-      QualType type = varDecl->getType();
+  std::string printString = "";
+
+  printString += "\nprintf(\"" + std::to_string(this->counters.size()) + "\\n\");\n";
+  for (auto const& [loop, counterName] : this->counters) {
+    printString += "printf(\"" + std::to_string(this->controlVariables[loop].size()) + "\\n\");\n";
+
+    std::string format = "";
+    std::string variables = "";
+    for (ParmVarDecl* controlParam : this->controlVariables[loop]) {
+      QualType type = controlParam->getType();
       if (type.getTypePtr()->isPointerType()) {
         format +=
             this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()] +
             " ";
-        variables += "*temp" + name + ",";
+        variables += "*temp" + controlParam->getNameAsString() + ",";
       } else {
         format += this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()] + " ";
-        variables += "temp" + name + ",";
+        variables += "temp" + controlParam->getNameAsString() + ",";
       }
     }
+
+    format += "%d";
+    variables += counterName;
+
+    printString += "printf(\"" + format + "\\n\", " + variables + ");\n";
   }
 
-  for (auto& counter : this->counters) {
-    format += "%d ";
-    variables += counter + ",";
-  }
-
-  if (format.size() > 0)
-    format.pop_back(); // Remove last space
-
-  if (variables.size() > 0)
-    variables.pop_back(); // Remove last comma
-
-  return "printf(\"" + format + "\\n\", " + variables + ");\n";
+  return printString;
 }
 
 void InstrumentationVisitor::addTempVariables() {
   std::string tempVariables = "\n";
-  for (auto const& [decl, name] : this->taintedVariables) {
-    if (auto* varDecl = dyn_cast<VarDecl>(decl))
-      tempVariables += varDecl->getType().getAsString() + " temp" + name + " = " + name + ";\n";
+  DenseMap<ParmVarDecl*, bool> added;
+
+  for (auto const& [_, controlParams] : this->controlVariables) {
+    for (ParmVarDecl* controlParam : controlParams) {
+      if (added.find(controlParam) == added.end()) {
+        added[controlParam] = true;
+        std::string name = controlParam->getNameAsString();
+        tempVariables += controlParam->getType().getAsString() + " temp" + name + " = " + name + ";\n";
+      }
+    }
   }
 
   auto* body = this->currFunc->getBody();
@@ -139,8 +145,8 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
     // function
 
     std::string countersDecls = "";
-    for (auto& counter : counters) {
-      countersDecls += "unsigned " + counter + " = 0;\n";
+    for (auto const& [_, counterName] : this->counters) {
+      countersDecls += "unsigned " + counterName + " = 0;\n";
     }
 
     if (auto* body = this->currFunc->getBody())
@@ -148,7 +154,6 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
 
     this->addTempVariables();
     this->addPrints();
-    this->taintedVariables.clear();
   }
 
   this->currFunc = funcDecl;
@@ -187,7 +192,7 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   // Add counter increment if this loop is within the target function
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
     std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
-    counters.push_back(counter);
+    counters[loop] = counter;
 
     std::string increment = "\n" + counter + "++;";
     this->rewriter->InsertTextAfterToken(bodyLoc, increment);
@@ -196,7 +201,7 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   return true;
 }
 
-void InstrumentationVisitor::getTaintedVars(Stmt* node) {
+void InstrumentationVisitor::getControlVars(Stmt* node, Stmt* loop) {
   for (auto* child : node->children()) {
     if (!child)
       continue;
@@ -205,25 +210,25 @@ void InstrumentationVisitor::getTaintedVars(Stmt* node) {
       NamedDecl* decl = refExpr->getFoundDecl();
 
       if (this->paramRefs.find(decl) != this->paramRefs.end()) {
-        for (auto* param : this->paramRefs[decl]) {
-          this->taintedVariables[param] = param->getNameAsString();
+        for (ParmVarDecl* param : this->paramRefs[decl]) {
+          this->controlVariables[loop].push_back(param);
         }
       }
     }
 
-    this->getTaintedVars(child);
+    this->getControlVars(child, loop);
   }
 }
 
 bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
-  this->getTaintedVars(whileStmt->getCond());
+  this->getControlVars(whileStmt->getCond(), whileStmt);
 
   SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
   return this->visitLoop(whileStmt, bodyLoc);
 }
 
 bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
-  this->getTaintedVars(doStmt->getCond());
+  this->getControlVars(doStmt->getCond(), doStmt);
 
   SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
   return this->visitLoop(doStmt, bodyLoc);
@@ -234,12 +239,12 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
     if (auto* binOp = dyn_cast<BinaryOperator>(forStmt->getInit())) {
       this->VisitBinaryOperator(binOp);
     } else {
-      this->getTaintedVars(forStmt->getInit());
+      this->getControlVars(forStmt->getInit(), forStmt);
     }
   }
 
   if (Expr* cond = forStmt->getCond())
-    this->getTaintedVars(cond);
+    this->getControlVars(cond, forStmt);
 
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
   return this->visitLoop(forStmt, bodyLoc);
