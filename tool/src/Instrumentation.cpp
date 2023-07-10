@@ -72,6 +72,9 @@ void InstrumentationVisitor::addPrints() {
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   if (funcDecl->getNameAsString() == this->functionName) {
+    // Once we visit our target function, we count the number of nodes in its
+    // AST and output it
+
     NodeCounterVisitor countVisitor;
     countVisitor.TraverseDecl(funcDecl);
     outs() << countVisitor.nodeCount << '\n';
@@ -106,6 +109,8 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
       this->visitedLoops[childFor] = true;
     } else if (auto* childWhile = dyn_cast<WhileStmt>(child)) {
       this->visitedLoops[childWhile] = true;
+    } else if (auto* childDo = dyn_cast<DoStmt>(child)) {
+      this->visitedLoops[childDo] = true;
     }
 
     if (isa<ReturnStmt>(child) || !this->isValidLoop(child)) {
@@ -123,6 +128,7 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
       return false;
   }
 
+  // Add counter increment if this loop is within the target function
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
     std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
     counters.push_back(counter);
