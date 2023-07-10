@@ -18,6 +18,56 @@ bool NodeCounterVisitor::VisitDecl(Decl* decl) {
   return true;
 }
 
+bool DependenceVisitor::containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl) {
+  bool result = false;
+
+  for (auto* child : node->children()) {
+    if (!child)
+      continue;
+
+    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
+      if (auto* param = dyn_cast<ParmVarDecl>(refExpr->getFoundDecl())) {
+        (*this->paramRefs)[decl].push_back(param);
+        result = true;
+      }
+    }
+
+    result |= this->containsRefToParam(child, decl);
+  }
+
+  return result;
+}
+
+bool DependenceVisitor::VisitBinaryOperator(clang::BinaryOperator* binOp) {
+  if (!binOp->isAssignmentOp())
+    return true;
+
+  if (auto* ref = dyn_cast<DeclRefExpr>(binOp->getLHS())) {
+    auto* decl = ref->getFoundDecl();
+    (*this->paramRefs)[decl].clear();
+    bool contains = this->containsRefToParam(binOp->getRHS(), decl);
+
+    if (!contains)
+      this->paramRefs->erase(decl);
+  }
+
+  return true;
+}
+
+bool DependenceVisitor::VisitVarDecl(clang::VarDecl* decl) {
+  if (auto* param = dyn_cast<ParmVarDecl>(decl)) {
+    (*this->paramRefs)[param].push_back(param);
+  } else if (auto* init = decl->getInit()) {
+    (*this->paramRefs)[decl].clear();
+    bool contains = this->containsRefToParam(init, decl);
+
+    if (!contains)
+      this->paramRefs->erase(decl);
+  }
+
+  return true;
+}
+
 std::string InstrumentationVisitor::getPrintString() {
   std::string format = "";
   std::string variables = "";
@@ -42,8 +92,8 @@ std::string InstrumentationVisitor::getPrintString() {
   }
 
   if (format.size() > 0)
-    format.pop_back();    // Remove last space
-  
+    format.pop_back(); // Remove last space
+
   if (variables.size() > 0)
     variables.pop_back(); // Remove last comma
 
@@ -63,21 +113,27 @@ void InstrumentationVisitor::addTempVariables() {
 }
 
 void InstrumentationVisitor::addPrints() {
-  this->printVisitor.printString = this->getPrintString();
-  this->printVisitor.TraverseDecl(this->currFunc);
+  InsertPrintVisitor printVisitor(this->rewriter);
+  printVisitor.printString = this->getPrintString();
+  printVisitor.TraverseDecl(this->currFunc);
 
   if (this->currFunc->getReturnType().getTypePtr()->isVoidType())
-    this->rewriter->InsertText(this->currFunc->getEndLoc(), this->printVisitor.printString, false, true);
+    this->rewriter->InsertText(this->currFunc->getEndLoc(), printVisitor.printString, false, true);
 }
 
 bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   if (funcDecl->getNameAsString() == this->functionName) {
     // Once we visit our target function, we count the number of nodes in its
     // AST and output it
-
     NodeCounterVisitor countVisitor;
     countVisitor.TraverseDecl(funcDecl);
     outs() << countVisitor.nodeCount << '\n';
+
+    // We also use an auxiliary class to get all variables that reference
+    // function params
+    DependenceVisitor dependenceVisitor;
+    dependenceVisitor.paramRefs = &(this->paramRefs);
+    dependenceVisitor.TraverseDecl(funcDecl);
   } else if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
     // If this condition is true, then we have finished traversing our target
     // function
@@ -211,56 +267,6 @@ bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
   this->visitedIfs[ifStmt] = true;
 
   return this->isValidIf(ifStmt);
-}
-
-bool InstrumentationVisitor::containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl) {
-  bool result = false;
-
-  for (auto* child : node->children()) {
-    if (!child)
-      continue;
-
-    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
-      if (auto* param = dyn_cast<ParmVarDecl>(refExpr->getFoundDecl())) {
-        this->paramRefs[decl].push_back(param);
-        result = true;
-      }
-    }
-
-    result |= this->containsRefToParam(child, decl);
-  }
-
-  return result;
-}
-
-bool InstrumentationVisitor::VisitBinaryOperator(clang::BinaryOperator* binOp) {
-  if (!binOp->isAssignmentOp())
-    return true;
-
-  if (auto* ref = dyn_cast<DeclRefExpr>(binOp->getLHS())) {
-    auto* decl = ref->getFoundDecl();
-    this->paramRefs[decl].clear();
-    bool contains = this->containsRefToParam(binOp->getRHS(), decl);
-
-    if (!contains)
-      this->paramRefs.erase(decl);
-  }
-
-  return true;
-}
-
-bool InstrumentationVisitor::VisitVarDecl(clang::VarDecl* decl) {
-  if (auto* param = dyn_cast<ParmVarDecl>(decl)) {
-    this->paramRefs[param].push_back(param);
-  } else if (auto* init = decl->getInit()) {
-    this->paramRefs[decl].clear();
-    bool contains = this->containsRefToParam(init, decl);
-
-    if (!contains)
-      this->paramRefs.erase(decl);
-  }
-
-  return true;
 }
 
 std::string InstrumentationConsumer::findFunctionName(std::string inputFile) {

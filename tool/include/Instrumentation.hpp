@@ -35,7 +35,7 @@ private:
 };
 
 /**
- * \class InsertPrintVisitor
+ * \class NodeCounterVisitor
  *
  * \brief Implementation of a recursive AST Visitor.
  *
@@ -55,6 +55,34 @@ public:
 };
 
 /**
+ * \class DependenceVisitor
+ *
+ * \brief Implementation of a recursive AST Visitor.
+ *
+ * Auxiliary visitor class used find dependencies between function parameters
+ * and variables used in the function.
+ */
+class DependenceVisitor : public clang::RecursiveASTVisitor<DependenceVisitor> {
+private:
+  /**
+   * \brief Checks whether a statement contains any references to a param. If so, updates the map
+   * paramRefs for the given declaration.
+   * \param node Statement being visited.
+   * \param decl Declaration to consider when updating paramRefs.
+   *
+   * \return Boolean value that is true if node contains a reference to a param.
+   */
+  bool containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl);
+
+public:
+  /// @brief Map that associates a declaration to the parameters that it references.
+  llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>>* paramRefs;
+
+  bool VisitBinaryOperator(clang::BinaryOperator* binOp);
+  bool VisitVarDecl(clang::VarDecl* decl);
+};
+
+/**
  * \class InstrumentationVisitor
  *
  * \brief Implementation of a recursive AST Visitor.
@@ -69,7 +97,7 @@ public:
    * \param rewriter Object use to rewrite the code and add instrumentation.
    */
   explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
-      : context(context), rewriter(rewriter), printVisitor(rewriter) {
+      : context(context), rewriter(rewriter) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
                              {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }
@@ -79,8 +107,6 @@ public:
   bool VisitForStmt(clang::ForStmt* forStmt);
   bool VisitWhileStmt(clang::WhileStmt* whileStmt);
   bool VisitIfStmt(clang::IfStmt* ifStmt);
-  bool VisitBinaryOperator(clang::BinaryOperator* binOp);
-  bool VisitVarDecl(clang::VarDecl* decl);
 
   /**
    * \brief Adds printf's with the counter and the tainted params to the last visited function.
@@ -107,8 +133,6 @@ private:
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
   llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables; ///< Map of parameters that influence some loop.
 
-  InsertPrintVisitor printVisitor; ///< Auxiliary visitor used to add printf's before return statements.
-
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
 
@@ -124,16 +148,6 @@ private:
    * \param node Statement being considered.
    */
   void getTaintedVars(clang::Stmt* node);
-
-  /**
-   * \brief Checks whether a statement contains any references to a param. If so, updates the map
-   * paramRefs for the given declaration.
-   * \param node Statement being visited.
-   * \param decl Declaration to consider when updating paramRefs.
-   *
-   * \return Boolean value that is true if node contains a reference to a param.
-   */
-  bool containsRefToParam(clang::Stmt* node, clang::NamedDecl* decl);
 
   /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.
