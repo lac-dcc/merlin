@@ -75,6 +75,7 @@ public:
   }
 
   bool VisitFunctionDecl(clang::FunctionDecl* funcDecl);
+  bool VisitDoStmt(clang::DoStmt* doStmt);
   bool VisitForStmt(clang::ForStmt* forStmt);
   bool VisitWhileStmt(clang::WhileStmt* whileStmt);
   bool VisitIfStmt(clang::IfStmt* ifStmt);
@@ -94,16 +95,16 @@ public:
   std::string functionName; ///< Name of the function to be instrumented.
 
 private:
-  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
-  std::string counter;        ///< String that contains the name of the counter being used for instrumentation.
-  clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited
+  clang::ASTContext* context;                 ///< ASTContext to be used by the visitor.
+  clang::Rewriter* rewriter;                  ///< Object used to rewrite the code and add instrumentation.
+  llvm::SmallVector<std::string, 3> counters; ///< Vector with the names of the counters used for instrumentation.
+  clang::FunctionDecl* currFunc = nullptr;    ///< Pointer to the function being currently visited.
 
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
   llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
 
   /// @brief Map that associates a declaration to the parameters that it references.
-  llvm::DenseMap<clang::NamedDecl*, clang::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
+  llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
   llvm::DenseMap<clang::NamedDecl*, std::string> taintedVariables; ///< Map of parameters that influence some loop.
 
   InsertPrintVisitor printVisitor; ///< Auxiliary visitor used to add printf's before return statements.

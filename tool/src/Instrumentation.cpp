@@ -36,8 +36,16 @@ std::string InstrumentationVisitor::getPrintString() {
     }
   }
 
-  format += "%d";
-  variables += this->counter;
+  for (auto& counter : this->counters) {
+    format += "%d ";
+    variables += counter + ",";
+  }
+
+  if (format.size() > 0)
+    format.pop_back();    // Remove last space
+  
+  if (variables.size() > 0)
+    variables.pop_back(); // Remove last comma
 
   return "printf(\"" + format + "\\n\", " + variables + ");\n";
 }
@@ -68,18 +76,42 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
     countVisitor.TraverseDecl(funcDecl);
     outs() << countVisitor.nodeCount << '\n';
   } else if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
-    std::string counterDeclaration = "unsigned " + this->counter + " = 0;\n";
+    // If this condition is true, then we have finished traversing our target
+    // function
+
+    std::string countersDecls = "";
+    for (auto& counter : counters) {
+      countersDecls += "unsigned " + counter + " = 0;\n";
+    }
 
     if (auto* body = this->currFunc->getBody())
-      this->rewriter->InsertTextAfterToken(body->getBeginLoc(), counterDeclaration);
+      this->rewriter->InsertTextAfterToken(body->getBeginLoc(), countersDecls);
 
     this->addTempVariables();
     this->addPrints();
     this->taintedVariables.clear();
   }
 
-  this->counter = "counter" + funcDecl->getNameAsString();
   this->currFunc = funcDecl;
+
+  return true;
+}
+
+bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
+  for (auto* child : stmt->children()) {
+    if (!child)
+      continue;
+
+    if (auto* childFor = dyn_cast<ForStmt>(child)) {
+      this->visitedLoops[childFor] = true;
+    } else if (auto* childWhile = dyn_cast<WhileStmt>(child)) {
+      this->visitedLoops[childWhile] = true;
+    }
+
+    if (isa<ReturnStmt>(child) || !this->isValidLoop(child)) {
+      return false;
+    }
+  }
 
   return true;
 }
@@ -92,9 +124,10 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   }
 
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
-    SourceLocation beginLoc = loop->getBeginLoc();
-    SourceManager& srcMgr = this->rewriter->getSourceMgr();
-    std::string increment = "\n" + this->counter + "++;";
+    std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
+    counters.push_back(counter);
+
+    std::string increment = "\n" + counter + "++;";
     this->rewriter->InsertTextAfterToken(bodyLoc, increment);
   }
 
@@ -121,34 +154,20 @@ void InstrumentationVisitor::getTaintedVars(Stmt* node) {
 }
 
 bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
-  SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
   this->getTaintedVars(whileStmt->getCond());
 
+  SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
   return this->visitLoop(whileStmt, bodyLoc);
 }
 
-bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
-  for (auto* child : stmt->children()) {
-    if (!child)
-      continue;
+bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
+  this->getTaintedVars(doStmt->getCond());
 
-    if (auto* childFor = dyn_cast<ForStmt>(child)) {
-      this->visitedLoops[childFor] = true;
-    } else if (auto* childWhile = dyn_cast<WhileStmt>(child)) {
-      this->visitedLoops[childWhile] = true;
-    }
-
-    if (isa<ReturnStmt>(child) || !this->isValidLoop(child)) {
-      return false;
-    }
-  }
-
-  return true;
+  SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
+  return this->visitLoop(doStmt, bodyLoc);
 }
 
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
-  SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
-
   if (forStmt->getInit()) {
     if (auto* binOp = dyn_cast<BinaryOperator>(forStmt->getInit())) {
       this->VisitBinaryOperator(binOp);
@@ -160,6 +179,7 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   if (Expr* cond = forStmt->getCond())
     this->getTaintedVars(cond);
 
+  SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
   return this->visitLoop(forStmt, bodyLoc);
 }
 
