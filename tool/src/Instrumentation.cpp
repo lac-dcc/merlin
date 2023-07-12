@@ -69,34 +69,40 @@ bool DependenceVisitor::VisitVarDecl(clang::VarDecl* decl) {
 }
 
 std::string InstrumentationVisitor::getPrintString() {
-  std::string printString = "";
+  SourceManager& srcMgr = this->rewriter->getSourceMgr();
+  std::string header = "";
+  std::string counters = "";
 
-  printString += "\nprintf(\"" + std::to_string(this->counters.size()) + "\\n\");\n";
+  header += "\nprintf(\"" + std::to_string(this->counters.size()) + "\\n\");\n";
   for (auto const& [loop, counterName] : this->counters) {
-    printString += "printf(\"" + std::to_string(this->controlVariables[loop].size()) + "\\n\");\n";
+    header += "printf(\"at line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
 
     std::string format = "";
     std::string variables = "";
+    std::string originalNames = "";
     for (ParmVarDecl* controlParam : this->controlVariables[loop]) {
+      std::string paramName = controlParam->getNameAsString();
+      originalNames += " " + paramName;
+
       QualType type = controlParam->getType();
       if (type.getTypePtr()->isPointerType()) {
         format +=
             this->formatSpecifier[type.getTypePtr()->getPointeeType().getDesugaredType(*this->context).getAsString()] +
             " ";
-        variables += "*temp" + controlParam->getNameAsString() + ",";
+        variables += "*temp" + paramName + ",";
       } else {
         format += this->formatSpecifier[type.getDesugaredType(*this->context).getAsString()] + " ";
-        variables += "temp" + controlParam->getNameAsString() + ",";
+        variables += "temp" + paramName + ",";
       }
     }
 
     format += "%d";
     variables += counterName;
 
-    printString += "printf(\"" + format + "\\n\", " + variables + ");\n";
+    counters += "printf(\"" + format + "\\n\", " + variables + ");\n";
+    header += "printf(\"" + originalNames + "\\n\");\n";
   }
-
-  return printString;
+  return header + counters;
 }
 
 void InstrumentationVisitor::addTempVariables() {
