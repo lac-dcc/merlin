@@ -161,20 +161,23 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
-bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
+bool InstrumentationVisitor::isValidLoop(Stmt* stmt, Stmt* loop) {
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
 
     if (auto* childFor = dyn_cast<ForStmt>(child)) {
+      this->parentLoops[childFor] = loop;
       this->visitedLoops[childFor] = true;
     } else if (auto* childWhile = dyn_cast<WhileStmt>(child)) {
+      this->parentLoops[childWhile] = loop;
       this->visitedLoops[childWhile] = true;
     } else if (auto* childDo = dyn_cast<DoStmt>(child)) {
+      this->parentLoops[childDo] = loop;
       this->visitedLoops[childDo] = true;
     }
 
-    if (isa<ReturnStmt>(child) || !this->isValidLoop(child)) {
+    if (isa<ReturnStmt>(child) || !this->isValidLoop(child, loop)) {
       return false;
     }
   }
@@ -185,9 +188,11 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt) {
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (this->visitedLoops.find(loop) == this->visitedLoops.end()) {
     this->visitedLoops[loop] = true;
-    if (!this->isValidLoop(loop))
+    if (!this->isValidLoop(loop, loop))
       return false;
   }
+
+  this->getParentControlVars(loop);
 
   // Add counter increment if this loop is within the target function
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
@@ -211,12 +216,22 @@ void InstrumentationVisitor::getControlVars(Stmt* node, Stmt* loop) {
 
       if (this->paramRefs.find(decl) != this->paramRefs.end()) {
         for (ParmVarDecl* param : this->paramRefs[decl]) {
-          this->controlVariables[loop].push_back(param);
+          this->controlVariables[loop].insert(param);
         }
       }
     }
 
     this->getControlVars(child, loop);
+  }
+}
+
+void InstrumentationVisitor::getParentControlVars(Stmt* loop) {
+  if (this->parentLoops.find(loop) == this->parentLoops.end())
+    return;
+
+  Stmt* parentLoop = this->parentLoops[loop];
+  for (ParmVarDecl* controlVar : this->controlVariables[parentLoop]) {
+    this->controlVariables[loop].insert(controlVar);
   }
 }
 

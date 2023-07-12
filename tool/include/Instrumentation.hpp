@@ -7,6 +7,7 @@
 #include "clang/Frontend/FrontendPluginRegistry.h"
 #include "clang/Rewrite/Core/Rewriter.h"
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
 #include <string>
 #include <unordered_map>
@@ -121,17 +122,21 @@ public:
   std::string functionName; ///< Name of the function to be instrumented.
 
 private:
-  clang::ASTContext* context;                 ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter;                  ///< Object used to rewrite the code and add instrumentation.
-  llvm::DenseMap<clang::Stmt*, std::string> counters; ///< Vector with the names of the counters used for instrumentation.
-  clang::FunctionDecl* currFunc = nullptr;    ///< Pointer to the function being currently visited.
+  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
+  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
+  /// @brief Vector with the names of the counters used for instrumentation.
+  llvm::DenseMap<clang::Stmt*, std::string> counters;
+  clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
 
   llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
   llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
 
+  llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
+
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
-  llvm::DenseMap<clang::Stmt*, llvm::SmallVector<clang::ParmVarDecl*, 3>> controlVariables;
+  /// @brief Map that associates a loop with all function parameters that control it.
+  llvm::DenseMap<clang::Stmt*, llvm::SmallSet<clang::ParmVarDecl*, 3>> controlVariables;
 
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
@@ -150,6 +155,12 @@ private:
   void getControlVars(clang::Stmt* node, clang::Stmt* loop);
 
   /**
+   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
+   * \param node Statement being considered.
+   */
+  void getParentControlVars(clang::Stmt* loop);
+
+  /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.
    * \param loop Loop being visited.
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
@@ -166,7 +177,7 @@ private:
    * \brief Recursive method used to indicate if a loop is valid for instrumentation.
    * \param stmt Statement being traversed.
    */
-  bool isValidLoop(clang::Stmt* stmt);
+  bool isValidLoop(clang::Stmt* stmt, clang::Stmt* loop);
 };
 
 /**
