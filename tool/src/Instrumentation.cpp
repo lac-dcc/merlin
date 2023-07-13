@@ -168,24 +168,22 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
 }
 
 bool InstrumentationVisitor::isValidLoop(Stmt* stmt, Stmt* loop) {
+  Stmt* lastLoop = loop;
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
 
-    if (auto* childFor = dyn_cast<ForStmt>(child)) {
-      this->parentLoops[childFor] = loop;
-      this->visitedLoops[childFor] = true;
-    } else if (auto* childWhile = dyn_cast<WhileStmt>(child)) {
-      this->parentLoops[childWhile] = loop;
-      this->visitedLoops[childWhile] = true;
-    } else if (auto* childDo = dyn_cast<DoStmt>(child)) {
-      this->parentLoops[childDo] = loop;
-      this->visitedLoops[childDo] = true;
+    if (isa<ForStmt>(child) || isa<WhileStmt>(child) || isa<DoStmt>(child)) {
+      this->parentLoops[child] = loop;
+      this->visitedLoops[child] = true;
+      lastLoop = child;
     }
 
-    if (isa<ReturnStmt>(child) || !this->isValidLoop(child, loop)) {
+    if (isa<ReturnStmt>(child) || !this->isValidLoop(child, lastLoop)) {
       return false;
     }
+
+    lastLoop = loop;
   }
 
   return true;
