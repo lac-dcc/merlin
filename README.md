@@ -1,7 +1,7 @@
 # 🧙‍♂️ Merlin 🧙‍♂️
 
 <p align="center">
-  <img alt="merlin drawing" src="assets/img/merlin.jpg" width="30%" height="auto"/></br>
+  <img alt="merlin drawing" src="assets/img/merlin_simple.png" width="30%" height="auto"/></br>
 </p>
 
 ## Introduction
