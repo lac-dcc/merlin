@@ -1,8 +1,8 @@
 .vscode/
 build/
-tool/output/
-tool/sample*/
-tool/*.csv
+instrumentation/output/
+instrumentation/sample*/
+instrumentation/*.csv
 interpolation/obj/
 interpolation/bin/
 interpolation/input/

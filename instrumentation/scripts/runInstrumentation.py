@@ -23,8 +23,8 @@ if __name__ == '__main__':
         })
 
         if proc.returncode != 0:
-            errors.append((input, proc.stderr))
 
+            errors.append((input, proc.stderr))
     if len(errors) > 0:
         print('\n\n======================ERRORS======================\n\n')
         for (input, err) in errors:
