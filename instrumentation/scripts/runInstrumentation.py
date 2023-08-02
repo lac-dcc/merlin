@@ -1,10 +1,25 @@
+"""Run instrumentation for all benchmarks
+
+This script runs Merlin's instrumentation for all Jotai benchmarks using the 
+'run.sh' script. The output for the instrumentation is saved in the 'output/'
+directory.
+
+The script reports any errors that occur during the execution of the
+instrumentation. It also generates a CSV file that gives the size of the 
+function instrumented for each file and wether it was instrumented or not.
+
+Usage:
+    python runInstrumentation.py
+"""
+
 import pandas as pd
 from os import listdir
 from subprocess import run
 
 if __name__ == '__main__':
     run('rm -rf output', shell=True)
-    inputs = listdir('../test/jotai_benchmarks')
+    benchmark_dir = '../test/jotai_benchmarks'
+    inputs = listdir(benchmark_dir)
     print(len(inputs))
 
     results = []
@@ -12,7 +27,7 @@ if __name__ == '__main__':
     for input in inputs:
         print(f'Running: {input}')
         proc = run(
-            f'./run.sh ../test/jotai_benchmarks/{input} {input}', shell=True, capture_output=True, text=True)
+            f'./scripts/run.sh {benchmark_dir}/{input} {input}', shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
         not_instrumented = len(lines) > 1 and lines[1] == 'Unable to instrument the input'
@@ -23,8 +38,8 @@ if __name__ == '__main__':
         })
 
         if proc.returncode != 0:
-
             errors.append((input, proc.stderr))
+
     if len(errors) > 0:
         print('\n\n======================ERRORS======================\n\n')
         for (input, err) in errors:

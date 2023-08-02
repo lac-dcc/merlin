@@ -1,3 +1,22 @@
+"""Generate sample from benchmarks
+
+This scripts generates a random sample of programs from the instrumented Jotai
+programs. You can define the size of the sample, the output directory and a seed.
+The script saves the seed that was used to generate the sample so that it can be
+generated again.
+
+Notice that you should run the script 'runInstrumentation.py' before running
+this script.
+
+Usage:
+    python generateSample.py <sample_size> <output> [seed]
+
+Arguments:
+    sample_size (int): Size of the sample to be generated.
+    output (str): Path to the directory where the sample should be placed.
+    seed (int, optional): Seed used to generate the random sample.
+"""
+
 from os import listdir
 from random import sample, randrange, seed
 from sys import argv, stderr, maxsize
@@ -5,7 +24,7 @@ from subprocess import run
 
 if __name__ == '__main__':
     if len(argv) < 3:
-        print(f'Usage: {argv[0]} <sample_size> <output> [seed]', file=stderr)
+        print(f'Usage: python {argv[0]} <sample_size> <output> [seed]', file=stderr)
         exit(1)
 
     if len(argv) == 4:
