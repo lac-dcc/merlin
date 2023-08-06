@@ -1,7 +1,7 @@
 # 🧙‍♂️ Merlin 🧙‍♂️
 
 <p align="center">
-  <img alt="merlin drawing" src="assets/img/merlin.png" width="30%" height="auto"/></br>
+  <img alt="merlin drawing" src="assets/img/merlin.png" width="45%" height="auto"/></br>
 </p>
 
 ## Introduction
@@ -16,3 +16,9 @@ Merlin's instrumentation was implemented as a `clang` plugin that inserts counte
 
 ## Interpolation
 Merlin, when dealing with programs influenced by a single input variable, uses [Newton's Divided Differences](https://en.wikipedia.org/wiki/Newton_polynomial) method for interpolating data points to find polynomials that fit the given data exactly. However, when dealing with programs costs that are influenced by multiple variables, Merlin uses the [least squares method](https://en.wikipedia.org/wiki/Linear_least_squares) to find good approximations for the function costs of the programs.
+
+## Building 
+To compile the instrumentation, access the script `merlin/instrumentation/scripts/setup.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/setup.sh` to create your own build.
+
+## Running
+To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name`, where `input_file` is the directory for the file you want to instrument and ´output_file_name´ is just the name for the output file. After running the instrumentation, the instrumented program will be available in the `output` folder. 
