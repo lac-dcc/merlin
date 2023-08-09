@@ -9,8 +9,7 @@ Interpolator::Interpolator(std::vector<double> x, std::vector<double> fx) {
   this->numSample = x.size();
 }
 
-Interpolator::Interpolator(std::vector<double> x, std::vector<double> y,
-                           std::vector<double> fxy) {
+Interpolator::Interpolator(std::vector<double> x, std::vector<double> y, std::vector<double> fxy) {
   this->interpType = InterpolationType::TwoVar;
   this->X = x;
   this->Y = y;
@@ -26,30 +25,29 @@ std::string Interpolator::interpolate() {
 }
 
 std::string Interpolator::newtonDividedDifference() {
-  std::vector<std::vector<double>> table(this->numSample,
-                                         std::vector<double>(this->numSample));
+  std::vector<std::vector<double>> table(this->numSample, std::vector<double>(this->numSample));
   for (int i = 0; i < this->numSample; i++) {
     table[i][0] = this->F[i];
   }
 
-	// Bulding divided difference table
+  // Bulding divided difference table
   for (int j = 1; j < this->numSample; j++) {
     for (int i = 0; i < this->numSample - j; i++) {
       table[i][j] = (table[i + 1][j - 1] - table[i][j - 1]) / (this->X[i + j] - this->X[i]);
     }
   }
 
-	if(table[this->numSample-1][this->numSample-1] != 0)
-		return "Couldn't find a solution! Try again with more sample points.";
+  if (table[this->numSample - 1][this->numSample - 1] != 0)
+    return "Couldn't find a solution! Try again with more sample points.";
 
-	std::stringstream formula;	
-	for (int i = 0; i < this->numSample; i++) {
+  std::stringstream formula;
+  for (int i = 0; i < this->numSample; i++) {
     if (!table[0][i])
       continue;
 
     if (i > 0) {
-			(table[0][i] > 0) ? formula << " + " : formula << " - ";
-		}
+      (table[0][i] > 0) ? formula << " + " : formula << " - ";
+    }
     formula << abs(table[0][i]);
 
     for (int j = 0; j < i; j++) {
@@ -58,46 +56,46 @@ std::string Interpolator::newtonDividedDifference() {
       formula << ")";
     }
   }
-	
-	std::string command = "python3 reduce.py \"" + formula.str() + "\"";
-	std::ostringstream result_stream;
-	FILE* pipe = popen(command.c_str(), "r");
-	if (!pipe) {
-			throw std::runtime_error("Erro ao executar o comando Python");
-	}
 
-	char buffer[128];
-	while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
-			result_stream << buffer;
-	}
-	pclose(pipe);
-  
+  std::string command = "python3 reduce.py \"" + formula.str() + "\"";
+  std::ostringstream result_stream;
+  FILE* pipe = popen(command.c_str(), "r");
+  if (!pipe) {
+    throw std::runtime_error("Erro ao executar o comando Python");
+  }
+
+  char buffer[128];
+  while (fgets(buffer, sizeof(buffer), pipe) != nullptr) {
+    result_stream << buffer;
+  }
+  pclose(pipe);
+
   std::string result = result_stream.str();
   if (!result.empty() && result[result.length() - 1] == '\n') {
-        result.erase(result.length() - 1);
+    result.erase(result.length() - 1);
   }
-	return "F(x) = " +  result;
+  return "F(x) = " + result;
 }
 
 std::string Interpolator::linearLeastSquares() {
-	Eigen::MatrixXd A(this->numSample, this->numSample);
+  Eigen::MatrixXd A(this->numSample, this->numSample);
   Eigen::VectorXd b(this->numSample);
   Eigen::VectorXd answer;
 
-	for (int i = 0; i < this->numSample; i++) {
+  for (int i = 0; i < this->numSample; i++) {
     A(i, 0) = 1;
     A(i, 1) = this->X[i];
     A(i, 2) = this->Y[i];
     b(i) = this->F[i];
   }
 
-	  double error = INT_MAX;
+  double error = INT_MAX;
   std::list<int> monomials;
 
   std::queue<std::list<int>> work_queue;
   work_queue.emplace();
-	int iterationsCounter = MAX_LEAST_SQR_ITERATIONS;
-	
+  int iterationsCounter = MAX_LEAST_SQR_ITERATIONS;
+
   while (error > ZERO && work_queue.size() != 0 && iterationsCounter--) {
     std::list<int> cols = work_queue.front();
     work_queue.pop();
@@ -123,7 +121,7 @@ std::string Interpolator::linearLeastSquares() {
       work_queue.push(cols);
     } else if (error <= ZERO) {
       monomials = cols;
-    } 
+    }
   }
 
   if (error > ZERO) {
