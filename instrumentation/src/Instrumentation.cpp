@@ -309,7 +309,7 @@ std::string InstrumentationConsumer::findFunctionName(std::string inputFile) {
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
   std::string inputFile = srcMgr.getFileEntryForID(srcMgr.getMainFileID())->getName().str();
-  this->visitor.functionName = findFunctionName(inputFile);
+  this->visitor.functionName = this->targetFunction;
 
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
@@ -325,7 +325,8 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
 
 std::unique_ptr<ASTConsumer> InstrumentationAction::CreateASTConsumer(CompilerInstance& Compiler, StringRef InFile) {
   this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
-  return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &rewriter, outputFile);
+  return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &(this->rewriter), this->outputFile,
+                                                   this->targetFunction);
 }
 
 bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const std::vector<std::string>& args) {
@@ -339,10 +340,19 @@ bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const st
 
       ++i;
       this->outputFile = args[i];
+    } else if (args[i] == "-target-function") {
+      if (i + 1 >= end) {
+        diagnostics.Report(diagnostics.getCustomDiagID(DiagnosticsEngine::Error, "Missing -target-function argument"));
+        return false;
+      }
+
+      ++i;
+      this->targetFunction = args[i];
     } else if (args[i] == "-help") {
       errs() << "--- Merlin plugin ---\n";
       errs() << "Arguments:\n";
-      errs() << " -output-file     fileName\n";
+      errs() << " -output-file         Name of the instrumented output file.\n";
+      errs() << " -target-function     Name of the function to be instrumented.\n";
     } else {
       unsigned DiagID = diagnostics.getCustomDiagID(DiagnosticsEngine::Error, "Invalid argument '%0'");
       diagnostics.Report(DiagID) << args[i];

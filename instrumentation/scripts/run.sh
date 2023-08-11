@@ -7,14 +7,15 @@
 # Notice that you must set the variable LLVM_BUILD_DIR to the directory where
 # LLVM is built in your computer.
 #
-# Usage: ./run.sh <input_file> <output_file>
+# Usage: ./run.sh <input_file> <output_file> <target_function>
 #
 # Arguments: 
 #   input_file: Path to the input file.
 #   output_file: Name of the output file.
+#   target_function: Name of the function that should be instrumented.
 
-if [ $# -lt 2 ]; then
-    echo 'Usage: run.sh <input_file> <output_file>'
+if [ $# -lt 3 ]; then
+    echo 'Usage: run.sh <input_file> <output_file> <target_function>'
     exit 1
 fi
 
@@ -23,6 +24,7 @@ CLANG_FORMAT="$LLVM_BUILD_DIR/bin/clang-format"
 LIB="./build/src/libMerlin.so"
 INPUT=$1
 OUTPUT=$2
+TARGET=$3
 
 FILE=$(basename $INPUT)
 EXT="${FILE##*.}"
@@ -37,7 +39,8 @@ TEMP=$FILE
 $CLANG_FORMAT $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
 
 $CC -std=c99 -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
--Xclang -plugin-arg-merlin  -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
+-Xclang -plugin-arg-merlin -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
+-Xclang -plugin-arg-merlin -Xclang -target-function -Xclang -plugin-arg-merlin -Xclang $TARGET \
 $TEMP
 
 RET_VAL=$?
