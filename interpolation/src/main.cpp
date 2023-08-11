@@ -11,6 +11,7 @@ int main() {
   cin >> numPoints;
   cin.ignore();
   vector<vector<string>> interpVars(numInterp);
+  vector<string> originLines(numInterp);
   vector<vector<double>> xValues(numInterp); // X variables
   vector<vector<double>> yValues(numInterp); // Y variable
   vector<vector<double>> fValues(numInterp); // F(x)/F(x,y)
@@ -18,6 +19,7 @@ int main() {
   for (int i = 0; i < numInterp; i++) {
     string varNames;
     getline(cin, varNames);
+    originLines[i] = varNames;
     varNames = varNames.substr(varNames.find(':') + 1, varNames.length());
 
     if (varNames.size() <= 0)
@@ -55,6 +57,7 @@ int main() {
     int numVars = interpVars[i].size();
     if (numVars == 1) {
       Interpolator interp(xValues[i], fValues[i]);
+      cout << originLines[i] << endl;
       cout << "x: " << interpVars[i][0] << endl;
       cout << interp.interpolate() << endl << endl;
     } else if (numVars == 2) {
