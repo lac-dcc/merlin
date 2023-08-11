@@ -187,8 +187,9 @@ private:
  */
 class InstrumentationConsumer : public clang::ASTConsumer {
 public:
-  explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile)
-      : visitor(Context, rewriter), rewriter(rewriter), outputFile(outputFile) {}
+  explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile,
+                                   std::string targetFunction)
+      : visitor(Context, rewriter), rewriter(rewriter), outputFile(outputFile), targetFunction(targetFunction) {}
 
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
@@ -205,6 +206,7 @@ private:
   InstrumentationVisitor visitor;
   clang::Rewriter* rewriter;
   std::string outputFile;
+  std::string targetFunction;
 };
 
 /**
@@ -223,6 +225,7 @@ protected:
 private:
   clang::Rewriter rewriter;
   std::string outputFile = "output.c";
+  std::string targetFunction = "main";
 };
 
 static clang::FrontendPluginRegistry::Add<InstrumentationAction> X("merlin",
