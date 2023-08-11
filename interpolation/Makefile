@@ -5,9 +5,9 @@ OBJ = obj
 BIN = bin
 EXE = ${BIN}/main
 
-${BIN}/main: ${OBJ}/interpolator.o ${OBJ}/main.o 
+${BIN}/interpolator: ${OBJ}/interpolator.o ${OBJ}/main.o 
 	@mkdir -p ./bin
-	$(CC) ${OBJ}/* -o ${BIN}/main
+	$(CC) ${OBJ}/* -o ${BIN}/interpolator
 
 ${OBJ}/interpolator.o: ${SRC}/interpolator.cpp
 	@mkdir -p ./obj
