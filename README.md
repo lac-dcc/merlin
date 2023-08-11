@@ -153,12 +153,12 @@ F(x) = 0.5*x*(x - 1)
 
 This output indicates the following:
 ```
-at line 9 : n           --> Point of Program analysed 
-x: n                    --> Varaible represented by x
-F(x) = x                --> Interpolated function for the point of program
+at line 9 : n           --> Program Point analysed 
+x: n                    --> Variable represented by x
+F(x) = x                --> Interpolated function for the Program Point
 
-at line 11 : n          --> Point of Program analysed 
-x: n                    --> Varaible represented by x
-F(x) = 0.5*x*(x - 1)    --> Interpolated function for the point of program
+at line 11 : n          --> Program Point analysed 
+x: n                    --> Variable represented by x
+F(x) = 0.5*x*(x - 1)    --> Interpolated function for the Program Point
 ```
 In this case, the first program point is the outer while statement, which is influenced by the variable `n` and has the cost function `F(n) = n`. For the second program point, representing the inner while statement, which is solely influenced by the variable `n`, the cost function is `F(n) = 0.5 * n * (n - 1)`.
