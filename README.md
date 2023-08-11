@@ -20,6 +20,16 @@ Merlin, when dealing with programs influenced by a single input variable, uses [
 ## Building 
 To compile the instrumentation, access the script `merlin/instrumentation/scripts/setup.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/setup.sh` to create your own build. After that, access the directory `merlin/interpolation` and run `make` to compile the interpolator code.
 
+### Dependencies
+These are the most important dependencies for building and running Merlin:
+
+| Dependency | Version   | Installation Link                            |
+|------------|-----------|----------------------------------------------|
+| LLVM       | >= 14.0.0 | [llvm.org](https://llvm.org/docs/CMake.html) |
+| CMake      | >= 3.20   | [cmake.org](https://cmake.org/install/)      |
+
+Building LLVM on your computer may be troublesome. To make things easier, we have made a Docker image with all Merlin's dependencies that is available [here](./docker/).
+
 ## Running
 To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name target_function`, where `input_file` is the directory for the file you want to instrument, `output_file_name` is just the name for the output file, and `target_function` is the name of the function to add the counters. After running the instrumentation, the instrumented program will be available in the `output` folder. 
 
@@ -84,7 +94,7 @@ void bubble_sort(int n, int *arr) {
 }
 ```
 
-Having instrumented the code, our subsequent task involves compiling the program and executing it using a range of input entries. This is essential for generating the requisite sample data, which will be used for conducting the interpolation. Specifically, the code was executed for the following input values:
+Having instrumented the code, our subsequent task involves compiling the program and executing it using a range of input entries. This is essential for generating the necessary sample data, which will be used for conducting the interpolation. Specifically, the code was executed for the following input values:
 
 ``` c++
 int main() {
