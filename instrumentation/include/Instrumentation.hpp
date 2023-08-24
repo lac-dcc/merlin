@@ -107,7 +107,6 @@ public:
   bool VisitDoStmt(clang::DoStmt* doStmt);
   bool VisitForStmt(clang::ForStmt* forStmt);
   bool VisitWhileStmt(clang::WhileStmt* whileStmt);
-  bool VisitIfStmt(clang::IfStmt* ifStmt);
 
   /**
    * \brief Adds printf's with the counter and the tainted params to the last visited function.
@@ -127,9 +126,6 @@ private:
   /// @brief Vector with the names of the counters used for instrumentation.
   llvm::DenseMap<clang::Stmt*, std::string> counters;
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
-
-  llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
-  llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
 
   llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
 
@@ -194,15 +190,6 @@ public:
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
 private:
-  /**
-   * \brief Assuming that we are testing Merlin on Jotai programs, this method will extract the name of the function to
-   * be instrumented from the input file name.
-   * \param inputFile Name of the input file.
-   *
-   * \return String with the name of the function to be instrumented.
-   */
-  std::string findFunctionName(std::string inputFile);
-
   InstrumentationVisitor visitor;
   clang::Rewriter* rewriter;
   std::string outputFile;

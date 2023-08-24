@@ -167,35 +167,7 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
-bool InstrumentationVisitor::isValidLoop(Stmt* stmt, Stmt* loop) {
-  Stmt* lastLoop = loop;
-  for (auto* child : stmt->children()) {
-    if (!child)
-      continue;
-
-    if (isa<ForStmt>(child) || isa<WhileStmt>(child) || isa<DoStmt>(child)) {
-      this->parentLoops[child] = loop;
-      this->visitedLoops[child] = true;
-      lastLoop = child;
-    }
-
-    if (isa<ReturnStmt>(child) || !this->isValidLoop(child, lastLoop)) {
-      return false;
-    }
-
-    lastLoop = loop;
-  }
-
-  return true;
-}
-
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
-  if (this->visitedLoops.find(loop) == this->visitedLoops.end()) {
-    this->visitedLoops[loop] = true;
-    // if (!this->isValidLoop(loop, loop))
-    //   return false;
-  }
-
   this->getParentControlVars(loop);
 
   // Add counter increment if this loop is within the target function
@@ -267,43 +239,6 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
 
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
   return this->visitLoop(forStmt, bodyLoc);
-}
-
-bool InstrumentationVisitor::isValidIf(Stmt* stmt) {
-  for (auto* child : stmt->children()) {
-    if (!child)
-      continue;
-
-    if (auto* childIf = dyn_cast<IfStmt>(child))
-      this->visitedIfs[childIf] = true;
-
-    if (isa<ForStmt>(child) || isa<WhileStmt>(child) || !this->isValidIf(child))
-      return false;
-  }
-
-  return true;
-}
-
-bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
-  if (this->visitedIfs.find(ifStmt) != this->visitedIfs.end())
-    return true;
-
-  this->visitedIfs[ifStmt] = true;
-
-  return this->isValidIf(ifStmt);
-}
-
-std::string InstrumentationConsumer::findFunctionName(std::string inputFile) {
-  size_t start, end;
-  start = inputFile.find(".h_");
-  if (start == std::string::npos) {
-    start = inputFile.find(".c_");
-  }
-  start += 3;
-
-  end = inputFile.find(".c", start);
-
-  return inputFile.substr(start, end - start);
 }
 
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
