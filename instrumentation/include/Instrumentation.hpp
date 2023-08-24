@@ -162,18 +162,6 @@ private:
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
    */
   bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
-
-  /**
-   * \brief Recursive method used to indicate if an IfStmt is valid for instrumentation.
-   * \param stmt Statement being traversed.
-   */
-  bool isValidIf(clang::Stmt* stmt);
-
-  /**
-   * \brief Recursive method used to indicate if a loop is valid for instrumentation.
-   * \param stmt Statement being traversed.
-   */
-  bool isValidLoop(clang::Stmt* stmt, clang::Stmt* loop);
 };
 
 /**
