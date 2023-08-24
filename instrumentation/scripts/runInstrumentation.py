@@ -16,6 +16,13 @@ import pandas as pd
 from os import listdir
 from subprocess import run
 
+def find_func_name(file_name):
+    start = file_name.find('.h_')
+    if start == -1:
+        start = file_name.find('.c_')
+    
+    return file_name[start + 3 : -2]
+
 if __name__ == '__main__':
     run('rm -rf output', shell=True)
     benchmark_dir = '../test/jotai_benchmarks'
@@ -26,8 +33,9 @@ if __name__ == '__main__':
     errors = []
     for input in inputs:
         print(f'Running: {input}')
+        func_target = find_func_name(input) 
         proc = run(
-            f'./scripts/run.sh {benchmark_dir}/{input} {input}', shell=True, capture_output=True, text=True)
+            f'./scripts/run.sh {benchmark_dir}/{input} {input} {func_target}', shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
         not_instrumented = len(lines) > 1 and lines[1] == 'Unable to instrument the input'

@@ -192,8 +192,8 @@ bool InstrumentationVisitor::isValidLoop(Stmt* stmt, Stmt* loop) {
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (this->visitedLoops.find(loop) == this->visitedLoops.end()) {
     this->visitedLoops[loop] = true;
-    if (!this->isValidLoop(loop, loop))
-      return false;
+    // if (!this->isValidLoop(loop, loop))
+    //   return false;
   }
 
   this->getParentControlVars(loop);

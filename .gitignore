@@ -3,6 +3,7 @@ build/
 instrumentation/output/
 instrumentation/sample*/
 instrumentation/*.csv
+instrumentation/exp_*
 interpolation/obj/
 interpolation/bin/
 interpolation/input/
