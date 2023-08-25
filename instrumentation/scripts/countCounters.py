@@ -41,15 +41,13 @@ if __name__ == '__main__':
     programs = listdir(programs_dir)
     for program in programs:
         print(f'Running: {program}')
-        for entry in range(5):
-            out = run(f'{programs_dir}/{program} {entry}',
-                      shell=True, capture_output=True, text=True, encoding='unicode_escape').stdout
+        out = run(f'{programs_dir}/{program} 0',
+                    shell=True, capture_output=True, text=True, encoding='unicode_escape').stdout
+        lines = out.split('\n')
+        if lines[0].strip() == 'Usage:':
+            break
 
-            lines = out.split('\n')
-            if lines[0].strip() == 'Usage:':
-                break
-
-            counters += int(lines[0])
+        counters += int(lines[0])
     
     print(f'NUMBER OF PROGRAMS: {len(programs)}')
     print(f'NUMBER OF COUNTERS: {counters}')
