@@ -1,5 +1,0 @@
-1
-at line 62 : step height
-10 10 1
-
-end
