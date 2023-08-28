@@ -1,0 +1,6 @@
+1
+at line 60 : f count
+10 10 10
+1030
+
+end
