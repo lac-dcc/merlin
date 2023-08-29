@@ -3,11 +3,13 @@ from sys import argv, stderr
 from os import listdir
 
 if __name__ == '__main__':
-    if len(argv) < 2:
+    if len(argv) < 3:
         print(f'Usage: {argv[0]} <input_dir>', file=stderr)
         exit(1)
     
     input_dir = argv[1]
+    output_name = argv[2]
+    run(f'mkdir -p ./input/{output_name}', shell=True)
     for input in listdir(input_dir):
         with open(f'{input_dir}/{input}', 'r') as file:
             interp_in = ''
@@ -21,7 +23,12 @@ if __name__ == '__main__':
                         offset = int(line) + 1
                         interp_in += str(len(calls)) + '\n'
 
-
             print(f'\n{input}')
             print(interp_in)
+            entry_file = open(f'input/{output_name}/{input}_interp.txt', "w")
+            entry_file.write(interp_in)
+    # run(f'mkdir -p ./output/{output_name}', shell=True)
+    # input_dir = f'input/{output_name}'
+    # for input in listdir(input_dir):
+    #     run(f'./bin/interpolator < {input_dir}/{input} > output/{output_name}/{input}', shell=True)
 

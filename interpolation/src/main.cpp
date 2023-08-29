@@ -52,7 +52,7 @@ int main() {
       }
     }
   }
-
+  
   for (int i = 0; i < numInterp; i++) {
     int numVars = interpVars[i].size();
     if (numVars == 1) {
@@ -65,6 +65,9 @@ int main() {
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
       cout << interp.interpolate() << endl << endl;
+    }
+    else if(numVars == 0) {
+      cout << "No variables identified!\n";
     }
   }
 
