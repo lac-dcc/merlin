@@ -1,6 +1,0 @@
-1
-at line 66 : chanset_size
-10 10
-0
-
-end

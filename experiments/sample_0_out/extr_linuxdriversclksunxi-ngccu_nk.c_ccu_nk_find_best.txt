@@ -1,7 +1,0 @@
-2
-at line 71 : nk
-at line 70 : nk
- 1
- 1
-
-end

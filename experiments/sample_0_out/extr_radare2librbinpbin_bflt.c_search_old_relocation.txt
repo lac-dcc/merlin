@@ -1,6 +1,0 @@
-1
-at line 64 : n_reloc
-10 10
--1
-
-end

@@ -1,7 +1,0 @@
-2
-at line 60 : base
-at line 63 : base
-10 1
-10 2
-
-end

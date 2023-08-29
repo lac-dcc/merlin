@@ -1,5 +1,0 @@
-1
-at line 60 : ndigits
-10 10
-
-end
