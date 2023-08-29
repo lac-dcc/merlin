@@ -1,0 +1,6 @@
+1
+at line 61 : ndim
+10 10
+10
+
+end
