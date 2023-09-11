@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = has_channel(channel_set, chanset_size, chan);
-    printf("%d\n", benchRet);
+    
     free(channel_set);
 
     break;
@@ -178,41 +178,39 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = has_channel(channel_set, chanset_size, chan);
-    printf("%d\n", benchRet);
+    
     free(channel_set);
 
     break;
   }
-
-  // empty
   case 2: {
-    // static_instructions_O0 : 13
-    // dynamic_instructions_O0 : 13
+    // static_instructions_O0 : 23
+    // dynamic_instructions_O0 : 143
     // -------------------------------
-    // static_instructions_O1 : 7
-    // dynamic_instructions_O1 : 7
+    // static_instructions_O1 : 15
+    // dynamic_instructions_O1 : 60
     // -------------------------------
-    // static_instructions_O2 : 7
-    // dynamic_instructions_O2 : 7
+    // static_instructions_O2 : 15
+    // dynamic_instructions_O2 : 60
     // -------------------------------
-    // static_instructions_O3 : 7
-    // dynamic_instructions_O3 : 7
+    // static_instructions_O3 : 15
+    // dynamic_instructions_O3 : 60
     // -------------------------------
-    // static_instructions_Ofast : 7
-    // dynamic_instructions_Ofast : 7
+    // static_instructions_Ofast : 15
+    // dynamic_instructions_Ofast : 60
     // -------------------------------
-    // static_instructions_Os : 8
-    // dynamic_instructions_Os : 8
+    // static_instructions_Os : 15
+    // dynamic_instructions_Os : 60
     // -------------------------------
-    // static_instructions_Oz : 11
-    // dynamic_instructions_Oz : 11
+    // static_instructions_Oz : 15
+    // dynamic_instructions_Oz : 71
     // -------------------------------
 
-    int chanset_size = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int chanset_size = 128;
 
-    int chan = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int chan = 128;
 
-    int _len_channel_set0 = 1;
+    int _len_channel_set0 = 16384;
     struct TYPE_3__ *channel_set =
         (struct TYPE_3__ *)malloc(_len_channel_set0 * sizeof(struct TYPE_3__));
     for (int _i0 = 0; _i0 < _len_channel_set0; _i0++) {
@@ -220,11 +218,13 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = has_channel(channel_set, chanset_size, chan);
-    printf("%d\n", benchRet);
+    
     free(channel_set);
 
     break;
   }
+  // empty
+  
 
   default:
     usage();

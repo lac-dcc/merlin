@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = sdsll2str(s, value);
-    // printf("%d\n", benchRet);
+    // 
     free(s);
 
     break;
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = sdsll2str(s, value);
-    // printf("%d\n", benchRet);
+    // 
     free(s);
 
     break;
@@ -143,7 +143,7 @@ int main(int argc, char *argv[]) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = sdsll2str(s, value);
-    // printf("%d\n", benchRet);
+    // 
     free(s);
 
     break;

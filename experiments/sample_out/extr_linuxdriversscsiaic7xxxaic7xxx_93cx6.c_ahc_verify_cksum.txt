@@ -1,12 +1,10 @@
 1
 at line 72 : sc
- -103
-0
+1 1
 
 end
 1
 at line 72 : sc
- -103
-0
+100 1
 
 end

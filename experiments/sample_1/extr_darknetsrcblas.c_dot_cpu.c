@@ -113,7 +113,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 
@@ -146,7 +145,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 
@@ -179,7 +177,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 

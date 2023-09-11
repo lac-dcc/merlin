@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
-    printf("%d\n", benchRet);
+    
     free(buf);
     free(mem);
 
@@ -195,55 +195,54 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
-    printf("%d\n", benchRet);
+    
     free(buf);
     free(mem);
 
     break;
   }
-
-  // empty
+// big-arr-10x
   case 2: {
-    // static_instructions_O0 : 18
-    // dynamic_instructions_O0 : 18
+    // static_instructions_O0 : 40
+    // dynamic_instructions_O0 : 232
     // -------------------------------
-    // static_instructions_O1 : 11
-    // dynamic_instructions_O1 : 11
+    // static_instructions_O1 : 30
+    // dynamic_instructions_O1 : 143
     // -------------------------------
-    // static_instructions_O2 : 11
-    // dynamic_instructions_O2 : 11
+    // static_instructions_O2 : 30
+    // dynamic_instructions_O2 : 143
     // -------------------------------
-    // static_instructions_O3 : 11
-    // dynamic_instructions_O3 : 11
+    // static_instructions_O3 : 30
+    // dynamic_instructions_O3 : 143
     // -------------------------------
-    // static_instructions_Ofast : 11
-    // dynamic_instructions_Ofast : 11
+    // static_instructions_Ofast : 30
+    // dynamic_instructions_Ofast : 143
     // -------------------------------
-    // static_instructions_Os : 11
-    // dynamic_instructions_Os : 11
+    // static_instructions_Os : 29
+    // dynamic_instructions_Os : 142
     // -------------------------------
-    // static_instructions_Oz : 15
-    // dynamic_instructions_Oz : 15
+    // static_instructions_Oz : 29
+    // dynamic_instructions_Oz : 152
     // -------------------------------
 
-    int buf_len = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int buf_len = 128;
 
-    int mem_len = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int mem_len = 128;
 
-    int _len_buf0 = 1;
+    int _len_buf0 = 16384;
     char *buf = (char *)malloc(_len_buf0 * sizeof(char));
     for (int _i0 = 0; _i0 < _len_buf0; _i0++) {
       buf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_mem0 = 1;
+    int _len_mem0 = 16384;
     char *mem = (char *)malloc(_len_mem0 * sizeof(char));
     for (int _i0 = 0; _i0 < _len_mem0; _i0++) {
       mem[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
     int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
-    printf("%d\n", benchRet);
+    
     free(buf);
     free(mem);
 

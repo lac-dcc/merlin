@@ -12,10 +12,5 @@ at line 65 : w
 10 100
 
 end
-2
-at line 64 : h
-at line 65 : w
--103 0
--103 0
 
 end

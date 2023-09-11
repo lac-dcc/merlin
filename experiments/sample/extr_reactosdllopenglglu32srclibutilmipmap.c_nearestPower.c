@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     int value = 100;
     int benchRet = nearestPower(value);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     int value = 255;
     int benchRet = nearestPower(value);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     int value = 10;
     int benchRet = nearestPower(value);
-    printf("%d\n", benchRet);
+    
 
     break;
   }

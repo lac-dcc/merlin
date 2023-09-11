@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = get_resource(rscs, amount, multi, ridx);
-    // printf("%d\n", benchRet);
+    // 
     free(rscs);
     free(ridx);
 
@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = get_resource(rscs, amount, multi, ridx);
-    // printf("%d\n", benchRet);
+    // 
     free(rscs);
     free(ridx);
 
@@ -266,7 +266,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = get_resource(rscs, amount, multi, ridx);
-    // printf("%d\n", benchRet);
+    // 
     free(rscs);
     free(ridx);
 

@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
       axis_flags[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = count_axes(ndim, axis_flags);
-    printf("%d\n", benchRet);
+    
     free(axis_flags);
 
     break;

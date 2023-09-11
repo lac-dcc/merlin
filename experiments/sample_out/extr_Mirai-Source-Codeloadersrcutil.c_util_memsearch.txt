@@ -1,18 +1,15 @@
 1
 at line 65 : buf_len
 255 255
-255
 
 end
 1
 at line 65 : buf_len
 10 10
-10
 
 end
 1
 at line 65 : buf_len
--103 0
--1
+128 128
 
 end

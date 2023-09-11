@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
       buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = stb_adler32(adler32, buffer, buflen);
-    printf("%d\n", benchRet);
+    
     free(buffer);
 
     break;

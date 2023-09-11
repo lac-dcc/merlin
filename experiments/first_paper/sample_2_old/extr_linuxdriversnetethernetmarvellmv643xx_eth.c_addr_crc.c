@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = addr_crc(addr);
-    // printf("%d\n", benchRet);
+    // 
     free(addr);
 
     break;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = addr_crc(addr);
-    // printf("%d\n", benchRet);
+    // 
     free(addr);
 
     break;

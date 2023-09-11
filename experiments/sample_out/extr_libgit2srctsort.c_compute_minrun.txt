@@ -1,18 +1,15 @@
 1
 at line 60 :
 1
-50
 
 end
 1
 at line 60 :
 2
-64
 
 end
 1
 at line 60 :
 0
-10
 
 end

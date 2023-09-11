@@ -189,34 +189,33 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-
-  // empty
+  // big-arr-10x
   case 2: {
-    // static_instructions_O0 : 11
-    // dynamic_instructions_O0 : 11
+    // static_instructions_O0 : 30
+    // dynamic_instructions_O0 : 231
     // -------------------------------
-    // static_instructions_O1 : 6
-    // dynamic_instructions_O1 : 6
+    // static_instructions_O1 : 16
+    // dynamic_instructions_O1 : 79
     // -------------------------------
-    // static_instructions_O2 : 6
-    // dynamic_instructions_O2 : 6
+    // static_instructions_O2 : 46
+    // dynamic_instructions_O2 : 68
     // -------------------------------
-    // static_instructions_O3 : 6
-    // dynamic_instructions_O3 : 6
+    // static_instructions_O3 : 46
+    // dynamic_instructions_O3 : 68
     // -------------------------------
-    // static_instructions_Ofast : 6
-    // dynamic_instructions_Ofast : 6
+    // static_instructions_Ofast : 46
+    // dynamic_instructions_Ofast : 68
     // -------------------------------
-    // static_instructions_Os : 6
-    // dynamic_instructions_Os : 6
+    // static_instructions_Os : 16
+    // dynamic_instructions_Os : 70
     // -------------------------------
-    // static_instructions_Oz : 10
-    // dynamic_instructions_Oz : 10
+    // static_instructions_Oz : 16
+    // dynamic_instructions_Oz : 90
     // -------------------------------
 
-    int size = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int size = 128;
 
-    int _len_wg0 = 1;
+    int _len_wg0 = 16384;
     struct window_global *wg =
         (struct window_global *)malloc(_len_wg0 * sizeof(struct window_global));
     for (int _i0 = 0; _i0 < _len_wg0; _i0++) {
@@ -224,7 +223,7 @@ int main(int argc, char *argv[]) {
       wg[_i0].pool_high = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_w0 = 1;
+    int _len_w0 = 16384;
     struct window_global *w =
         (struct window_global *)malloc(_len_w0 * sizeof(struct window_global));
     for (int _i0 = 0; _i0 < _len_w0; _i0++) {
@@ -238,6 +237,7 @@ int main(int argc, char *argv[]) {
 
     break;
   }
+ 
 
   default:
     usage();

@@ -8,8 +8,5 @@ at line 80 : max_pin
 10 10
 
 end
-1
-at line 80 : max_pin
--103 0
 
 end

@@ -1,18 +1,15 @@
 1
 at line 63 : nr
 255 253
-0
 
 end
 1
 at line 63 : nr
 10 8
-0
 
 end
 1
 at line 63 : nr
--103 0
-2
+128 126
 
 end

@@ -74,7 +74,7 @@ __attribute__((used)) static inline void mix_audio(float *p_out, float *p_in,
   printf("1\n");
   printf("at line 63 :");
   printf(" p_in pos count\n");
-  printf("%f %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
+  printf("%d %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
 }
 
 // ------------------------------------------------------------------------- //

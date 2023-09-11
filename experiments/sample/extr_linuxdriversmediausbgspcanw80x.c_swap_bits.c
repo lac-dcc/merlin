@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     int v = 100;
     int benchRet = swap_bits(v);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     int v = 255;
     int benchRet = swap_bits(v);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     int v = 10;
     int benchRet = swap_bits(v);
-    printf("%d\n", benchRet);
+    
 
     break;
   }

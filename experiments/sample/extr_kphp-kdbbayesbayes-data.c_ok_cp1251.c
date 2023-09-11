@@ -101,7 +101,18 @@ int main(int argc, char *argv[]) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = ok_cp1251(s, n);
-    printf("%d\n", benchRet);
+    free(s);
+
+    break;
+  }
+  case 1: {
+    int n = 100;
+    int _len_s0 = 10000;
+    char *s = (char *)malloc(_len_s0 * sizeof(char));
+    for (int _i0 = 0; _i0 < _len_s0; _i0++) {
+      s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
+    }
+    int benchRet = ok_cp1251(s, n);
     free(s);
 
     break;

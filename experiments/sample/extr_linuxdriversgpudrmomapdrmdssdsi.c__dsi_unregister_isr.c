@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
 
     int benchRet =
         _dsi_unregister_isr(isr, arg, mask, isr_array, isr_array_size);
-    printf("%d\n", benchRet);
+    
     free(isr);
     for (int _aux = 0; _aux < _len_isr_array0; _aux++) {
       free(isr_array[_aux].isr);
@@ -223,7 +223,7 @@ int main(int argc, char *argv[]) {
 
     int benchRet =
         _dsi_unregister_isr(isr, arg, mask, isr_array, isr_array_size);
-    printf("%d\n", benchRet);
+    
     free(isr);
     for (int _aux = 0; _aux < _len_isr_array0; _aux++) {
       free(isr_array[_aux].isr);

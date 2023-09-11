@@ -113,7 +113,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 
@@ -146,7 +145,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 
@@ -154,13 +152,13 @@ int main(int argc, char *argv[]) {
   }
   // empty
   case 2: {
-    int N = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int N = 128;
 
-    int INCX = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int INCX = 128;
 
-    int INCY = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int INCY = 128;
 
-    int _len_X0 = 1;
+    int _len_X0 = 16384;
     float *X = (float *)malloc(_len_X0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_X0; _i0++) {
       X[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
@@ -179,7 +177,6 @@ int main(int argc, char *argv[]) {
     }
 
     float benchRet = dot_cpu(N, X, INCX, Y, INCY);
-    printf("%f\n", benchRet);
     free(X);
     free(Y);
 

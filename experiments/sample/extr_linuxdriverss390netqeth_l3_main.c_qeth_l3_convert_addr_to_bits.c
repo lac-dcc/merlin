@@ -186,40 +186,39 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-
-  // empty
+ // big-arr-10x
   case 2: {
-    // static_instructions_O0 : 11
-    // dynamic_instructions_O0 : 11
+    // static_instructions_O0 : 38
+    // dynamic_instructions_O0 : 1521
     // -------------------------------
-    // static_instructions_O1 : 6
-    // dynamic_instructions_O1 : 6
+    // static_instructions_O1 : 22
+    // dynamic_instructions_O1 : 559
     // -------------------------------
-    // static_instructions_O2 : 6
-    // dynamic_instructions_O2 : 6
+    // static_instructions_O2 : 45
+    // dynamic_instructions_O2 : 351
     // -------------------------------
-    // static_instructions_O3 : 6
-    // dynamic_instructions_O3 : 6
+    // static_instructions_O3 : 45
+    // dynamic_instructions_O3 : 351
     // -------------------------------
-    // static_instructions_Ofast : 6
-    // dynamic_instructions_Ofast : 6
+    // static_instructions_Ofast : 45
+    // dynamic_instructions_Ofast : 351
     // -------------------------------
-    // static_instructions_Os : 6
-    // dynamic_instructions_Os : 6
+    // static_instructions_Os : 20
+    // dynamic_instructions_Os : 548
     // -------------------------------
-    // static_instructions_Oz : 13
-    // dynamic_instructions_Oz : 13
+    // static_instructions_Oz : 28
+    // dynamic_instructions_Oz : 763
     // -------------------------------
 
-    int len = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int len = 128;
 
-    int _len_addr0 = 1;
+    int _len_addr0 = 16384;
     int *addr = (int *)malloc(_len_addr0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_addr0; _i0++) {
       addr[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_bits0 = 1;
+    int _len_bits0 = 16384;
     int *bits = (int *)malloc(_len_bits0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_bits0; _i0++) {
       bits[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
@@ -231,6 +230,7 @@ int main(int argc, char *argv[]) {
 
     break;
   }
+  
 
   default:
     usage();

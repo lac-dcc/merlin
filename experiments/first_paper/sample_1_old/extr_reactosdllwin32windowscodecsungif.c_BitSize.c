@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     int n = 100;
     int benchRet = BitSize(n);
-    // printf("%d\n", benchRet);
+    // 
 
     break;
   }
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     int n = 255;
     int benchRet = BitSize(n);
-    // printf("%d\n", benchRet);
+    // 
 
     break;
   }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     int n = 10;
     int benchRet = BitSize(n);
-    // printf("%d\n", benchRet);
+    // 
 
     break;
   }

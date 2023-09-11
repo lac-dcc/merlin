@@ -222,15 +222,15 @@ int main(int argc, char *argv[]) {
     // dynamic_instructions_Oz : 17
     // -------------------------------
 
-    int src_linesize = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int src_linesize = 128;
 
-    int dst_linesize = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int dst_linesize = 128;
 
-    int w = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int w = 128;
 
-    int h = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int h = 128;
 
-    int _len_src0 = 1;
+    int _len_src0 = 16384;
     int *src = (int *)malloc(_len_src0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_src0; _i0++) {
       src[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

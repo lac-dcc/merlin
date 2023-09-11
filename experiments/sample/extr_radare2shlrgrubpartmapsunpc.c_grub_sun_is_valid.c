@@ -59,7 +59,7 @@ typedef int /*<<< orphan*/ grub_uint16_t;
 /* Variables and functions */
 
 __attribute__((used)) static int
-grub_sun_is_valid(struct grub_sun_pc_block *label) {
+grub_sun_is_valid(struct grub_sun_pc_block *label, int lenlabel) {
   unsigned countergrub_sun_is_valid0 = 0;
 
   struct grub_sun_pc_block *templabel = label;
@@ -76,7 +76,7 @@ grub_sun_is_valid(struct grub_sun_pc_block *label) {
   printf("1\n");
   printf("at line 66 :");
   printf(" label\n");
-  printf(" %d\n", *templabel, countergrub_sun_is_valid0);
+  printf("%d %d\n", lenlabel, countergrub_sun_is_valid0);
   return !sum;
 }
 
@@ -102,8 +102,8 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_label0; _i0++) {
       label[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = grub_sun_is_valid(label);
-    printf("%d\n", benchRet);
+    int benchRet = grub_sun_is_valid(label, _len_label0);
+    
     free(label);
 
     break;
@@ -116,8 +116,8 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_label0; _i0++) {
       label[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = grub_sun_is_valid(label);
-    printf("%d\n", benchRet);
+    int benchRet = grub_sun_is_valid(label, _len_label0);
+    
     free(label);
 
     break;

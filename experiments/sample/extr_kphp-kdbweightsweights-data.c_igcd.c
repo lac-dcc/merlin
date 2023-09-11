@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
     int a = 100;
     int b = 100;
     int benchRet = igcd(a, b);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     int a = 255;
     int b = 255;
     int benchRet = igcd(a, b);
-    printf("%d\n", benchRet);
+    
 
     break;
   }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
     int a = 10;
     int b = 10;
     int benchRet = igcd(a, b);
-    printf("%d\n", benchRet);
+    
 
     break;
   }

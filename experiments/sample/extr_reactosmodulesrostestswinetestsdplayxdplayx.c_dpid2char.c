@@ -57,11 +57,11 @@ typedef scalar_t__ DPID;
 /* Variables and functions */
 scalar_t__ DPID_SYSMSG;
 
-__attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
+__attribute__((used)) static char dpid2char(DPID *dpid, int dpidSize,
                                             DPID idPlayer) {
   unsigned counterdpid2char0 = 0;
 
-  DWORD tempdpidSize = dpidSize;
+  int tempdpidSize = dpidSize;
 
   UINT i;
   if (idPlayer == DPID_SYSMSG) {
@@ -69,7 +69,7 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
     printf("1\n");
     printf("at line 66 :");
     printf(" dpidSize\n");
-    printf("%ld %d\n", tempdpidSize, counterdpid2char0);
+    printf("%d %d\n", tempdpidSize, counterdpid2char0);
     return 'S';
   }
   for (i = 0; i < dpidSize; i++) {
@@ -79,7 +79,7 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
       printf("1\n");
       printf("at line 66 :");
       printf(" dpidSize\n");
-      printf("%ld %d\n", tempdpidSize, counterdpid2char0);
+      printf("%d %d\n", tempdpidSize, counterdpid2char0);
       return (char)(i + 48);
     }
   }
@@ -87,7 +87,7 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
   printf("1\n");
   printf("at line 66 :");
   printf(" dpidSize\n");
-  printf("%ld %d\n", tempdpidSize, counterdpid2char0);
+  printf("%d %d\n", tempdpidSize, counterdpid2char0);
   return '?';
 }
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 
   // big-arr-10x
   case 0: {
-    unsigned long dpidSize = 10;
+    int dpidSize = 10;
     long idPlayer = 10;
     int _len_dpid0 = 100;
     long *dpid = (long *)malloc(_len_dpid0 * sizeof(long));

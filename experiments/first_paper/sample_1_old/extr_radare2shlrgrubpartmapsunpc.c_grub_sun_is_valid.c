@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
       label[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = grub_sun_is_valid(label);
-    // printf("%d\n", benchRet);
+    // 
     free(label);
 
     break;
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
       label[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = grub_sun_is_valid(label);
-    // printf("%d\n", benchRet);
+    // 
     free(label);
 
     break;

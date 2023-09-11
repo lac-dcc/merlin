@@ -1,18 +1,15 @@
 1
 at line 64 :
 8
-100
 
 end
 1
 at line 64 :
 8
-255
 
 end
 1
 at line 64 :
 8
-10
 
 end

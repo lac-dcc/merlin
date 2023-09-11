@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
       ptr[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = crc16(ptr, len);
-    printf("%d\n", benchRet);
+    
     free(ptr);
 
     break;

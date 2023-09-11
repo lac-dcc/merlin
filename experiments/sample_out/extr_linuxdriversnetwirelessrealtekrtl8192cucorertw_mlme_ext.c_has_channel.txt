@@ -1,18 +1,15 @@
 1
 at line 68 : chanset_size
 255 255
-0
 
 end
 1
 at line 68 : chanset_size
 10 10
-0
 
 end
 1
 at line 68 : chanset_size
--103 0
-0
+128 128
 
 end

@@ -114,7 +114,6 @@ int main(int argc, char *argv[]) {
     unsigned long v = 100;
 
     unsigned long benchRet = rev(v);
-    printf("%lu\n", benchRet);
 
     break;
   }
@@ -146,7 +145,6 @@ int main(int argc, char *argv[]) {
     unsigned long v = 255;
 
     unsigned long benchRet = rev(v);
-    printf("%lu\n", benchRet);
 
     break;
   }
@@ -178,7 +176,6 @@ int main(int argc, char *argv[]) {
     unsigned long v = 10;
 
     unsigned long benchRet = rev(v);
-    printf("%lu\n", benchRet);
 
     break;
   }
@@ -210,7 +207,6 @@ int main(int argc, char *argv[]) {
     unsigned long v = ((-2 * (next_i() % 2)) + 1) * next_i();
 
     unsigned long benchRet = rev(v);
-    printf("%lu\n", benchRet);
 
     break;
   }

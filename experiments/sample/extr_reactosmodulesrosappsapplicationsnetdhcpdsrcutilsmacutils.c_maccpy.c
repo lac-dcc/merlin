@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
       source[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = maccpy(dest, source);
-    printf("%d\n", benchRet);
+    
     free(dest);
     free(source);
 

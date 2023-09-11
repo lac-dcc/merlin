@@ -90,7 +90,6 @@ int main(int argc, char *argv[]) {
   case 0: {
     unsigned long n = 100;
     unsigned long benchRet = compute_minrun(n);
-    printf("%lu\n", benchRet);
 
     break;
   }
@@ -98,7 +97,6 @@ int main(int argc, char *argv[]) {
   case 1: {
     unsigned long n = 255;
     unsigned long benchRet = compute_minrun(n);
-    printf("%lu\n", benchRet);
 
     break;
   }
@@ -106,7 +104,6 @@ int main(int argc, char *argv[]) {
   case 2: {
     unsigned long n = 10;
     unsigned long benchRet = compute_minrun(n);
-    printf("%lu\n", benchRet);
 
     break;
   }

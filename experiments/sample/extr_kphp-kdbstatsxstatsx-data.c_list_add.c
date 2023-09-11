@@ -206,15 +206,15 @@ int main(int argc, char *argv[]) {
     // dynamic_instructions_Oz : 13
     // -------------------------------
 
-    int cnt = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int cnt = 128;
 
-    int _len_a0 = 1;
+    int _len_a0 = 16384;
     int *a = (int *)malloc(_len_a0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_a0; _i0++) {
       a[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_b0 = 1;
+    int _len_b0 = 16384;
     int *b = (int *)malloc(_len_b0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_b0; _i0++) {
       b[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

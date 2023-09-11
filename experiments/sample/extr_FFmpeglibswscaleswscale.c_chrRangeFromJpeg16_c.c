@@ -204,15 +204,15 @@ int main(int argc, char *argv[]) {
     // dynamic_instructions_Oz : 10
     // -------------------------------
 
-    int width = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int width = 128;
 
-    int _len__dstU0 = 1;
+    int _len__dstU0 = 16384;
     int *_dstU = (int *)malloc(_len__dstU0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len__dstU0; _i0++) {
       _dstU[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len__dstV0 = 1;
+    int _len__dstV0 = 16384;
     int *_dstV = (int *)malloc(_len__dstV0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len__dstV0; _i0++) {
       _dstV[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

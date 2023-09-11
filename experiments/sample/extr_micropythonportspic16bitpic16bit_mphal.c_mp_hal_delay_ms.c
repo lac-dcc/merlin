@@ -116,9 +116,8 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-  // empty
   case 3: {
-    int ms = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int ms = 128;
 
     mp_hal_delay_ms(ms);
 

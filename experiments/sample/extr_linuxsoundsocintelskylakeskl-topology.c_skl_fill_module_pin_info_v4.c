@@ -217,36 +217,35 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-
-  // empty
+ // big-arr-10x
   case 2: {
-    // static_instructions_O0 : 12
-    // dynamic_instructions_O0 : 12
+    // static_instructions_O0 : 49
+    // dynamic_instructions_O0 : 412
     // -------------------------------
-    // static_instructions_O1 : 6
-    // dynamic_instructions_O1 : 6
+    // static_instructions_O1 : 23
+    // dynamic_instructions_O1 : 131
     // -------------------------------
-    // static_instructions_O2 : 6
-    // dynamic_instructions_O2 : 6
+    // static_instructions_O2 : 23
+    // dynamic_instructions_O2 : 131
     // -------------------------------
-    // static_instructions_O3 : 6
-    // dynamic_instructions_O3 : 6
+    // static_instructions_O3 : 23
+    // dynamic_instructions_O3 : 131
     // -------------------------------
-    // static_instructions_Ofast : 6
-    // dynamic_instructions_Ofast : 6
+    // static_instructions_Ofast : 23
+    // dynamic_instructions_Ofast : 131
     // -------------------------------
-    // static_instructions_Os : 6
-    // dynamic_instructions_Os : 6
+    // static_instructions_Os : 21
+    // dynamic_instructions_Os : 129
     // -------------------------------
-    // static_instructions_Oz : 10
-    // dynamic_instructions_Oz : 10
+    // static_instructions_Oz : 21
+    // dynamic_instructions_Oz : 140
     // -------------------------------
 
-    int is_dynamic = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int is_dynamic = 128;
 
-    int max_pin = ((-2 * (next_i() % 2)) + 1) * next_i();
+    int max_pin = 128;
 
-    int _len_dfw_pin0 = 1;
+    int _len_dfw_pin0 = 16384;
     struct skl_dfw_v4_module_pin *dfw_pin =
         (struct skl_dfw_v4_module_pin *)malloc(
             _len_dfw_pin0 * sizeof(struct skl_dfw_v4_module_pin));
@@ -255,7 +254,7 @@ int main(int argc, char *argv[]) {
       dfw_pin[_i0].module_id = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_m_pin0 = 1;
+    int _len_m_pin0 = 100;
     struct skl_module_pin *m_pin = (struct skl_module_pin *)malloc(
         _len_m_pin0 * sizeof(struct skl_module_pin));
     for (int _i0 = 0; _i0 < _len_m_pin0; _i0++) {
@@ -272,6 +271,7 @@ int main(int argc, char *argv[]) {
 
     break;
   }
+  
 
   default:
     usage();
