@@ -26,8 +26,15 @@ bool DependenceVisitor::containsRefToParam(clang::Stmt* node, clang::NamedDecl* 
       continue;
 
     if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
-      if (auto* param = dyn_cast<ParmVarDecl>(refExpr->getFoundDecl())) {
+      NamedDecl* foundDecl = refExpr->getFoundDecl();
+
+      if (auto* param = dyn_cast<ParmVarDecl>(foundDecl)) {
         (*this->paramRefs)[decl].push_back(param);
+        result = true;
+      } else if (this->paramRefs->find(foundDecl) != this->paramRefs->end()) {
+        for (ParmVarDecl* param : (*this->paramRefs)[foundDecl]) {
+          (*this->paramRefs)[decl].push_back(param);
+        }
         result = true;
       }
     }
@@ -43,11 +50,14 @@ bool DependenceVisitor::VisitBinaryOperator(clang::BinaryOperator* binOp) {
     return true;
 
   if (auto* ref = dyn_cast<DeclRefExpr>(binOp->getLHS())) {
-    auto* decl = ref->getFoundDecl();
-    (*this->paramRefs)[decl].clear();
+    NamedDecl* decl = ref->getFoundDecl();
+    if (!binOp->isCompoundAssignmentOp())
+      (*this->paramRefs)[decl].clear();
+
     bool contains = this->containsRefToParam(binOp->getRHS(), decl);
 
-    if (!contains)
+    
+    if (!contains && !binOp->isCompoundAssignmentOp())
       this->paramRefs->erase(decl);
   }
 
@@ -167,7 +177,30 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
+void InstrumentationVisitor::checkNestedLoops(clang::Stmt* stmt, Stmt* loop) {
+  Stmt* lastLoop = loop;
+  for (auto* child : stmt->children()) {
+    if (!child)
+      continue;
+
+    if (isa<ForStmt>(child) || isa<WhileStmt>(child) || isa<DoStmt>(child)) {
+      this->parentLoops[child] = loop;
+      this->visitedLoops.insert(child);
+      lastLoop = child;
+    }
+
+    this->checkNestedLoops(child, lastLoop);
+
+    lastLoop = loop;
+  }
+}
+
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
+  if (!this->visitedLoops.contains(loop)) {
+    this->visitedLoops.insert(loop);
+    this->checkNestedLoops(loop, loop);
+  }
+  
   this->getParentControlVars(loop);
 
   // Add counter increment if this loop is within the target function
@@ -189,7 +222,6 @@ void InstrumentationVisitor::getControlVars(Stmt* node, Stmt* loop) {
 
     if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
       NamedDecl* decl = refExpr->getFoundDecl();
-
       if (this->paramRefs.find(decl) != this->paramRefs.end()) {
         for (ParmVarDecl* param : this->paramRefs[decl]) {
           this->controlVariables[loop].insert(param);

@@ -128,6 +128,7 @@ private:
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
 
   llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
+  llvm::SmallSet<clang::Stmt*, 3> visitedLoops; ///< Set of visited loops.
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
@@ -162,6 +163,13 @@ private:
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
    */
   bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
+
+  /**
+   * \brief Recursive method used to identify nested loop and save their parents in the parentLoops map.
+   * \param stmt Statement being traversed.
+   * \param loop Current outermost loop.
+   */
+  void checkNestedLoops(clang::Stmt* stmt, clang::Stmt* loop);
 };
 
 /**
