@@ -172,3 +172,21 @@ x: n                    --> Variable represented by x
 F(x) = 0.5*x*(x - 1)    --> Interpolated function for the Program Point
 ```
 In this case, the first program point is the outer while statement, which is influenced by the variable `n` and has the cost function `F(n) = n`. For the second program point, representing the inner while statement, which is solely influenced by the variable `n`, the cost function is `F(n) = 0.5 * n * (n - 1)`.
+
+## Cite this Work
+
+The ideas in this work are described in more details in [this paper](https://homepages.dcc.ufmg.br/~fernando/publications/papers/Merlin.pdf), which was published in the Brazilian Symposium on Programming Languages (SBLP 2023).
+You can cite it as follows:
+
+```
+@inproceedings{SumitaniSBLP23,
+    author = {Rafael Fontes Sumitani and Lucas Victor da Silva Costa and Frederico F. Campos and Fernando Magno Quintao Pereira},
+    title = {A Class of Programs that Admit Exact Complexity Analysis via Newton’s Polynomial Interpolation},
+    year = {2023},
+    publisher = {Association for Computing Machinery},
+    booktitle = {Proceedings of the 2023 Brazilian Symposium on Programming Languages},
+    location = {Campo Grande, Brazil},
+    series = {SBLP'23},
+    doi={10.1145/3624309.3624311},
+}
+```
