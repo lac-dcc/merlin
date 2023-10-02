@@ -1,0 +1,8 @@
+at line 63 : base
+x: base
+Couldn't find a solution! Try again with more sample points.
+
+at line 60 : base
+x: base
+Couldn't find a solution! Try again with more sample points.
+

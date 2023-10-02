@@ -12,5 +12,3 @@ at line 65 : w
 10 100
 
 end
-
-end
