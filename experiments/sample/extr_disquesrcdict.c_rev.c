@@ -60,6 +60,8 @@ typedef int /*<<< orphan*/ v;
 __attribute__((used)) static unsigned long rev(unsigned long v) {
   unsigned counterrev0 = 0;
 
+  unsigned long tempv = v;
+
   unsigned long s = 8 * sizeof(v); // bit size; must be power of 2
   unsigned long mask = ~0;
   while ((s >>= 1) > 0) {
@@ -70,8 +72,8 @@ __attribute__((used)) static unsigned long rev(unsigned long v) {
 
   printf("1\n");
   printf("at line 63 :");
-  printf("\n");
-  printf("%d\n", counterrev0);
+  printf(" v\n");
+  printf("%ld %d\n", tempv, counterrev0);
   return v;
 }
 
@@ -114,6 +116,7 @@ int main(int argc, char *argv[]) {
     unsigned long v = 100;
 
     unsigned long benchRet = rev(v);
+    printf("%lu\n", benchRet);
 
     break;
   }
@@ -145,6 +148,7 @@ int main(int argc, char *argv[]) {
     unsigned long v = 255;
 
     unsigned long benchRet = rev(v);
+    printf("%lu\n", benchRet);
 
     break;
   }
@@ -176,6 +180,7 @@ int main(int argc, char *argv[]) {
     unsigned long v = 10;
 
     unsigned long benchRet = rev(v);
+    printf("%lu\n", benchRet);
 
     break;
   }
@@ -207,6 +212,7 @@ int main(int argc, char *argv[]) {
     unsigned long v = ((-2 * (next_i() % 2)) + 1) * next_i();
 
     unsigned long benchRet = rev(v);
+    printf("%lu\n", benchRet);
 
     break;
   }

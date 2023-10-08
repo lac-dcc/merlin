@@ -150,7 +150,7 @@ int main(int argc, char *argv[]) {
 
     unsigned int benchRet =
         sirfsoc_uart_calc_sample_div(baud_rate, ioclk_rate, set_baud);
-    
+    printf("%u\n", benchRet);
     free(set_baud);
 
     break;
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
 
     unsigned int benchRet =
         sirfsoc_uart_calc_sample_div(baud_rate, ioclk_rate, set_baud);
-    
+    printf("%u\n", benchRet);
     free(set_baud);
 
     break;
@@ -236,11 +236,13 @@ int main(int argc, char *argv[]) {
 
     unsigned int benchRet =
         sirfsoc_uart_calc_sample_div(baud_rate, ioclk_rate, set_baud);
-    
+    printf("%u\n", benchRet);
     free(set_baud);
 
     break;
   }
+
+  // empty
   case 3: {
     // static_instructions_O0 : 82
     // dynamic_instructions_O0 : 86
@@ -248,14 +250,14 @@ int main(int argc, char *argv[]) {
     // static_instructions_O1 : 64
     // dynamic_instructions_O1 : 64
     // -------------------------------
-    // static_instructions_O2 : 72
-    // dynamic_instructions_O2 : 72
+    // static_instructions_O2 : 74
+    // dynamic_instructions_O2 : 74
     // -------------------------------
-    // static_instructions_O3 : 72
-    // dynamic_instructions_O3 : 72
+    // static_instructions_O3 : 74
+    // dynamic_instructions_O3 : 74
     // -------------------------------
-    // static_instructions_Ofast : 72
-    // dynamic_instructions_Ofast : 72
+    // static_instructions_Ofast : 74
+    // dynamic_instructions_Ofast : 74
     // -------------------------------
     // static_instructions_Os : 63
     // dynamic_instructions_Os : 63
@@ -264,11 +266,11 @@ int main(int argc, char *argv[]) {
     // dynamic_instructions_Oz : 63
     // -------------------------------
 
-    unsigned long baud_rate = 128;
+    unsigned long baud_rate = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    unsigned long ioclk_rate = 128;
+    unsigned long ioclk_rate = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int _len_set_baud0 = 16384;
+    int _len_set_baud0 = 1;
     unsigned long *set_baud =
         (unsigned long *)malloc(_len_set_baud0 * sizeof(unsigned long));
     for (int _i0 = 0; _i0 < _len_set_baud0; _i0++) {
@@ -277,11 +279,12 @@ int main(int argc, char *argv[]) {
 
     unsigned int benchRet =
         sirfsoc_uart_calc_sample_div(baud_rate, ioclk_rate, set_baud);
-    
+    printf("%u\n", benchRet);
     free(set_baud);
 
     break;
   }
+
   default:
     usage();
     break;

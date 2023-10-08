@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     int data = 100;
     int benchRet = crc8(data);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     int data = 255;
     int benchRet = crc8(data);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     int data = 10;
     int benchRet = crc8(data);
-    
+    printf("%d\n", benchRet);
 
     break;
   }

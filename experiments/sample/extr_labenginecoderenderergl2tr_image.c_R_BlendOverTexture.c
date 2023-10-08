@@ -210,15 +210,15 @@ int main(int argc, char *argv[]) {
     // dynamic_instructions_Oz : 17
     // -------------------------------
 
-    int pixelCount = 128;
+    int pixelCount = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int _len_data0 = 16384;
+    int _len_data0 = 1;
     int *data = (int *)malloc(_len_data0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_data0; _i0++) {
       data[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_blend0 = 16384;
+    int _len_blend0 = 4;
     int *blend = (int *)malloc(_len_blend0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_blend0; _i0++) {
       blend[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

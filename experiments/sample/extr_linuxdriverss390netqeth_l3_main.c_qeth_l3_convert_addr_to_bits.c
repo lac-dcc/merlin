@@ -58,8 +58,8 @@ typedef int u8;
 
 __attribute__((used)) static void
 qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
-  unsigned counterqeth_l3_convert_addr_to_bits0 = 0;
   unsigned counterqeth_l3_convert_addr_to_bits1 = 0;
+  unsigned counterqeth_l3_convert_addr_to_bits0 = 0;
 
   int templen = len;
 
@@ -77,12 +77,12 @@ qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
   }
 
   printf("2\n");
+  printf("at line 66 :");
+  printf(" len\n");
   printf("at line 64 :");
   printf(" len\n");
-  printf("at line 66 :");
-  printf("\n");
+  printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits1);
   printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits0);
-  printf("%d\n", counterqeth_l3_convert_addr_to_bits1);
 }
 
 // ------------------------------------------------------------------------- //
@@ -186,39 +186,40 @@ int main(int argc, char *argv[]) {
 
     break;
   }
- // big-arr-10x
+
+  // empty
   case 2: {
-    // static_instructions_O0 : 38
-    // dynamic_instructions_O0 : 1521
+    // static_instructions_O0 : 11
+    // dynamic_instructions_O0 : 11
     // -------------------------------
-    // static_instructions_O1 : 22
-    // dynamic_instructions_O1 : 559
+    // static_instructions_O1 : 6
+    // dynamic_instructions_O1 : 6
     // -------------------------------
-    // static_instructions_O2 : 45
-    // dynamic_instructions_O2 : 351
+    // static_instructions_O2 : 6
+    // dynamic_instructions_O2 : 6
     // -------------------------------
-    // static_instructions_O3 : 45
-    // dynamic_instructions_O3 : 351
+    // static_instructions_O3 : 6
+    // dynamic_instructions_O3 : 6
     // -------------------------------
-    // static_instructions_Ofast : 45
-    // dynamic_instructions_Ofast : 351
+    // static_instructions_Ofast : 6
+    // dynamic_instructions_Ofast : 6
     // -------------------------------
-    // static_instructions_Os : 20
-    // dynamic_instructions_Os : 548
+    // static_instructions_Os : 6
+    // dynamic_instructions_Os : 6
     // -------------------------------
-    // static_instructions_Oz : 28
-    // dynamic_instructions_Oz : 763
+    // static_instructions_Oz : 13
+    // dynamic_instructions_Oz : 13
     // -------------------------------
 
-    int len = 128;
+    int len = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int _len_addr0 = 16384;
+    int _len_addr0 = 1;
     int *addr = (int *)malloc(_len_addr0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_addr0; _i0++) {
       addr[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int _len_bits0 = 16384;
+    int _len_bits0 = 1;
     int *bits = (int *)malloc(_len_bits0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_bits0; _i0++) {
       bits[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
@@ -230,7 +231,6 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-  
 
   default:
     usage();

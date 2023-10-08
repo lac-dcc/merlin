@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = int3406_thermal_get_index(array, nr, value);
-    
+    printf("%d\n", benchRet);
     free(array);
 
     break;
@@ -121,29 +121,29 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = int3406_thermal_get_index(array, nr, value);
-    
+    printf("%d\n", benchRet);
     free(array);
 
     break;
   }
+  // empty
   case 2: {
-    int nr = 128;
+    int nr = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int value = 128;
+    int value = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int _len_array0 = 16384;
+    int _len_array0 = 1;
     int *array = (int *)malloc(_len_array0 * sizeof(int));
     for (int _i0 = 0; _i0 < _len_array0; _i0++) {
       array[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
     int benchRet = int3406_thermal_get_index(array, nr, value);
-    
+    printf("%d\n", benchRet);
     free(array);
 
     break;
   }
-
   default:
     usage();
     break;

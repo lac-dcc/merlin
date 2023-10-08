@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
       irqs[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = is_duplicate_irq(irq, irqs, nr_irqs);
-    
+    printf("%d\n", benchRet);
     free(irqs);
 
     break;

@@ -56,6 +56,8 @@ typedef int bool;
 void int_to_ascii(int n, char str[]) {
   unsigned counterint_to_ascii0 = 0;
 
+  int tempn = n;
+
   int i, sign;
   if ((sign = n) < 0) {
     n = -n;
@@ -75,8 +77,8 @@ void int_to_ascii(int n, char str[]) {
 
   printf("1\n");
   printf("at line 62 :");
-  printf("\n");
-  printf("%d\n", counterint_to_ascii0);
+  printf(" n\n");
+  printf("%d %d\n", tempn, counterint_to_ascii0);
 }
 
 // ------------------------------------------------------------------------- //

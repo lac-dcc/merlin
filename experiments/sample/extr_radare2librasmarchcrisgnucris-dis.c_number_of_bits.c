@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     unsigned int val = 100;
     int benchRet = number_of_bits(val);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     unsigned int val = 255;
     int benchRet = number_of_bits(val);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -108,7 +108,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     unsigned int val = 10;
     int benchRet = number_of_bits(val);
-    
+    printf("%d\n", benchRet);
 
     break;
   }

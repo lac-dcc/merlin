@@ -58,6 +58,8 @@ typedef int bool;
 __attribute__((used)) static size_t compute_minrun(size_t n) {
   unsigned countercompute_minrun0 = 0;
 
+  size_t tempn = n;
+
   int r = 0;
   while (n >= 64) {
     countercompute_minrun0++;
@@ -67,8 +69,8 @@ __attribute__((used)) static size_t compute_minrun(size_t n) {
 
   printf("1\n");
   printf("at line 60 :");
-  printf("\n");
-  printf("%d\n", countercompute_minrun0);
+  printf(" n\n");
+  printf("%ld %d\n", tempn, countercompute_minrun0);
   return n + r;
 }
 
@@ -90,6 +92,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     unsigned long n = 100;
     unsigned long benchRet = compute_minrun(n);
+    printf("%lu\n", benchRet);
 
     break;
   }
@@ -97,6 +100,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     unsigned long n = 255;
     unsigned long benchRet = compute_minrun(n);
+    printf("%lu\n", benchRet);
 
     break;
   }
@@ -104,6 +108,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     unsigned long n = 10;
     unsigned long benchRet = compute_minrun(n);
+    printf("%lu\n", benchRet);
 
     break;
   }

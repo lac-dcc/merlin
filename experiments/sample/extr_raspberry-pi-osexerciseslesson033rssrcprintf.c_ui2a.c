@@ -56,9 +56,10 @@ typedef int bool;
 
 __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
                                        int uc, char *bf) {
-  unsigned counterui2a1 = 0;
   unsigned counterui2a0 = 0;
+  unsigned counterui2a1 = 0;
 
+  unsigned int tempnum = num;
   unsigned int tempbase = base;
 
   int n = 0;
@@ -80,12 +81,12 @@ __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
   *bf = 0;
 
   printf("2\n");
+  printf("at line 61 :");
+  printf(" num base\n");
   printf("at line 64 :");
   printf(" base\n");
-  printf("at line 61 :");
-  printf(" base\n");
+  printf("%u %u %d\n", tempnum, tempbase, counterui2a0);
   printf("%u %d\n", tempbase, counterui2a1);
-  printf("%u %d\n", tempbase, counterui2a0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -173,47 +174,6 @@ int main(int argc, char *argv[]) {
     int uc = 10;
 
     int _len_bf0 = 100;
-    char *bf = (char *)malloc(_len_bf0 * sizeof(char));
-    for (int _i0 = 0; _i0 < _len_bf0; _i0++) {
-      bf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    ui2a(num, base, uc, bf);
-    free(bf);
-
-    break;
-  }
-
-  case 2: {
-    // static_instructions_O0 : 62
-    // dynamic_instructions_O0 : 107
-    // -------------------------------
-    // static_instructions_O1 : 55
-    // dynamic_instructions_O1 : 75
-    // -------------------------------
-    // static_instructions_O2 : 54
-    // dynamic_instructions_O2 : 74
-    // -------------------------------
-    // static_instructions_O3 : 54
-    // dynamic_instructions_O3 : 74
-    // -------------------------------
-    // static_instructions_Ofast : 54
-    // dynamic_instructions_Ofast : 74
-    // -------------------------------
-    // static_instructions_Os : 52
-    // dynamic_instructions_Os : 72
-    // -------------------------------
-    // static_instructions_Oz : 55
-    // dynamic_instructions_Oz : 86
-    // -------------------------------
-
-    unsigned int num = 100;
-
-    unsigned int base = 100;
-
-    int uc = 100;
-
-    int _len_bf0 = 10000;
     char *bf = (char *)malloc(_len_bf0 * sizeof(char));
     for (int _i0 = 0; _i0 < _len_bf0; _i0++) {
       bf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

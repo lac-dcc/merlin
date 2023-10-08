@@ -102,6 +102,7 @@ int main(int argc, char *argv[]) {
   case 0: {
     int level = 100;
     int benchRet = ccv_cli_output_level_and_above(level);
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -109,6 +110,7 @@ int main(int argc, char *argv[]) {
   case 1: {
     int level = 255;
     int benchRet = ccv_cli_output_level_and_above(level);
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -116,6 +118,7 @@ int main(int argc, char *argv[]) {
   case 2: {
     int level = 10;
     int benchRet = ccv_cli_output_level_and_above(level);
+    printf("%d\n", benchRet);
 
     break;
   }

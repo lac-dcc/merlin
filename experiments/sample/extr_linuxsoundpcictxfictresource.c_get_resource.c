@@ -59,11 +59,11 @@ int ENOENT;
 __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
                                               unsigned int multi,
                                               unsigned int *ridx) {
-  unsigned counterget_resource0 = 0;
   unsigned counterget_resource1 = 0;
+  unsigned counterget_resource0 = 0;
 
-  unsigned int tempamount = amount;
   unsigned int tempmulti = multi;
+  unsigned int tempamount = amount;
 
   int i, j, k, n;
 
@@ -85,12 +85,12 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
     /* Can not find sufficient contiguous resources */
 
     printf("2\n");
-    printf("at line 65 :");
-    printf(" amount\n");
     printf("at line 83 :");
     printf(" multi\n");
-    printf("%u %d\n", tempamount, counterget_resource0);
+    printf("at line 65 :");
+    printf(" amount\n");
     printf("%u %d\n", tempmulti, counterget_resource1);
+    printf("%u %d\n", tempamount, counterget_resource0);
     return -ENOENT;
   }
 
@@ -106,12 +106,12 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
   *ridx = i + 1;
 
   printf("2\n");
-  printf("at line 65 :");
-  printf(" amount\n");
   printf("at line 83 :");
   printf(" multi\n");
-  printf("%u %d\n", tempamount, counterget_resource0);
+  printf("at line 65 :");
+  printf(" amount\n");
   printf("%u %d\n", tempmulti, counterget_resource1);
+  printf("%u %d\n", tempamount, counterget_resource0);
   return 0;
 }
 
@@ -169,7 +169,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = get_resource(rscs, amount, multi, ridx);
-    // 
+    printf("%d\n", benchRet);
     free(rscs);
     free(ridx);
 
@@ -218,55 +218,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = get_resource(rscs, amount, multi, ridx);
-    // 
-    free(rscs);
-    free(ridx);
-
-    break;
-  }
-
-  case 2: {
-    // static_instructions_O0 : 55
-    // dynamic_instructions_O0 : 337
-    // -------------------------------
-    // static_instructions_O1 : 31
-    // dynamic_instructions_O1 : 178
-    // -------------------------------
-    // static_instructions_O2 : 28
-    // dynamic_instructions_O2 : 157
-    // -------------------------------
-    // static_instructions_O3 : 28
-    // dynamic_instructions_O3 : 157
-    // -------------------------------
-    // static_instructions_Ofast : 28
-    // dynamic_instructions_Ofast : 157
-    // -------------------------------
-    // static_instructions_Os : 27
-    // dynamic_instructions_Os : 156
-    // -------------------------------
-    // static_instructions_Oz : 28
-    // dynamic_instructions_Oz : 168
-    // -------------------------------
-
-    unsigned int amount = 100;
-
-    unsigned int multi = 100;
-
-    int _len_rscs0 = 10000;
-    int *rscs = (int *)malloc(_len_rscs0 * sizeof(int));
-    for (int _i0 = 0; _i0 < _len_rscs0; _i0++) {
-      rscs[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    int _len_ridx0 = 10000;
-    unsigned int *ridx =
-        (unsigned int *)malloc(_len_ridx0 * sizeof(unsigned int));
-    for (int _i0 = 0; _i0 < _len_ridx0; _i0++) {
-      ridx[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    int benchRet = get_resource(rscs, amount, multi, ridx);
-    // 
+    printf("%d\n", benchRet);
     free(rscs);
     free(ridx);
 

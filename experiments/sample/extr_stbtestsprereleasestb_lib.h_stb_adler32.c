@@ -56,9 +56,11 @@ typedef scalar_t__ stb_uchar;
 /* Variables and functions */
 
 stb_uint stb_adler32(stb_uint adler32, stb_uchar *buffer, stb_uint buflen) {
-  unsigned counterstb_adler321 = 0;
-  unsigned counterstb_adler320 = 0;
   unsigned counterstb_adler322 = 0;
+  unsigned counterstb_adler320 = 0;
+  unsigned counterstb_adler321 = 0;
+
+  stb_uint tempbuflen = buflen;
 
   const unsigned long ADLER_MOD = 65521;
   unsigned long s1 = adler32 & 0xffff, s2 = adler32 >> 16;
@@ -92,15 +94,15 @@ stb_uint stb_adler32(stb_uint adler32, stb_uchar *buffer, stb_uint buflen) {
   }
 
   printf("3\n");
-  printf("at line 65 :");
-  printf("\n");
-  printf("at line 64 :");
-  printf("\n");
   printf("at line 78 :");
-  printf("\n");
-  printf("%d\n", counterstb_adler321);
-  printf("%d\n", counterstb_adler320);
-  printf("%d\n", counterstb_adler322);
+  printf(" buflen\n");
+  printf("at line 64 :");
+  printf(" buflen\n");
+  printf("at line 65 :");
+  printf(" buflen\n");
+  printf("%d %d\n", tempbuflen, counterstb_adler322);
+  printf("%d %d\n", tempbuflen, counterstb_adler320);
+  printf("%d %d\n", tempbuflen, counterstb_adler321);
   return (s2 << 16) + s1;
 }
 
@@ -128,7 +130,7 @@ int main(int argc, char *argv[]) {
       buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = stb_adler32(adler32, buffer, buflen);
-    
+    printf("%d\n", benchRet);
     free(buffer);
 
     break;

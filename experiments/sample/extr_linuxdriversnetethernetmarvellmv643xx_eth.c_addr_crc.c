@@ -55,8 +55,8 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static int addr_crc(unsigned char *addr) {
-  unsigned counteraddr_crc0 = 0;
   unsigned counteraddr_crc1 = 0;
+  unsigned counteraddr_crc0 = 0;
 
   int crc = 0;
   int i;
@@ -75,12 +75,12 @@ __attribute__((used)) static int addr_crc(unsigned char *addr) {
   }
 
   printf("2\n");
-  printf("at line 61 :");
-  printf("\n");
   printf("at line 65 :");
   printf("\n");
-  printf("%d\n", counteraddr_crc0);
+  printf("at line 61 :");
+  printf("\n");
   printf("%d\n", counteraddr_crc1);
+  printf("%d\n", counteraddr_crc0);
   return crc;
 }
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = addr_crc(addr);
-    
+    printf("%d\n", benchRet);
     free(addr);
 
     break;
@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
     }
 
     int benchRet = addr_crc(addr);
-    
+    printf("%d\n", benchRet);
     free(addr);
 
     break;

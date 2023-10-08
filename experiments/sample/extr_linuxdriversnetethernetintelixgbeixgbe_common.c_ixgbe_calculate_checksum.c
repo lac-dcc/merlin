@@ -107,35 +107,7 @@ int main(int argc, char *argv[]) {
       buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     long benchRet = ixgbe_calculate_checksum(buffer, length);
-    // printf("%ld\n", benchRet);
-    free(buffer);
-
-    break;
-  }
-
-  case 1: {
-    unsigned long length = 100;
-    int _len_buffer0 = 1000;
-    long *buffer = (long *)malloc(_len_buffer0 * sizeof(long));
-    for (int _i0 = 0; _i0 < _len_buffer0; _i0++) {
-      buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    long benchRet = ixgbe_calculate_checksum(buffer, length);
-    // printf("%ld\n", benchRet);
-    free(buffer);
-
-    break;
-  }
-
-  case 2: {
-    unsigned long length = 255;
-    int _len_buffer0 = 65025;
-    long *buffer = (long *)malloc(_len_buffer0 * sizeof(long));
-    for (int _i0 = 0; _i0 < _len_buffer0; _i0++) {
-      buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    long benchRet = ixgbe_calculate_checksum(buffer, length);
-    // printf("%ld\n", benchRet);
+    printf("%ld\n", benchRet);
     free(buffer);
 
     break;

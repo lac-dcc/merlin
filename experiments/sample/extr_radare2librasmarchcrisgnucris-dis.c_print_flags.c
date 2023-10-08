@@ -119,6 +119,7 @@ int main(int argc, char *argv[]) {
     }
 
     char *benchRet = print_flags(disdata, insn, cp);
+    printf("%c\n", ((*benchRet) % 26) + 'a');
     free(disdata);
     free(cp);
 
@@ -142,6 +143,7 @@ int main(int argc, char *argv[]) {
     }
 
     char *benchRet = print_flags(disdata, insn, cp);
+    printf("%c\n", ((*benchRet) % 26) + 'a');
     free(disdata);
     free(cp);
 

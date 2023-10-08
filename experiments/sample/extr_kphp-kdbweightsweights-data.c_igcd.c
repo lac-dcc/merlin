@@ -58,6 +58,9 @@ typedef int bool;
 int igcd(int a, int b) {
   unsigned counterigcd0 = 0;
 
+  int tempa = a;
+  int tempb = b;
+
   int c;
   if (a < b) {
     c = a;
@@ -73,8 +76,8 @@ int igcd(int a, int b) {
 
   printf("1\n");
   printf("at line 65 :");
-  printf("\n");
-  printf("%d\n", counterigcd0);
+  printf(" a b\n");
+  printf("%d %d %d\n", tempa, tempb, counterigcd0);
   return a;
 }
 
@@ -97,7 +100,7 @@ int main(int argc, char *argv[]) {
     int a = 100;
     int b = 100;
     int benchRet = igcd(a, b);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -106,7 +109,7 @@ int main(int argc, char *argv[]) {
     int a = 255;
     int b = 255;
     int benchRet = igcd(a, b);
-    
+    printf("%d\n", benchRet);
 
     break;
   }
@@ -115,7 +118,7 @@ int main(int argc, char *argv[]) {
     int a = 10;
     int b = 10;
     int benchRet = igcd(a, b);
-    
+    printf("%d\n", benchRet);
 
     break;
   }

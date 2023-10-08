@@ -162,7 +162,7 @@ int main(int argc, char *argv[]) {
   }
   // empty
   case 2: {
-    int N = 128;
+    int N = ((-2 * (next_i() % 2)) + 1) * next_i();
 
     float ALPHA =
         ((-2.0 * (next_i() % 2)) + 1.0) *
@@ -170,11 +170,11 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
 
-    int INCX = 128;
+    int INCX = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int INCY = 128;
+    int INCY = ((-2 * (next_i() % 2)) + 1) * next_i();
 
-    int _len_X0 = 16384;
+    int _len_X0 = 1;
     float *X = (float *)malloc(_len_X0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_X0; _i0++) {
       X[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *

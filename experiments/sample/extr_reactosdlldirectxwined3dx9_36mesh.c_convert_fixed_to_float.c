@@ -166,8 +166,8 @@ int main(int argc, char *argv[]) {
     }
 
     struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare);
-    // printf("%f\n", (*benchRet).x);
-    // printf("%f\n", (*benchRet).y);
+    printf("%f\n", (*benchRet).x);
+    printf("%f\n", (*benchRet).y);
     free(pt);
 
     break;
@@ -229,70 +229,8 @@ int main(int argc, char *argv[]) {
     }
 
     struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare);
-    // printf("%f\n", (*benchRet).x);
-    // printf("%f\n", (*benchRet).y);
-    free(pt);
-
-    break;
-  }
-
-  case 2: {
-    // static_instructions_O0 : 43
-    // dynamic_instructions_O0 : 8431
-    // -------------------------------
-    // static_instructions_O1 : 25
-    // dynamic_instructions_O1 : 3327
-    // -------------------------------
-    // static_instructions_O2 : 90
-    // dynamic_instructions_O2 : 2844
-    // -------------------------------
-    // static_instructions_O3 : 90
-    // dynamic_instructions_O3 : 2844
-    // -------------------------------
-    // static_instructions_Ofast : 93
-    // dynamic_instructions_Ofast : 2847
-    // -------------------------------
-    // static_instructions_Os : 24
-    // dynamic_instructions_Os : 3326
-    // -------------------------------
-    // static_instructions_Oz : 24
-    // dynamic_instructions_Oz : 3836
-    // -------------------------------
-
-    int count = 100;
-
-    unsigned int emsquare = 100;
-
-    int _len_pt0 = 10000;
-    struct TYPE_9__ *pt =
-        (struct TYPE_9__ *)malloc(_len_pt0 * sizeof(struct TYPE_9__));
-    for (int _i0 = 0; _i0 < _len_pt0; _i0++) {
-      pt[_i0].y.value =
-          ((-2.0 * (next_i() % 2)) + 1.0) *
-          (-16777216.000000 +
-           (float)next_f() / (((float)16777215.000000 /
-                               (16777215.000000 - -16777216.000000))));
-      pt[_i0].y.fract =
-          ((-2.0 * (next_i() % 2)) + 1.0) *
-          (-16777216.000000 +
-           (float)next_f() / (((float)16777215.000000 /
-                               (16777215.000000 - -16777216.000000))));
-
-      pt[_i0].x.value =
-          ((-2.0 * (next_i() % 2)) + 1.0) *
-          (-16777216.000000 +
-           (float)next_f() / (((float)16777215.000000 /
-                               (16777215.000000 - -16777216.000000))));
-      pt[_i0].x.fract =
-          ((-2.0 * (next_i() % 2)) + 1.0) *
-          (-16777216.000000 +
-           (float)next_f() / (((float)16777215.000000 /
-                               (16777215.000000 - -16777216.000000))));
-    }
-
-    struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare);
-    // printf("%f\n", (*benchRet).x);
-    // printf("%f\n", (*benchRet).y);
+    printf("%f\n", (*benchRet).x);
+    printf("%f\n", (*benchRet).y);
     free(pt);
 
     break;

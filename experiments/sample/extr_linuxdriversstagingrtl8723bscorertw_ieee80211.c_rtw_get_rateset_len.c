@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
       rateset[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = rtw_get_rateset_len(rateset);
-    
+    printf("%d\n", benchRet);
     free(rateset);
 
     break;

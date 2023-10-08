@@ -74,7 +74,7 @@ __attribute__((used)) static inline void mix_audio(float *p_out, float *p_in,
   printf("1\n");
   printf("at line 63 :");
   printf(" p_in pos count\n");
-  printf("%d %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
+  printf("%f %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -180,58 +180,6 @@ int main(int argc, char *argv[]) {
     }
 
     int _len_p_in0 = 100;
-    float *p_in = (float *)malloc(_len_p_in0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_p_in0; _i0++) {
-      p_in[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-                  (-16777216.000000 +
-                   (float)next_f() / (((float)16777215.000000 /
-                                       (16777215.000000 - -16777216.000000))));
-    }
-
-    mix_audio(p_out, p_in, pos, count);
-    free(p_out);
-    free(p_in);
-
-    break;
-  }
-
-  case 2: {
-    // static_instructions_O0 : 35
-    // dynamic_instructions_O0 : 173
-    // -------------------------------
-    // static_instructions_O1 : 17
-    // dynamic_instructions_O1 : 80
-    // -------------------------------
-    // static_instructions_O2 : 70
-    // dynamic_instructions_O2 : 77
-    // -------------------------------
-    // static_instructions_O3 : 70
-    // dynamic_instructions_O3 : 77
-    // -------------------------------
-    // static_instructions_Ofast : 70
-    // dynamic_instructions_Ofast : 77
-    // -------------------------------
-    // static_instructions_Os : 15
-    // dynamic_instructions_Os : 78
-    // -------------------------------
-    // static_instructions_Oz : 14
-    // dynamic_instructions_Oz : 88
-    // -------------------------------
-
-    unsigned long pos = 100;
-
-    unsigned long count = 100;
-
-    int _len_p_out0 = 10000;
-    float *p_out = (float *)malloc(_len_p_out0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_p_out0; _i0++) {
-      p_out[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-                   (-16777216.000000 +
-                    (float)next_f() / (((float)16777215.000000 /
-                                        (16777215.000000 - -16777216.000000))));
-    }
-
-    int _len_p_in0 = 10000;
     float *p_in = (float *)malloc(_len_p_in0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_p_in0; _i0++) {
       p_in[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *

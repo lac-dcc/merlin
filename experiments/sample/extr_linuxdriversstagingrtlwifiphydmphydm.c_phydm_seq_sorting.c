@@ -58,10 +58,10 @@ typedef scalar_t__ u32;
 
 void phydm_seq_sorting(void *dm_void, u32 *value, u32 *rank_idx, u32 *idx_out,
                        u8 seq_length) {
-  unsigned counterphydm_seq_sorting3 = 0;
-  unsigned counterphydm_seq_sorting2 = 0;
   unsigned counterphydm_seq_sorting1 = 0;
+  unsigned counterphydm_seq_sorting2 = 0;
   unsigned counterphydm_seq_sorting0 = 0;
+  unsigned counterphydm_seq_sorting3 = 0;
 
   u8 tempseq_length = seq_length;
 
@@ -102,18 +102,18 @@ void phydm_seq_sorting(void *dm_void, u32 *value, u32 *rank_idx, u32 *idx_out,
   }
 
   printf("4\n");
-  printf("at line 88 :");
+  printf("at line 70 :");
   printf(" seq_length\n");
   printf("at line 71 :");
   printf(" seq_length\n");
-  printf("at line 70 :");
-  printf(" seq_length\n");
   printf("at line 65 :");
   printf(" seq_length\n");
-  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting3);
-  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting2);
+  printf("at line 88 :");
+  printf(" seq_length\n");
   printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting1);
+  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting2);
   printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting0);
+  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting3);
 }
 
 // ------------------------------------------------------------------------- //
@@ -223,59 +223,6 @@ int main(int argc, char *argv[]) {
     }
 
     int _len_idx_out0 = 100;
-    long *idx_out = (long *)malloc(_len_idx_out0 * sizeof(long));
-    for (int _i0 = 0; _i0 < _len_idx_out0; _i0++) {
-      idx_out[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    phydm_seq_sorting(dm_void, value, rank_idx, idx_out, seq_length);
-    free(value);
-    free(rank_idx);
-    free(idx_out);
-
-    break;
-  }
-
-  case 2: {
-    // static_instructions_O0 : 80
-    // dynamic_instructions_O0 : 1778
-    // -------------------------------
-    // static_instructions_O1 : 56
-    // dynamic_instructions_O1 : 571
-    // -------------------------------
-    // static_instructions_O2 : 128
-    // dynamic_instructions_O2 : 527
-    // -------------------------------
-    // static_instructions_O3 : 128
-    // dynamic_instructions_O3 : 527
-    // -------------------------------
-    // static_instructions_Ofast : 128
-    // dynamic_instructions_Ofast : 527
-    // -------------------------------
-    // static_instructions_Os : 46
-    // dynamic_instructions_Os : 553
-    // -------------------------------
-    // static_instructions_Oz : 40
-    // dynamic_instructions_Oz : 573
-    // -------------------------------
-
-    unsigned long seq_length = 100;
-
-    void *dm_void;
-
-    int _len_value0 = 10000;
-    long *value = (long *)malloc(_len_value0 * sizeof(long));
-    for (int _i0 = 0; _i0 < _len_value0; _i0++) {
-      value[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    int _len_rank_idx0 = 10000;
-    long *rank_idx = (long *)malloc(_len_rank_idx0 * sizeof(long));
-    for (int _i0 = 0; _i0 < _len_rank_idx0; _i0++) {
-      rank_idx[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-
-    int _len_idx_out0 = 10000;
     long *idx_out = (long *)malloc(_len_idx_out0 * sizeof(long));
     for (int _i0 = 0; _i0 < _len_idx_out0; _i0++) {
       idx_out[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();

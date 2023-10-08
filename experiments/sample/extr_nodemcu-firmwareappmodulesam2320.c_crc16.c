@@ -56,8 +56,8 @@ typedef int uint16_t;
 /* Variables and functions */
 
 __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
-  unsigned countercrc161 = 0;
   unsigned countercrc160 = 0;
+  unsigned countercrc161 = 0;
 
   unsigned int templen = len;
 
@@ -79,12 +79,12 @@ __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
   }
 
   printf("2\n");
-  printf("at line 64 :");
-  printf("\n");
   printf("at line 62 :");
   printf(" len\n");
-  printf("%d\n", countercrc161);
+  printf("at line 64 :");
+  printf(" len\n");
   printf("%u %d\n", templen, countercrc160);
+  printf("%u %d\n", templen, countercrc161);
   return crc;
 }
 
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
       ptr[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = crc16(ptr, len);
-    
+    printf("%d\n", benchRet);
     free(ptr);
 
     break;

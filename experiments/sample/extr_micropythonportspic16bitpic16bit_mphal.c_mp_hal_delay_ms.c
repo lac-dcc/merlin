@@ -75,9 +75,9 @@ void mp_hal_delay_ms(mp_uint_t ms) {
   printf("at line 62 :");
   printf(" ms\n");
   printf("at line 63 :");
-  printf("\n");
+  printf(" ms\n");
   printf("%d %d\n", tempms, countermp_hal_delay_ms0);
-  printf("%d\n", countermp_hal_delay_ms1);
+  printf("%d %d\n", tempms, countermp_hal_delay_ms1);
 }
 
 // ------------------------------------------------------------------------- //
@@ -116,8 +116,9 @@ int main(int argc, char *argv[]) {
 
     break;
   }
+  // empty
   case 3: {
-    int ms = 128;
+    int ms = ((-2 * (next_i() % 2)) + 1) * next_i();
 
     mp_hal_delay_ms(ms);
 

@@ -58,9 +58,10 @@ struct fru_common_header {
 
 /* Variables and functions */
 
-int fru_header_cksum_ok(struct fru_common_header *header, int lenheader) {
+int fru_header_cksum_ok(struct fru_common_header *header) {
   unsigned counterfru_header_cksum_ok0 = 0;
-;
+
+  struct fru_common_header *tempheader = header;
 
   uint8_t *ptr = (void *)header;
   int i, sum;
@@ -73,7 +74,7 @@ int fru_header_cksum_ok(struct fru_common_header *header, int lenheader) {
   printf("1\n");
   printf("at line 65 :");
   printf(" header\n");
-  printf("%d %d\n", lenheader, counterfru_header_cksum_ok0);
+  printf(" %d\n", *tempheader, counterfru_header_cksum_ok0);
   return (sum & 0xff) == 0;
 }
 
@@ -120,7 +121,8 @@ int main(int argc, char *argv[]) {
       header[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = fru_header_cksum_ok(header, _len_header0);
+    int benchRet = fru_header_cksum_ok(header);
+    printf("%d\n", benchRet);
     free(header);
 
     break;
@@ -157,7 +159,8 @@ int main(int argc, char *argv[]) {
       header[_i0].dummy = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = fru_header_cksum_ok(header, _len_header0);
+    int benchRet = fru_header_cksum_ok(header);
+    printf("%d\n", benchRet);
     free(header);
 
     break;

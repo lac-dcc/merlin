@@ -121,64 +121,6 @@ int main(int argc, char *argv[]) {
     break;
   }
 
-  case 1: {
-    int height = 100;
-    int linesize = 100;
-    float o1 =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    float o2 =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    int v = 10;
-    int step = 100;
-    int _len_dst0 = 10000;
-    float *dst = (float *)malloc(_len_dst0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
-      dst[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-                 (-16777216.000000 +
-                  (float)next_f() / (((float)16777215.000000 /
-                                      (16777215.000000 - -16777216.000000))));
-    }
-    blend_vline(dst, height, linesize, o1, o2, v, step);
-    free(dst);
-
-    break;
-  }
-
-  case 2: {
-    int height = 255;
-    int linesize = 255;
-    float o1 =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    float o2 =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    int v = 10;
-    int step = 255;
-    int _len_dst0 = 65025;
-    float *dst = (float *)malloc(_len_dst0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
-      dst[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-                 (-16777216.000000 +
-                  (float)next_f() / (((float)16777215.000000 /
-                                      (16777215.000000 - -16777216.000000))));
-    }
-    blend_vline(dst, height, linesize, o1, o2, v, step);
-    free(dst);
-
-    break;
-  }
-
   default:
     usage();
     break;

@@ -59,8 +59,10 @@ struct seeprom_config {
 
 /* Variables and functions */
 
-int ahc_verify_cksum(struct seeprom_config *sc, int lensc) {
+int ahc_verify_cksum(struct seeprom_config *sc) {
   unsigned counterahc_verify_cksum0 = 0;
+
+  struct seeprom_config *tempsc = sc;
 
   int i;
   int maxaddr;
@@ -80,14 +82,14 @@ int ahc_verify_cksum(struct seeprom_config *sc, int lensc) {
     printf("1\n");
     printf("at line 72 :");
     printf(" sc\n");
-    printf("%d %d\n", lensc, counterahc_verify_cksum0);
+    printf(" %d\n", *tempsc, counterahc_verify_cksum0);
     return (0);
   } else {
 
     printf("1\n");
     printf("at line 72 :");
     printf(" sc\n");
-    printf("%d %d\n", lensc, counterahc_verify_cksum0);
+    printf(" %d\n", *tempsc, counterahc_verify_cksum0);
     return (1);
   }
 }
@@ -114,8 +116,8 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_sc0; _i0++) {
       sc[_i0].checksum = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = ahc_verify_cksum(sc, _len_sc0);
-    
+    int benchRet = ahc_verify_cksum(sc);
+    printf("%d\n", benchRet);
     free(sc);
 
     break;
@@ -128,8 +130,8 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_sc0; _i0++) {
       sc[_i0].checksum = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = ahc_verify_cksum(sc, _len_sc0);
-    
+    int benchRet = ahc_verify_cksum(sc);
+    printf("%d\n", benchRet);
     free(sc);
 
     break;

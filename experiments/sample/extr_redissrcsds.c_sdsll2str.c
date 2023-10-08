@@ -57,6 +57,7 @@ int sdsll2str(char *s, long long value) {
   unsigned countersdsll2str0 = 0;
   unsigned countersdsll2str1 = 0;
 
+  long long tempvalue = value;
   char *temps = s;
 
   char *p, aux;
@@ -93,10 +94,10 @@ int sdsll2str(char *s, long long value) {
 
   printf("2\n");
   printf("at line 65 :");
-  printf("\n");
+  printf(" value\n");
   printf("at line 79 :");
   printf(" s\n");
-  printf("%d\n", countersdsll2str0);
+  printf(" %d\n", tempvalue, countersdsll2str0);
   printf("%c %d\n", *temps, countersdsll2str1);
   return l;
 }
@@ -124,35 +125,7 @@ int main(int argc, char *argv[]) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     int benchRet = sdsll2str(s, value);
-    // 
-    free(s);
-
-    break;
-  }
-
-  case 1: {
-    long long value = 100;
-    int _len_s0 = 10000;
-    char *s = (char *)malloc(_len_s0 * sizeof(char));
-    for (int _i0 = 0; _i0 < _len_s0; _i0++) {
-      s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    int benchRet = sdsll2str(s, value);
-    // 
-    free(s);
-
-    break;
-  }
-
-  case 2: {
-    long long value = 255;
-    int _len_s0 = 65025;
-    char *s = (char *)malloc(_len_s0 * sizeof(char));
-    for (int _i0 = 0; _i0 < _len_s0; _i0++) {
-      s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    int benchRet = sdsll2str(s, value);
-    // 
+    printf("%d\n", benchRet);
     free(s);
 
     break;

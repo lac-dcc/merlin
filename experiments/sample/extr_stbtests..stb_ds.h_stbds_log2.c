@@ -59,6 +59,8 @@ typedef int bool;
 __attribute__((used)) static size_t stbds_log2(size_t slot_count) {
   unsigned counterstbds_log20 = 0;
 
+  size_t tempslot_count = slot_count;
+
   size_t n = 0;
   while (slot_count > 1) {
     counterstbds_log20++;
@@ -68,8 +70,8 @@ __attribute__((used)) static size_t stbds_log2(size_t slot_count) {
 
   printf("1\n");
   printf("at line 61 :");
-  printf("\n");
-  printf("%d\n", counterstbds_log20);
+  printf(" slot_count\n");
+  printf("%ld %d\n", tempslot_count, counterstbds_log20);
   return n;
 }
 

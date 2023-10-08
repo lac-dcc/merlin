@@ -98,37 +98,7 @@ int main(int argc, char *argv[]) {
       buf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
     unsigned long benchRet = msdc_dma_calcs(buf, len);
-    // printf("%lu\n", benchRet);
-    free(buf);
-
-    break;
-  }
-
-  case 1: {
-    unsigned long len = 100;
-    int _len_buf0 = 10000;
-    unsigned long *buf =
-        (unsigned long *)malloc(_len_buf0 * sizeof(unsigned long));
-    for (int _i0 = 0; _i0 < _len_buf0; _i0++) {
-      buf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    unsigned long benchRet = msdc_dma_calcs(buf, len);
-    // printf("%lu\n", benchRet);
-    free(buf);
-
-    break;
-  }
-
-  case 2: {
-    unsigned long len = 255;
-    int _len_buf0 = 65025;
-    unsigned long *buf =
-        (unsigned long *)malloc(_len_buf0 * sizeof(unsigned long));
-    for (int _i0 = 0; _i0 < _len_buf0; _i0++) {
-      buf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
-    }
-    unsigned long benchRet = msdc_dma_calcs(buf, len);
-    // printf("%lu\n", benchRet);
+    printf("%lu\n", benchRet);
     free(buf);
 
     break;

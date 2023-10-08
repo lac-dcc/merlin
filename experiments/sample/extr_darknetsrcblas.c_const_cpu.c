@@ -106,48 +106,6 @@ int main(int argc, char *argv[]) {
 
     break;
   }
-  case 1: {
-    int N = 100;
-    float ALPHA =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    int INCX = 100;
-    int _len_X0 = 1000;
-    float *X = (float *)malloc(_len_X0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_X0; _i0++) {
-      X[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-               (-16777216.000000 +
-                (float)next_f() / (((float)16777215.000000 /
-                                    (16777215.000000 - -16777216.000000))));
-    }
-    const_cpu(N, ALPHA, X, INCX);
-    free(X);
-
-    break;
-  }
-  case 3: {
-    int N = 255;
-    float ALPHA =
-        ((-2.0 * (next_i() % 2)) + 1.0) *
-        (-16777216.000000 +
-         (float)next_f() /
-             (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
-    int INCX = 255;
-    int _len_X0 = 65025;
-    float *X = (float *)malloc(_len_X0 * sizeof(float));
-    for (int _i0 = 0; _i0 < _len_X0; _i0++) {
-      X[_i0] = ((-2.0 * (next_i() % 2)) + 1.0) *
-               (-16777216.000000 +
-                (float)next_f() / (((float)16777215.000000 /
-                                    (16777215.000000 - -16777216.000000))));
-    }
-    const_cpu(N, ALPHA, X, INCX);
-    free(X);
-
-    break;
-  }
 
   default:
     usage();
