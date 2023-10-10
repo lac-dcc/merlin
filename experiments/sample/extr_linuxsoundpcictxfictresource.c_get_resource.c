@@ -58,7 +58,7 @@ int ENOENT;
 
 __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
                                               unsigned int multi,
-                                              unsigned int *ridx) {
+                                              unsigned int *ridx, int rscs_size) {
   unsigned counterget_resource1 = 0;
   unsigned counterget_resource0 = 0;
 
@@ -86,11 +86,11 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
 
     printf("2\n");
     printf("at line 83 :");
-    printf(" multi\n");
+    printf(" multi rscs_size\n");
     printf("at line 65 :");
-    printf(" amount\n");
-    printf("%u %d\n", tempmulti, counterget_resource1);
-    printf("%u %d\n", tempamount, counterget_resource0);
+    printf(" amount rscs_size\n");
+    printf("%u %d %d\n", tempmulti, rscs_size, counterget_resource1);
+    printf("%u %d %d\n", tempamount, rscs_size, counterget_resource0);
     return -ENOENT;
   }
 
@@ -107,11 +107,11 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
 
   printf("2\n");
   printf("at line 83 :");
-  printf(" multi\n");
+  printf(" multi rscs_size\n");
   printf("at line 65 :");
-  printf(" amount\n");
-  printf("%u %d\n", tempmulti, counterget_resource1);
-  printf("%u %d\n", tempamount, counterget_resource0);
+  printf(" amount rscs_size\n");
+  printf("%u %d %d\n", tempmulti, rscs_size, counterget_resource1);
+  printf("%u %d %d\n", tempamount, rscs_size, counterget_resource0);
   return 0;
 }
 
@@ -168,7 +168,7 @@ int main(int argc, char *argv[]) {
       ridx[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = get_resource(rscs, amount, multi, ridx);
+    int benchRet = get_resource(rscs, amount, multi, ridx, _len_rscs0);
     printf("%d\n", benchRet);
     free(rscs);
     free(ridx);
@@ -217,7 +217,7 @@ int main(int argc, char *argv[]) {
       ridx[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = get_resource(rscs, amount, multi, ridx);
+    int benchRet = get_resource(rscs, amount, multi, ridx, _len_rscs0);
     printf("%d\n", benchRet);
     free(rscs);
     free(ridx);

@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-int sdsll2str(char *s, long long value) {
+int sdsll2str(char *s, long long value, int s_size) {
   unsigned countersdsll2str0 = 0;
   unsigned countersdsll2str1 = 0;
 
@@ -96,9 +96,9 @@ int sdsll2str(char *s, long long value) {
   printf("at line 65 :");
   printf(" value\n");
   printf("at line 79 :");
-  printf(" s\n");
-  printf(" %d\n", tempvalue, countersdsll2str0);
-  printf("%c %d\n", *temps, countersdsll2str1);
+  printf(" s_size\n");
+  printf("%d %d\n", tempvalue, countersdsll2str0);
+  printf("%d %d\n", s_size, countersdsll2str1);
   return l;
 }
 
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
     printf("%d\n", benchRet);
     free(s);
 

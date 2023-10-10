@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-void scsi_sanitize_inquiry_string(unsigned char *s, int len) {
+void scsi_sanitize_inquiry_string(unsigned char *s, int len, int s_size) {
   unsigned counterscsi_sanitize_inquiry_string0 = 0;
 
   int templen = len;
@@ -72,8 +72,8 @@ void scsi_sanitize_inquiry_string(unsigned char *s, int len) {
 
   printf("1\n");
   printf("at line 59 :");
-  printf(" len\n");
-  printf("%d %d\n", templen, counterscsi_sanitize_inquiry_string0);
+  printf(" len s_size\n");
+  printf("%d %d %d\n", templen, s_size, counterscsi_sanitize_inquiry_string0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    scsi_sanitize_inquiry_string(s, len);
+    scsi_sanitize_inquiry_string(s, len, _len_s0);
     free(s);
 
     break;

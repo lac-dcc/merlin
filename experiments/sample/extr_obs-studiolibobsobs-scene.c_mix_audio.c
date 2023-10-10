@@ -55,7 +55,8 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static inline void mix_audio(float *p_out, float *p_in,
-                                                   size_t pos, size_t count) {
+                                                   size_t pos, size_t count,
+                                                   int p_out_size, int p_in_size) {
   unsigned countermix_audio0 = 0;
 
   float *tempp_in = p_in;
@@ -73,8 +74,8 @@ __attribute__((used)) static inline void mix_audio(float *p_out, float *p_in,
 
   printf("1\n");
   printf("at line 63 :");
-  printf(" p_in pos count\n");
-  printf("%f %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
+  printf(" pos count p_out_size p_in_size\n");
+  printf("%ld %ld %d %d %d\n", temppos, tempcount, p_out_size, p_in_size, countermix_audio0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -135,7 +136,7 @@ int main(int argc, char *argv[]) {
                                        (16777215.000000 - -16777216.000000))));
     }
 
-    mix_audio(p_out, p_in, pos, count);
+    mix_audio(p_out, p_in, pos, count, _len_p_out0, _len_p_in0);
     free(p_out);
     free(p_in);
 
@@ -188,7 +189,7 @@ int main(int argc, char *argv[]) {
                                        (16777215.000000 - -16777216.000000))));
     }
 
-    mix_audio(p_out, p_in, pos, count);
+    mix_audio(p_out, p_in, pos, count, _len_p_out0, _len_p_in0);
     free(p_out);
     free(p_in);
 

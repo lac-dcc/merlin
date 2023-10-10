@@ -55,7 +55,7 @@ typedef scalar_t__ u8;
 
 /* Variables and functions */
 
-uint rtw_get_rateset_len(u8 *rateset) {
+uint rtw_get_rateset_len(u8 *rateset, int rateset_size) {
   unsigned counterrtw_get_rateset_len0 = 0;
 
   uint i;
@@ -69,8 +69,8 @@ uint rtw_get_rateset_len(u8 *rateset) {
 
   printf("1\n");
   printf("at line 61 :");
-  printf("\n");
-  printf("%d\n", counterrtw_get_rateset_len0);
+  printf(" rateset_size\n");
+  printf("%d %d\n", rateset_size, counterrtw_get_rateset_len0);
   return i;
 }
 
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_rateset0; _i0++) {
       rateset[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = rtw_get_rateset_len(rateset);
+    int benchRet = rtw_get_rateset_len(rateset, _len_rateset0);
     printf("%d\n", benchRet);
     free(rateset);
 

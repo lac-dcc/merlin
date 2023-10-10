@@ -59,7 +59,7 @@ typedef int ptrdiff_t;
 
 __attribute__((used)) static inline void
 transpose_block_8_c(uint8_t *src, ptrdiff_t src_linesize, uint8_t *dst,
-                    ptrdiff_t dst_linesize, int w, int h) {
+                    ptrdiff_t dst_linesize, int w, int h, int src_size, int dst_size) {
   unsigned countertranspose_block_8_c1 = 0;
   unsigned countertranspose_block_8_c0 = 0;
 
@@ -77,11 +77,11 @@ transpose_block_8_c(uint8_t *src, ptrdiff_t src_linesize, uint8_t *dst,
 
   printf("2\n");
   printf("at line 65 :");
-  printf(" w h\n");
+  printf(" w h src_size dst_size\n");
   printf("at line 64 :");
-  printf(" h\n");
-  printf("%d %d %d\n", tempw, temph, countertranspose_block_8_c1);
-  printf("%d %d\n", temph, countertranspose_block_8_c0);
+  printf(" h src_size dst_size\n");
+  printf("%d %d %d %d %d\n", tempw, temph, src_size, dst_size, countertranspose_block_8_c1);
+  printf("%d %d %d %d\n", temph, src_size, dst_size, countertranspose_block_8_c0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -140,7 +140,7 @@ int main(int argc, char *argv[]) {
       dst[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h);
+    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h, _len_src0, _len_dst0);
     free(src);
     free(dst);
 
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
       dst[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h);
+    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h, _len_src0, _len_dst0);
     free(src);
     free(dst);
 
@@ -242,7 +242,7 @@ int main(int argc, char *argv[]) {
       dst[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h);
+    transpose_block_8_c(src, src_linesize, dst, dst_linesize, w, h, _len_src0, _len_dst0);
     free(src);
     free(dst);
 

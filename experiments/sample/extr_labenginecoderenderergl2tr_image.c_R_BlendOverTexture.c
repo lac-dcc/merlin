@@ -57,7 +57,7 @@ typedef int byte;
 /* Variables and functions */
 
 __attribute__((used)) static void R_BlendOverTexture(byte *data, int pixelCount,
-                                                     byte blend[4]) {
+                                                     byte blend[4], int data_size) {
   unsigned counterR_BlendOverTexture0 = 0;
 
   int temppixelCount = pixelCount;
@@ -80,8 +80,8 @@ __attribute__((used)) static void R_BlendOverTexture(byte *data, int pixelCount,
 
   printf("1\n");
   printf("at line 70 :");
-  printf(" pixelCount\n");
-  printf("%d %d\n", temppixelCount, counterR_BlendOverTexture0);
+  printf(" pixelCount data_size\n");
+  printf("%d %d %d\n", temppixelCount, data_size, counterR_BlendOverTexture0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
       blend[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    R_BlendOverTexture(data, pixelCount, blend);
+    R_BlendOverTexture(data, pixelCount, blend, _len_data0);
     free(data);
     free(blend);
 
@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
       blend[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    R_BlendOverTexture(data, pixelCount, blend);
+    R_BlendOverTexture(data, pixelCount, blend, _len_data0);
     free(data);
     free(blend);
 
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
       blend[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    R_BlendOverTexture(data, pixelCount, blend);
+    R_BlendOverTexture(data, pixelCount, blend, _len_data0);
     free(data);
     free(blend);
 

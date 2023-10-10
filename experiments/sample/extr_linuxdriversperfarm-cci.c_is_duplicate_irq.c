@@ -54,7 +54,7 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static bool is_duplicate_irq(int irq, int *irqs,
-                                                   int nr_irqs) {
+                                                   int nr_irqs, int irqs_size) {
   unsigned counteris_duplicate_irq0 = 0;
 
   int tempnr_irqs = nr_irqs;
@@ -67,16 +67,16 @@ __attribute__((used)) static bool is_duplicate_irq(int irq, int *irqs,
 
       printf("1\n");
       printf("at line 60 :");
-      printf(" nr_irqs\n");
-      printf("%d %d\n", tempnr_irqs, counteris_duplicate_irq0);
+      printf(" nr_irqs irqs_size\n");
+      printf("%d %d %d\n", tempnr_irqs, irqs_size, counteris_duplicate_irq0);
       return true;
     }
   }
 
   printf("1\n");
   printf("at line 60 :");
-  printf(" nr_irqs\n");
-  printf("%d %d\n", tempnr_irqs, counteris_duplicate_irq0);
+  printf(" nr_irqs irqs_size\n");
+  printf("%d %d %d\n", tempnr_irqs, irqs_size, counteris_duplicate_irq0);
   return false;
 }
 
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_irqs0; _i0++) {
       irqs[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = is_duplicate_irq(irq, irqs, nr_irqs);
+    int benchRet = is_duplicate_irq(irq, irqs, nr_irqs, _len_irqs0);
     printf("%d\n", benchRet);
     free(irqs);
 

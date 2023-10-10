@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-void const_cpu(int N, float ALPHA, float *X, int INCX) {
+void const_cpu(int N, float ALPHA, float *X, int INCX, int X_size) {
   unsigned counterconst_cpu0 = 0;
 
   int tempN = N;
@@ -66,8 +66,8 @@ void const_cpu(int N, float ALPHA, float *X, int INCX) {
 
   printf("1\n");
   printf("at line 58 :");
-  printf(" N\n");
-  printf("%d %d\n", tempN, counterconst_cpu0);
+  printf(" N X_size\n");
+  printf("%d %d %d\n", tempN, X_size, counterconst_cpu0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
                 (float)next_f() / (((float)16777215.000000 /
                                     (16777215.000000 - -16777216.000000))));
     }
-    const_cpu(N, ALPHA, X, INCX);
+    const_cpu(N, ALPHA, X, INCX, _len_X0);
     free(X);
 
     break;

@@ -54,7 +54,7 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static inline void extend97_float(float *p, int i0,
-                                                        int i1) {
+                                                        int i1, int p_size) {
   unsigned counterextend97_float0 = 0;
 
   int i;
@@ -67,8 +67,8 @@ __attribute__((used)) static inline void extend97_float(float *p, int i0,
 
   printf("1\n");
   printf("at line 60 :");
-  printf("\n");
-  printf("%d\n", counterextend97_float0);
+  printf(" p_size\n");
+  printf("%d %d\n", p_size, counterextend97_float0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
                 (float)next_f() / (((float)16777215.000000 /
                                     (16777215.000000 - -16777216.000000))));
     }
-    extend97_float(p, i0, i1);
+    extend97_float(p, i0, i1, _len_p0);
     free(p);
 
     break;

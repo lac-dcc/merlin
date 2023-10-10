@@ -55,7 +55,7 @@ typedef size_t u32;
 
 /* Variables and functions */
 
-u8 ixgbe_calculate_checksum(u8 *buffer, u32 length) {
+u8 ixgbe_calculate_checksum(u8 *buffer, u32 length, int buffer_size) {
   unsigned counterixgbe_calculate_checksum0 = 0;
 
   u32 templength = length;
@@ -67,8 +67,8 @@ u8 ixgbe_calculate_checksum(u8 *buffer, u32 length) {
 
     printf("1\n");
     printf("at line 66 :");
-    printf(" length\n");
-    printf("%ld %d\n", templength, counterixgbe_calculate_checksum0);
+    printf(" length buffer_size\n");
+    printf("%ld %d %d\n", templength, buffer_size, counterixgbe_calculate_checksum0);
     return 0;
   }
 
@@ -79,8 +79,8 @@ u8 ixgbe_calculate_checksum(u8 *buffer, u32 length) {
 
   printf("1\n");
   printf("at line 66 :");
-  printf(" length\n");
-  printf("%ld %d\n", templength, counterixgbe_calculate_checksum0);
+  printf(" length buffer_size\n");
+  printf("%ld %d %d\n", templength, buffer_size, counterixgbe_calculate_checksum0);
   return (u8)(0 - sum);
 }
 
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_buffer0; _i0++) {
       buffer[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    long benchRet = ixgbe_calculate_checksum(buffer, length);
+    long benchRet = ixgbe_calculate_checksum(buffer, length, _len_buffer0);
     printf("%ld\n", benchRet);
     free(buffer);
 

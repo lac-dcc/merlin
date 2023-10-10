@@ -56,7 +56,7 @@ typedef float uint8_t;
 
 __attribute__((used)) static void blend_vline(uint8_t *dst, int height,
                                               int linesize, float o1, float o2,
-                                              int v, int step) {
+                                              int v, int step, int dst_size) {
   unsigned counterblend_vline0 = 0;
 
   int tempstep = step;
@@ -73,8 +73,8 @@ __attribute__((used)) static void blend_vline(uint8_t *dst, int height,
 
   printf("1\n");
   printf("at line 62 :");
-  printf(" step height\n");
-  printf("%d %d %d\n", tempstep, tempheight, counterblend_vline0);
+  printf(" step height dst_size\n");
+  printf("%d %d %d %d\n", tempstep, tempheight, dst_size, counterblend_vline0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
                   (float)next_f() / (((float)16777215.000000 /
                                       (16777215.000000 - -16777216.000000))));
     }
-    blend_vline(dst, height, linesize, o1, o2, v, step);
+    blend_vline(dst, height, linesize, o1, o2, v, step, _len_dst0);
     free(dst);
 
     break;

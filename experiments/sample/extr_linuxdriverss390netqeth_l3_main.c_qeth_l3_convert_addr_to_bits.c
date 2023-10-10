@@ -57,7 +57,7 @@ typedef int u8;
 /* Variables and functions */
 
 __attribute__((used)) static void
-qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
+qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len, int addr_size, int buffer_size) {
   unsigned counterqeth_l3_convert_addr_to_bits1 = 0;
   unsigned counterqeth_l3_convert_addr_to_bits0 = 0;
 
@@ -78,11 +78,11 @@ qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
 
   printf("2\n");
   printf("at line 66 :");
-  printf(" len\n");
+  printf(" len addr_size buffer_size\n");
   printf("at line 64 :");
-  printf(" len\n");
-  printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits1);
-  printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits0);
+  printf(" len addr_size buffer_size\n");
+  printf("%d %d %d %d\n", templen, addr_size, buffer_size, counterqeth_l3_convert_addr_to_bits1);
+  printf("%d %d %d %d\n", templen, addr_size, buffer_size, counterqeth_l3_convert_addr_to_bits0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
       bits[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    qeth_l3_convert_addr_to_bits(addr, bits, len);
+    qeth_l3_convert_addr_to_bits(addr, bits, len, _len_addr0, _len_bits0);
     free(addr);
     free(bits);
 
@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
       bits[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    qeth_l3_convert_addr_to_bits(addr, bits, len);
+    qeth_l3_convert_addr_to_bits(addr, bits, len, _len_addr0, _len_bits0);
     free(addr);
     free(bits);
 
@@ -225,7 +225,7 @@ int main(int argc, char *argv[]) {
       bits[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    qeth_l3_convert_addr_to_bits(addr, bits, len);
+    qeth_l3_convert_addr_to_bits(addr, bits, len, _len_addr0, _len_bits0);
     free(addr);
     free(bits);
 

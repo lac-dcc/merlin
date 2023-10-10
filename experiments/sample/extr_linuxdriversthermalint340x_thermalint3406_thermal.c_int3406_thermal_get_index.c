@@ -57,7 +57,7 @@ typedef int bool;
 int ENOENT;
 
 __attribute__((used)) static int int3406_thermal_get_index(int *array, int nr,
-                                                           int value) {
+                                                           int value, int array_size) {
   unsigned counterint3406_thermal_get_index0 = 0;
 
   int tempnr = nr;
@@ -73,8 +73,8 @@ __attribute__((used)) static int int3406_thermal_get_index(int *array, int nr,
 
   printf("1\n");
   printf("at line 63 :");
-  printf(" nr\n");
-  printf("%d %d\n", tempnr, counterint3406_thermal_get_index0);
+  printf(" nr array_size\n");
+  printf("%d %d %d\n", tempnr, array_size, counterint3406_thermal_get_index0);
   return i == nr ? -ENOENT : i;
 }
 
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
       array[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = int3406_thermal_get_index(array, nr, value);
+    int benchRet = int3406_thermal_get_index(array, nr, value, _len_array0);
     printf("%d\n", benchRet);
     free(array);
 
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
       array[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = int3406_thermal_get_index(array, nr, value);
+    int benchRet = int3406_thermal_get_index(array, nr, value, _len_array0);
     printf("%d\n", benchRet);
     free(array);
 
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
       array[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = int3406_thermal_get_index(array, nr, value);
+    int benchRet = int3406_thermal_get_index(array, nr, value, _len_array0);
     printf("%d\n", benchRet);
     free(array);
 

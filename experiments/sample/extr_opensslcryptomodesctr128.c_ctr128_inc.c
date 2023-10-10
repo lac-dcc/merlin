@@ -55,7 +55,7 @@ typedef int u32;
 
 /* Variables and functions */
 
-__attribute__((used)) static void ctr128_inc(unsigned char *counter) {
+__attribute__((used)) static void ctr128_inc(unsigned char *counter, int counter_size) {
   unsigned counterctr128_inc0 = 0;
 
   u32 n = 16, c = 1;
@@ -70,8 +70,8 @@ __attribute__((used)) static void ctr128_inc(unsigned char *counter) {
 
   printf("1\n");
   printf("at line 61 :");
-  printf("\n");
-  printf("%d\n", counterctr128_inc0);
+  printf(" counter_size\n");
+  printf("%d %d\n", counter_size, counterctr128_inc0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_counter0; _i0++) {
       counter[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    ctr128_inc(counter);
+    ctr128_inc(counter, _len_counter0);
     free(counter);
 
     break;

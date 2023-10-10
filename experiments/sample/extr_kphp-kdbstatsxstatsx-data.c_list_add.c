@@ -55,7 +55,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-__attribute__((used)) static void list_add(int *a, int *b, int cnt) {
+__attribute__((used)) static void list_add(int *a, int *b, int cnt, int a_size, int b_size) {
   unsigned counterlist_add0 = 0;
 
   int tempcnt = cnt;
@@ -64,8 +64,8 @@ __attribute__((used)) static void list_add(int *a, int *b, int cnt) {
 
     printf("1\n");
     printf("at line 63 :");
-    printf(" cnt\n");
-    printf("%d %d\n", tempcnt, counterlist_add0);
+    printf(" cnt a_size b_size\n");
+    printf("%d %d %d %d\n", tempcnt, a_size, b_size, counterlist_add0);
     return;
   }
   int i;
@@ -76,8 +76,8 @@ __attribute__((used)) static void list_add(int *a, int *b, int cnt) {
 
   printf("1\n");
   printf("at line 63 :");
-  printf(" cnt\n");
-  printf("%d %d\n", tempcnt, counterlist_add0);
+  printf(" cnt a_size b_size\n");
+  printf("%d %d %d %d\n", tempcnt, a_size, b_size, counterlist_add0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
       b[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    list_add(a, b, cnt);
+    list_add(a, b, cnt, _len_a0, _len_b0);
     free(a);
     free(b);
 
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
       b[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    list_add(a, b, cnt);
+    list_add(a, b, cnt, _len_a0, _len_b0);
     free(a);
     free(b);
 
@@ -220,7 +220,7 @@ int main(int argc, char *argv[]) {
       b[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    list_add(a, b, cnt);
+    list_add(a, b, cnt, _len_a0, _len_b0);
     free(a);
     free(b);
 

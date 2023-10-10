@@ -56,7 +56,7 @@ typedef int sint;
 
 /* Variables and functions */
 
-__attribute__((used)) static void xor_32(u8 *a, u8 *b, u8 *out) {
+__attribute__((used)) static void xor_32(u8 *a, u8 *b, u8 *out, int a_size, int b_size, int out_size) {
   unsigned counterxor_320 = 0;
 
   sint i;
@@ -68,8 +68,8 @@ __attribute__((used)) static void xor_32(u8 *a, u8 *b, u8 *out) {
 
   printf("1\n");
   printf("at line 62 :");
-  printf("\n");
-  printf("%d\n", counterxor_320);
+  printf(" a_size b_size out_size\n");
+  printf("%d %d %d %d\n", a_size, b_size, out_size, counterxor_320);
 }
 
 // ------------------------------------------------------------------------- //
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
       out[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    xor_32(a, b, out);
+    xor_32(a, b, out, _len_a0, _len_b0, _len_out0);
     free(a);
     free(b);
     free(out);
@@ -176,7 +176,7 @@ int main(int argc, char *argv[]) {
       out[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    xor_32(a, b, out);
+    xor_32(a, b, out, _len_a0, _len_b0, _len_out0);
     free(a);
     free(b);
     free(out);

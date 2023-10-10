@@ -58,7 +58,7 @@ typedef int /*<<< orphan*/ int16_t;
 /* Variables and functions */
 
 __attribute__((used)) static void
-chrRangeFromJpeg16_c(int16_t *_dstU, int16_t *_dstV, int width) {
+chrRangeFromJpeg16_c(int16_t *_dstU, int16_t *_dstV, int width, int _dstU_size, int _dstV_size) {
   unsigned counterchrRangeFromJpeg16_c0 = 0;
 
   int tempwidth = width;
@@ -74,8 +74,8 @@ chrRangeFromJpeg16_c(int16_t *_dstU, int16_t *_dstV, int width) {
 
   printf("1\n");
   printf("at line 65 :");
-  printf(" width\n");
-  printf("%d %d\n", tempwidth, counterchrRangeFromJpeg16_c0);
+  printf(" width _dstU_size _dstV_size\n");
+  printf("%d %d %d %d\n", tempwidth, _dstU_size, _dstV_size, counterchrRangeFromJpeg16_c0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
       _dstV[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    chrRangeFromJpeg16_c(_dstU, _dstV, width);
+    chrRangeFromJpeg16_c(_dstU, _dstV, width, _len__dstU0, _len__dstV0);
     free(_dstU);
     free(_dstV);
 
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
       _dstV[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    chrRangeFromJpeg16_c(_dstU, _dstV, width);
+    chrRangeFromJpeg16_c(_dstU, _dstV, width, _len__dstU0, _len__dstV0);
     free(_dstU);
     free(_dstV);
 
@@ -218,7 +218,7 @@ int main(int argc, char *argv[]) {
       _dstV[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    chrRangeFromJpeg16_c(_dstU, _dstV, width);
+    chrRangeFromJpeg16_c(_dstU, _dstV, width, _len__dstU0, _len__dstV0);
     free(_dstU);
     free(_dstV);
 

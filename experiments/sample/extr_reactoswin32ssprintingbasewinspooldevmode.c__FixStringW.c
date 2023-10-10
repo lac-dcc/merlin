@@ -57,7 +57,7 @@ typedef int DWORD;
 /* Variables and functions */
 
 __attribute__((used)) static __inline void _FixStringW(PWSTR String,
-                                                       DWORD cbString) {
+                                                       DWORD cbString, int String_size) {
   unsigned counter_FixStringW0 = 0;
 
   PWSTR tempString = String;
@@ -77,8 +77,8 @@ __attribute__((used)) static __inline void _FixStringW(PWSTR String,
 
   printf("1\n");
   printf("at line 64 :");
-  printf(" String\n");
-  printf("%ld %d\n", *tempString, counter_FixStringW0);
+  printf(" String_size\n");
+  printf("%d %d\n", String_size, counter_FixStringW0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_String0; _i0++) {
       String[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    _FixStringW(String, cbString);
+    _FixStringW(String, cbString, _len_String0);
     free(String);
 
     break;

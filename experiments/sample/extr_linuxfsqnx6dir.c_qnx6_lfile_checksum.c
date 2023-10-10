@@ -54,7 +54,7 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static unsigned qnx6_lfile_checksum(char *name,
-                                                          unsigned size) {
+                                                          unsigned size, int name_size) {
   unsigned counterqnx6_lfile_checksum0 = 0;
 
   char *tempname = name;
@@ -69,8 +69,8 @@ __attribute__((used)) static unsigned qnx6_lfile_checksum(char *name,
 
   printf("1\n");
   printf("at line 60 :");
-  printf(" name size\n");
-  printf("%c %u %d\n", *tempname, tempsize, counterqnx6_lfile_checksum0);
+  printf(" size name_size\n");
+  printf("%u %d %d\n", tempsize, name_size, counterqnx6_lfile_checksum0);
   return crc;
 }
 
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_name0; _i0++) {
       name[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    unsigned int benchRet = qnx6_lfile_checksum(name, size);
+    unsigned int benchRet = qnx6_lfile_checksum(name, size, _len_name0);
     printf("%u\n", benchRet);
     free(name);
 

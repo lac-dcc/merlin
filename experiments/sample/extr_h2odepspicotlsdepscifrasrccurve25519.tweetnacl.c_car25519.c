@@ -55,7 +55,7 @@ typedef long long *gf;
 
 /* Variables and functions */
 
-__attribute__((used)) static void car25519(gf o) {
+__attribute__((used)) static void car25519(gf o, int o_size) {
   unsigned countercar255190 = 0;
 
   int64_t c;
@@ -71,8 +71,8 @@ __attribute__((used)) static void car25519(gf o) {
 
   printf("1\n");
   printf("at line 62 :");
-  printf("\n");
-  printf("%d\n", countercar255190);
+  printf(" o_size\n");
+  printf("%d %d\n", o_size, countercar255190);
 }
 
 // ------------------------------------------------------------------------- //
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_o0; _i0++) {
       o[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    car25519(o);
+    car25519(o, _len_o0);
     free(o);
 
     break;

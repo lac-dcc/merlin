@@ -54,7 +54,8 @@ typedef scalar_t__ npy_bool;
 
 /* Variables and functions */
 
-__attribute__((used)) static int count_axes(int ndim, npy_bool *axis_flags) {
+__attribute__((used)) static int count_axes(int ndim, npy_bool *axis_flags,
+                                            int axis_flags_size) {
   unsigned countercount_axes0 = 0;
 
   int tempndim = ndim;
@@ -71,8 +72,8 @@ __attribute__((used)) static int count_axes(int ndim, npy_bool *axis_flags) {
 
   printf("1\n");
   printf("at line 61 :");
-  printf(" ndim\n");
-  printf("%d %d\n", tempndim, countercount_axes0);
+  printf(" ndim axis_flags_size\n");
+  printf("%d %d %d\n", tempndim, axis_flags_size, countercount_axes0);
   return naxes;
 }
 
@@ -98,7 +99,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_axis_flags0; _i0++) {
       axis_flags[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = count_axes(ndim, axis_flags);
+    int benchRet = count_axes(ndim, axis_flags, _len_axis_flags0);
     printf("%d\n", benchRet);
     free(axis_flags);
 

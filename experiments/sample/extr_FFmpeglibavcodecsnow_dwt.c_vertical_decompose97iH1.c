@@ -60,7 +60,8 @@ int W_CO;
 int W_CS;
 
 __attribute__((used)) static void
-vertical_decompose97iH1(DWTELEM *b0, DWTELEM *b1, DWTELEM *b2, int width) {
+vertical_decompose97iH1(DWTELEM *b0, DWTELEM *b1, DWTELEM *b2, int width,
+                        int b0_size, int b1_size, int b2_size) {
   unsigned countervertical_decompose97iH10 = 0;
 
   int tempwidth = width;
@@ -74,8 +75,8 @@ vertical_decompose97iH1(DWTELEM *b0, DWTELEM *b1, DWTELEM *b2, int width) {
 
   printf("1\n");
   printf("at line 66 :");
-  printf(" width\n");
-  printf("%d %d\n", tempwidth, countervertical_decompose97iH10);
+  printf(" width b0_size b1_size b2_size\n");
+  printf("%d %d %d %d %d\n", tempwidth, b0_size, b1_size, b2_size, countervertical_decompose97iH10);
 }
 
 // ------------------------------------------------------------------------- //
@@ -134,7 +135,7 @@ int main(int argc, char *argv[]) {
       b2[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    vertical_decompose97iH1(b0, b1, b2, width);
+    vertical_decompose97iH1(b0, b1, b2, width, _len_b00, _len_b10, _len_b20);
     free(b0);
     free(b1);
     free(b2);
@@ -186,7 +187,7 @@ int main(int argc, char *argv[]) {
       b2[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    vertical_decompose97iH1(b0, b1, b2, width);
+    vertical_decompose97iH1(b0, b1, b2, width, _len_b00, _len_b10, _len_b20);
     free(b0);
     free(b1);
     free(b2);
@@ -238,7 +239,7 @@ int main(int argc, char *argv[]) {
       b2[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    vertical_decompose97iH1(b0, b1, b2, width);
+    vertical_decompose97iH1(b0, b1, b2, width, _len_b00, _len_b10, _len_b20);
     free(b0);
     free(b1);
     free(b2);

@@ -77,7 +77,7 @@ typedef TYPE_4__ D3DXVECTOR2;
 /* Variables and functions */
 
 __attribute__((used)) static inline D3DXVECTOR2 *
-convert_fixed_to_float(POINTFX *pt, int count, unsigned int emsquare) {
+convert_fixed_to_float(POINTFX *pt, int count, unsigned int emsquare, int pt_size) {
   unsigned counterconvert_fixed_to_float0 = 0;
 
   int tempcount = count;
@@ -93,8 +93,8 @@ convert_fixed_to_float(POINTFX *pt, int count, unsigned int emsquare) {
 
   printf("1\n");
   printf("at line 82 :");
-  printf(" count\n");
-  printf("%d %d\n", tempcount, counterconvert_fixed_to_float0);
+  printf(" count pt_size\n");
+  printf("%d %d %d\n", tempcount, pt_size, counterconvert_fixed_to_float0);
   return ret;
 }
 
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
                                (16777215.000000 - -16777216.000000))));
     }
 
-    struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare);
+    struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare, _len_pt0);
     printf("%f\n", (*benchRet).x);
     printf("%f\n", (*benchRet).y);
     free(pt);
@@ -228,7 +228,7 @@ int main(int argc, char *argv[]) {
                                (16777215.000000 - -16777216.000000))));
     }
 
-    struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare);
+    struct TYPE_10__ *benchRet = convert_fixed_to_float(pt, count, emsquare, _len_pt0);
     printf("%f\n", (*benchRet).x);
     printf("%f\n", (*benchRet).y);
     free(pt);

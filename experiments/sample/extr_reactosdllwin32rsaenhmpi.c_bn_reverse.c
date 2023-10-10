@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-__attribute__((used)) static void bn_reverse(unsigned char *s, int len) {
+__attribute__((used)) static void bn_reverse(unsigned char *s, int len, int s_size) {
   unsigned counterbn_reverse0 = 0;
 
   int templen = len;
@@ -74,8 +74,8 @@ __attribute__((used)) static void bn_reverse(unsigned char *s, int len) {
 
   printf("1\n");
   printf("at line 62 :");
-  printf(" len\n");
-  printf("%d %d\n", templen, counterbn_reverse0);
+  printf(" len s_size\n");
+  printf("%d %d %d\n", templen, s_size, counterbn_reverse0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    bn_reverse(s, len);
+    bn_reverse(s, len, _len_s0);
     free(s);
 
     break;

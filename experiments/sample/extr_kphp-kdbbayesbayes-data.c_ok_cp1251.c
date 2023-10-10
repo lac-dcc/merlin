@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-int ok_cp1251(char *s, int n) {
+int ok_cp1251(char *s, int n, int s_size) {
   unsigned counterok_cp12510 = 0;
 
   int tempn = n;
@@ -65,16 +65,16 @@ int ok_cp1251(char *s, int n) {
 
       printf("1\n");
       printf("at line 58 :");
-      printf(" n\n");
-      printf("%d %d\n", tempn, counterok_cp12510);
+      printf(" n s_size\n");
+      printf("%d %d %d\n", tempn, s_size, counterok_cp12510);
       return 0;
     }
   }
 
   printf("1\n");
   printf("at line 58 :");
-  printf(" n\n");
-  printf("%d %d\n", tempn, counterok_cp12510);
+  printf(" n s_size\n");
+  printf("%d %d %d\n", tempn, s_size, counterok_cp12510);
   return 1;
 }
 
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = ok_cp1251(s, n);
+    int benchRet = ok_cp1251(s, n, _len_s0);
     printf("%d\n", benchRet);
     free(s);
 

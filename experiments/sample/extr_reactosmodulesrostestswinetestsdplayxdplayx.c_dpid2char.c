@@ -58,7 +58,7 @@ typedef scalar_t__ DPID;
 scalar_t__ DPID_SYSMSG;
 
 __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
-                                            DPID idPlayer) {
+                                            DPID idPlayer, int dpid_size) {
   unsigned counterdpid2char0 = 0;
 
   DWORD tempdpidSize = dpidSize;
@@ -86,8 +86,8 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
 
   printf("1\n");
   printf("at line 66 :");
-  printf(" dpidSize\n");
-  printf("%ld %d\n", tempdpidSize, counterdpid2char0);
+  printf(" dpidSize dpid_size\n");
+  printf("%ld %d %d\n", tempdpidSize, dpid_size, counterdpid2char0);
   return '?';
 }
 
@@ -114,7 +114,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_dpid0; _i0++) {
       dpid[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    char benchRet = dpid2char(dpid, dpidSize, idPlayer);
+    char benchRet = dpid2char(dpid, dpidSize, idPlayer, _len_dpid0);
     printf("%c\n", (benchRet % 26) + 'a');
     free(dpid);
 

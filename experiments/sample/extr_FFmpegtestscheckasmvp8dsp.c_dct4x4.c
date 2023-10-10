@@ -55,7 +55,7 @@ typedef int int16_t;
 
 /* Variables and functions */
 
-__attribute__((used)) static void dct4x4(int16_t *coef) {
+__attribute__((used)) static void dct4x4(int16_t *coef, int coef_size) {
   unsigned counterdct4x40 = 0;
   unsigned counterdct4x41 = 0;
 
@@ -85,11 +85,11 @@ __attribute__((used)) static void dct4x4(int16_t *coef) {
 
   printf("2\n");
   printf("at line 60 :");
-  printf("\n");
+  printf(" coef_size\n");
   printf("at line 70 :");
-  printf("\n");
-  printf("%d\n", counterdct4x40);
-  printf("%d\n", counterdct4x41);
+  printf(" coef_size\n");
+  printf("%d %d\n", coef_size, counterdct4x40);
+  printf("%d %d\n", coef_size, counterdct4x41);
 }
 
 // ------------------------------------------------------------------------- //
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
       coef[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    dct4x4(coef);
+    dct4x4(coef, _len_coef0);
     free(coef);
 
     break;
@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
       coef[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    dct4x4(coef);
+    dct4x4(coef, _len_coef0);
     free(coef);
 
     break;

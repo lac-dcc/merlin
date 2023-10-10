@@ -56,7 +56,8 @@ typedef short stbi_uc;
 /* Variables and functions */
 
 __attribute__((used)) static void stbi__jpeg_dequantize(short *data,
-                                                        stbi_uc *dequant) {
+                                                        stbi_uc *dequant,
+                                                        int data_size, int dequant_size) {
   unsigned counterstbi__jpeg_dequantize0 = 0;
 
   int i;
@@ -67,8 +68,8 @@ __attribute__((used)) static void stbi__jpeg_dequantize(short *data,
 
   printf("1\n");
   printf("at line 61 :");
-  printf("\n");
-  printf("%d\n", counterstbi__jpeg_dequantize0);
+  printf(" data_size dequant_size\n");
+  printf("%d %d %d\n", data_size, dequant_size, counterstbi__jpeg_dequantize0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -119,7 +120,7 @@ int main(int argc, char *argv[]) {
       dequant[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    stbi__jpeg_dequantize(data, dequant);
+    stbi__jpeg_dequantize(data, dequant, _len_data0, _len_dequant0);
     free(data);
     free(dequant);
 
@@ -162,7 +163,7 @@ int main(int argc, char *argv[]) {
       dequant[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    stbi__jpeg_dequantize(data, dequant);
+    stbi__jpeg_dequantize(data, dequant, _len_data0, _len_dequant0);
     free(data);
     free(dequant);
 

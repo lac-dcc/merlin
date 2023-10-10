@@ -55,7 +55,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
+int util_memsearch(char *buf, int buf_len, char *mem, int mem_len, int buf_size, int mem_size) {
   unsigned counterutil_memsearch0 = 0;
 
   int tempbuf_len = buf_len;
@@ -66,8 +66,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
 
     printf("1\n");
     printf("at line 65 :");
-    printf(" buf_len\n");
-    printf("%d %d\n", tempbuf_len, counterutil_memsearch0);
+    printf(" buf_len buf_size mem_size\n");
+    printf("%d %d\n", tempbuf_len, buf_size, mem_size, counterutil_memsearch0);
     return -1;
   }
 
@@ -78,8 +78,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
 
         printf("1\n");
         printf("at line 65 :");
-        printf(" buf_len\n");
-        printf("%d %d\n", tempbuf_len, counterutil_memsearch0);
+        printf(" buf_len buf_size mem_size\n");
+        printf("%d %d\n", tempbuf_len, buf_size, mem_size, counterutil_memsearch0);
         return i + 1;
       }
     } else {
@@ -89,8 +89,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
 
   printf("1\n");
   printf("at line 65 :");
-  printf(" buf_len\n");
-  printf("%d %d\n", tempbuf_len, counterutil_memsearch0);
+  printf(" buf_len buf_size mem_size\n");
+  printf("%d %d\n", tempbuf_len, buf_size, mem_size, counterutil_memsearch0);
   return -1;
 }
 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
       mem[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
+    int benchRet = util_memsearch(buf, buf_len, mem, mem_len, _len_buf0, _len_mem0);
     printf("%d\n", benchRet);
     free(buf);
     free(mem);
@@ -194,7 +194,7 @@ int main(int argc, char *argv[]) {
       mem[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
+    int benchRet = util_memsearch(buf, buf_len, mem, mem_len, _len_buf0, _len_mem0);
     printf("%d\n", benchRet);
     free(buf);
     free(mem);
@@ -242,7 +242,7 @@ int main(int argc, char *argv[]) {
       mem[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = util_memsearch(buf, buf_len, mem, mem_len);
+    int benchRet = util_memsearch(buf, buf_len, mem, mem_len, _len_buf0, _len_mem0);
     printf("%d\n", benchRet);
     free(buf);
     free(mem);

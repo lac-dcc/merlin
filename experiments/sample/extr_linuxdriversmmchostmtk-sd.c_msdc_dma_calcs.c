@@ -55,7 +55,7 @@ typedef size_t u32;
 
 /* Variables and functions */
 
-__attribute__((used)) static u8 msdc_dma_calcs(u8 *buf, u32 len) {
+__attribute__((used)) static u8 msdc_dma_calcs(u8 *buf, u32 len, int buf_size) {
   unsigned countermsdc_dma_calcs0 = 0;
 
   u32 templen = len;
@@ -69,8 +69,8 @@ __attribute__((used)) static u8 msdc_dma_calcs(u8 *buf, u32 len) {
 
   printf("1\n");
   printf("at line 61 :");
-  printf(" len\n");
-  printf("%ld %d\n", templen, countermsdc_dma_calcs0);
+  printf(" len buf_size\n");
+  printf("%ld %d %d\n", templen, buf_size, countermsdc_dma_calcs0);
   return 0xff - (u8)sum;
 }
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_buf0; _i0++) {
       buf[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    unsigned long benchRet = msdc_dma_calcs(buf, len);
+    unsigned long benchRet = msdc_dma_calcs(buf, len, _len_buf0);
     printf("%lu\n", benchRet);
     free(buf);
 

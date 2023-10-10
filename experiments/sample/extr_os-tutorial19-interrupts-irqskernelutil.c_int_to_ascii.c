@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-void int_to_ascii(int n, char str[]) {
+void int_to_ascii(int n, char str[], int str_size) {
   unsigned counterint_to_ascii0 = 0;
 
   int tempn = n;
@@ -77,8 +77,8 @@ void int_to_ascii(int n, char str[]) {
 
   printf("1\n");
   printf("at line 62 :");
-  printf(" n\n");
-  printf("%d %d\n", tempn, counterint_to_ascii0);
+  printf(" n str_size\n");
+  printf("%d %d %d\n", tempn, str_size, counterint_to_ascii0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -103,7 +103,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_str0; _i0++) {
       str[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int_to_ascii(n, str);
+    int_to_ascii(n, str, _len_str0);
     free(str);
 
     break;

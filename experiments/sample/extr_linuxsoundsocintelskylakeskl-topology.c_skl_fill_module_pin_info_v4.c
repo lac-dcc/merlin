@@ -74,7 +74,7 @@ int /*<<< orphan*/ SKL_PIN_UNBIND;
 __attribute__((used)) static void
 skl_fill_module_pin_info_v4(struct skl_dfw_v4_module_pin *dfw_pin,
                             struct skl_module_pin *m_pin, bool is_dynamic,
-                            int max_pin) {
+                            int max_pin, int dfw_pin_size, int m_pin_size) {
   unsigned counterskl_fill_module_pin_info_v40 = 0;
 
   int tempmax_pin = max_pin;
@@ -92,8 +92,8 @@ skl_fill_module_pin_info_v4(struct skl_dfw_v4_module_pin *dfw_pin,
 
   printf("1\n");
   printf("at line 80 :");
-  printf(" max_pin\n");
-  printf("%d %d\n", tempmax_pin, counterskl_fill_module_pin_info_v40);
+  printf(" max_pin dfw_pin_size m_pin_size\n");
+  printf("%d %d %d %d\n", tempmax_pin, dfw_pin_size, m_pin_size, counterskl_fill_module_pin_info_v40);
 }
 
 // ------------------------------------------------------------------------- //
@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
       m_pin[_i0].id.module_id = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin);
+    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin, _len_dfw_pin0, _len_m_pin0);
     free(dfw_pin);
     free(m_pin);
 
@@ -211,7 +211,7 @@ int main(int argc, char *argv[]) {
       m_pin[_i0].id.module_id = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin);
+    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin, _len_dfw_pin0, _len_m_pin0);
     free(dfw_pin);
     free(m_pin);
 
@@ -266,7 +266,7 @@ int main(int argc, char *argv[]) {
       m_pin[_i0].id.module_id = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin);
+    skl_fill_module_pin_info_v4(dfw_pin, m_pin, is_dynamic, max_pin, _len_dfw_pin0, _len_m_pin0);
     free(dfw_pin);
     free(m_pin);
 

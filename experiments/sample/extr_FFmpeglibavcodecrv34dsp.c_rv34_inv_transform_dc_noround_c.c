@@ -55,7 +55,7 @@ typedef int int16_t;
 /* Variables and functions */
 
 __attribute__((used)) static void
-rv34_inv_transform_dc_noround_c(int16_t *block) {
+rv34_inv_transform_dc_noround_c(int16_t *block, int block_size) {
   unsigned counterrv34_inv_transform_dc_noround_c0 = 0;
   unsigned counterrv34_inv_transform_dc_noround_c1 = 0;
 
@@ -72,11 +72,11 @@ rv34_inv_transform_dc_noround_c(int16_t *block) {
 
   printf("2\n");
   printf("at line 62 :");
-  printf("\n");
+  printf(" block_size\n");
   printf("at line 63 :");
-  printf("\n");
-  printf("%d\n", counterrv34_inv_transform_dc_noround_c0);
-  printf("%d\n", counterrv34_inv_transform_dc_noround_c1);
+  printf(" block_size\n");
+  printf("%d %d\n", block_size, counterrv34_inv_transform_dc_noround_c0);
+  printf("%d %d\n", block_size, counterrv34_inv_transform_dc_noround_c1);
 }
 
 // ------------------------------------------------------------------------- //
@@ -100,7 +100,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_block0; _i0++) {
       block[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    rv34_inv_transform_dc_noround_c(block);
+    rv34_inv_transform_dc_noround_c(block, _len_block0);
     free(block);
 
     break;

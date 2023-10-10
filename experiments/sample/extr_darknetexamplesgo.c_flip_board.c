@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-void flip_board(float *board) {
+void flip_board(float *board, int board_size) {
   unsigned counterflip_board0 = 0;
 
   int i;
@@ -67,8 +67,8 @@ void flip_board(float *board) {
 
   printf("1\n");
   printf("at line 58 :");
-  printf("\n");
-  printf("%d\n", counterflip_board0);
+  printf(" board_size\n");
+  printf("%d %d\n", board_size, counterflip_board0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
                                         (16777215.000000 - -16777216.000000))));
     }
 
-    flip_board(board);
+    flip_board(board, _len_board0);
     free(board);
 
     break;

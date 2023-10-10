@@ -62,7 +62,7 @@ typedef TYPE_1__ RT_CHANNEL_INFO;
 /* Variables and functions */
 
 __attribute__((used)) static int has_channel(RT_CHANNEL_INFO *channel_set,
-                                             u8 chanset_size, u8 chan) {
+                                             u8 chanset_size, u8 chan, int channel_set_size) {
   unsigned counterhas_channel0 = 0;
 
   u8 tempchanset_size = chanset_size;
@@ -75,16 +75,16 @@ __attribute__((used)) static int has_channel(RT_CHANNEL_INFO *channel_set,
 
       printf("1\n");
       printf("at line 68 :");
-      printf(" chanset_size\n");
-      printf("%d %d\n", tempchanset_size, counterhas_channel0);
+      printf(" chanset_size channel_set_size\n");
+      printf("%d %d %d\n", tempchanset_size, channel_set_size, counterhas_channel0);
       return 1;
     }
   }
 
   printf("1\n");
   printf("at line 68 :");
-  printf(" chanset_size\n");
-  printf("%d %d\n", tempchanset_size, counterhas_channel0);
+  printf(" chanset_size channel_set_size\n");
+  printf("%d %d %d\n", tempchanset_size, channel_set_size, counterhas_channel0);
   return 0;
 }
 
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
       channel_set[_i0].ChannelNum = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = has_channel(channel_set, chanset_size, chan);
+    int benchRet = has_channel(channel_set, chanset_size, chan, _len_channel_set0);
     printf("%d\n", benchRet);
     free(channel_set);
 
@@ -177,7 +177,7 @@ int main(int argc, char *argv[]) {
       channel_set[_i0].ChannelNum = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = has_channel(channel_set, chanset_size, chan);
+    int benchRet = has_channel(channel_set, chanset_size, chan, _len_channel_set0);
     printf("%d\n", benchRet);
     free(channel_set);
 
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
       channel_set[_i0].ChannelNum = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    int benchRet = has_channel(channel_set, chanset_size, chan);
+    int benchRet = has_channel(channel_set, chanset_size, chan, _len_channel_set0);
     printf("%d\n", benchRet);
     free(channel_set);
 

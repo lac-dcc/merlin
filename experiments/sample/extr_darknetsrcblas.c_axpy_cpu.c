@@ -55,7 +55,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY) {
+void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY, int X_size, int Y_size) {
   unsigned counteraxpy_cpu0 = 0;
 
   int tempN = N;
@@ -68,8 +68,8 @@ void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY) {
 
   printf("1\n");
   printf("at line 60 :");
-  printf(" N\n");
-  printf("%d %d\n", tempN, counteraxpy_cpu0);
+  printf(" N X_size Y_size\n");
+  printf("%d %d %d %d\n", tempN, X_size, Y_size, counteraxpy_cpu0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
                                     (16777215.000000 - -16777216.000000))));
     }
 
-    axpy_cpu(N, ALPHA, X, INCX, Y, INCY);
+    axpy_cpu(N, ALPHA, X, INCX, Y, INCY, _len_X0, _len_Y0);
     free(X);
     free(Y);
 
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
                                     (16777215.000000 - -16777216.000000))));
     }
 
-    axpy_cpu(N, ALPHA, X, INCX, Y, INCY);
+    axpy_cpu(N, ALPHA, X, INCX, Y, INCY, _len_X0, _len_Y0);
     free(X);
     free(Y);
 
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
                                     (16777215.000000 - -16777216.000000))));
     }
 
-    axpy_cpu(N, ALPHA, X, INCX, Y, INCY);
+    axpy_cpu(N, ALPHA, X, INCX, Y, INCY, _len_X0, _len_Y0);
     free(X);
     free(Y);
 

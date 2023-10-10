@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-__attribute__((used)) static void sbr_qmf_pre_shuffle_c(int *z) {
+__attribute__((used)) static void sbr_qmf_pre_shuffle_c(int *z, int z_size) {
   unsigned countersbr_qmf_pre_shuffle_c0 = 0;
 
   int k;
@@ -67,8 +67,8 @@ __attribute__((used)) static void sbr_qmf_pre_shuffle_c(int *z) {
 
   printf("1\n");
   printf("at line 60 :");
-  printf("\n");
-  printf("%d\n", countersbr_qmf_pre_shuffle_c0);
+  printf(" z_size\n");
+  printf("%d %d\n", z_size, countersbr_qmf_pre_shuffle_c0);
 }
 
 // ------------------------------------------------------------------------- //
@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
       z[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
 
-    sbr_qmf_pre_shuffle_c(z);
+    sbr_qmf_pre_shuffle_c(z, _len_z0);
     free(z);
 
     break;
