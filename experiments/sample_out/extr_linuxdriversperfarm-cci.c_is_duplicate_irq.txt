@@ -1,5 +1,0 @@
-1
-at line 60 : nr_irqs
-10 10
-
-end
