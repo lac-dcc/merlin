@@ -18,6 +18,6 @@ private:
   std::vector<double> Y;
   std::vector<double> F;
   std::string newtonDividedDifference();
-  std::string linearLeastSquares();
+  std::string leastSquares();
   int numSample;
 };

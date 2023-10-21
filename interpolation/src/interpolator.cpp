@@ -1,4 +1,5 @@
 #include "interpolator.hpp"
+#include <iostream>
 #define ZERO 1e-15
 #define MAX_LEAST_SQR_ITERATIONS 30
 
@@ -21,11 +22,12 @@ std::string Interpolator::interpolate() {
   if (this->interpType == InterpolationType::OneVar)
     return this->newtonDividedDifference();
   else
-    return this->linearLeastSquares();
+    return this->leastSquares();
 }
 
 std::string Interpolator::newtonDividedDifference() {
   std::vector<std::vector<double>> table(this->numSample, std::vector<double>(this->numSample));
+
   for (int i = 0; i < this->numSample; i++) {
     table[i][0] = this->F[i];
   }
@@ -37,7 +39,15 @@ std::string Interpolator::newtonDividedDifference() {
     }
   }
 
-  if (table[this->numSample - 1][this->numSample - 1] != 0)
+  // Printing the table
+  for (int j = 0; j < this->numSample; j++) {
+    for (int i = 0; i < this->numSample; i++) {
+      std::cout << table[j][i] << " ";
+    }
+    std::cout << '\n';
+  }
+
+  if (table[0][numSample-1] != 0)
     return "Couldn't find a solution! Try again with more sample points.";
 
   std::stringstream formula;
@@ -77,7 +87,7 @@ std::string Interpolator::newtonDividedDifference() {
   return "F(x) = " + result;
 }
 
-std::string Interpolator::linearLeastSquares() {
+std::string Interpolator::leastSquares() {
   Eigen::MatrixXd A(this->numSample, this->numSample);
   Eigen::VectorXd b(this->numSample);
   Eigen::VectorXd answer;
