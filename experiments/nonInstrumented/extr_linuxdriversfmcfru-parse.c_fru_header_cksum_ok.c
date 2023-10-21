@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
           }
         
           int benchRet = fru_header_cksum_ok(header);
-          printf("%d\n", benchRet); 
+          
           free(header);
         
         break;
@@ -131,7 +131,7 @@ int main(int argc, char *argv[]) {
           }
         
           int benchRet = fru_header_cksum_ok(header);
-          printf("%d\n", benchRet); 
+          
           free(header);
         
         break;
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
           }
         
           int benchRet = fru_header_cksum_ok(header);
-          printf("%d\n", benchRet); 
+          
           free(header);
         
         break;
@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
           }
         
           int benchRet = fru_header_cksum_ok(header);
-          printf("%d\n", benchRet); 
+          
           free(header);
         
         break;
@@ -176,7 +176,7 @@ int main(int argc, char *argv[]) {
           }
         
           int benchRet = fru_header_cksum_ok(header);
-          printf("%d\n", benchRet); 
+          
           free(header);
         
         break;

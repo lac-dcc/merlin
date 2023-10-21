@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned long n = 100;
           unsigned long benchRet = compute_minrun(n);
-          printf("%lu\n", benchRet); 
+          
         
         break;
     }
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned long n = 255;
           unsigned long benchRet = compute_minrun(n);
-          printf("%lu\n", benchRet); 
+          
         
         break;
     }
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned long n = 10;
           unsigned long benchRet = compute_minrun(n);
-          printf("%lu\n", benchRet); 
+          
         
         break;
     }
@@ -115,7 +115,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned long n = 150;
           unsigned long benchRet = compute_minrun(n);
-          printf("%lu\n", benchRet); 
+          
         
         break;
     }
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned long n = 200;
           unsigned long benchRet = compute_minrun(n);
-          printf("%lu\n", benchRet); 
+          
         
         break;
     }
