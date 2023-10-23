@@ -1,5 +1,5 @@
-#ifndef TREE_BUILDER
-#define TREE_BUILDER
+#ifndef INSTRUMENTATION_H
+#define INSTRUMENTATION_H
 
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
@@ -44,7 +44,7 @@ private:
  */
 class NodeCounterVisitor : public clang::RecursiveASTVisitor<NodeCounterVisitor> {
 public:
-  unsigned nodeCount;
+  u_int32_t nodeCount;
 
   /**
    * \brief Constructor method.
@@ -97,8 +97,8 @@ public:
    * \param context ASTContext to be used by the visitor.
    * \param rewriter Object use to rewrite the code and add instrumentation.
    */
-  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
-      : context(context), rewriter(rewriter) {
+  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter, bool ignoreNonNewton)
+      : context(context), rewriter(rewriter), ignoreNonNewton(ignoreNonNewton) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
                              {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }
@@ -107,6 +107,7 @@ public:
   bool VisitDoStmt(clang::DoStmt* doStmt);
   bool VisitForStmt(clang::ForStmt* forStmt);
   bool VisitWhileStmt(clang::WhileStmt* whileStmt);
+  bool VisitIfStmt(clang::IfStmt* ifStmt);
 
   /**
    * \brief Adds printf's with the counter and the tainted params to the last visited function.
@@ -120,6 +121,8 @@ public:
 
   std::string functionName; ///< Name of the function to be instrumented.
 
+  u_int32_t maxNestingDepth = 0; ///< Maximum loop nesting depth
+
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
@@ -128,7 +131,9 @@ private:
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
 
   llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
-  llvm::SmallSet<clang::Stmt*, 3> visitedLoops; ///< Set of visited loops.
+  llvm::SmallSet<clang::Stmt*, 3> visitedLoops;           ///< Set of visited loops.
+
+  llvm::SmallSet<clang::IfStmt*, 3> visitedIfs; ///< Set of visited if statements.
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
@@ -137,6 +142,8 @@ private:
 
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
+
+  bool ignoreNonNewton; ///< Flag that determines if non-Newton programs are instrumented
 
   /**
    * \brief Generate the string with the printf statement to be added to the function.
@@ -158,6 +165,13 @@ private:
   void getParentControlVars(clang::Stmt* loop);
 
   /**
+   * \brief Determines if a Stmt node is a loop.
+   *
+   * \return Boolean value that indicates whether the node is a loop.
+   */
+  bool isLoop(clang::Stmt* stmt);
+
+  /**
    * \brief Auxiliary method used to visit loops and insert instrumentation.
    * \param loop Loop being visited.
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
@@ -165,11 +179,24 @@ private:
   bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
 
   /**
-   * \brief Recursive method used to identify nested loop and save their parents in the parentLoops map.
+   * \brief Recursive method used to validate if a loop is valid for instrumentation.
+   *        Also identifies the maximum depth nesting for this loop.
    * \param stmt Statement being traversed.
    * \param loop Current outermost loop.
+   * \param nestingDepth Current loop nesting depth.
+   * \param maxDepth Maximum nesting depth for this loop.
+   *
+   * \return Boolean value that indicates if the loop is valid
    */
-  void checkNestedLoops(clang::Stmt* stmt, clang::Stmt* loop);
+  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop, u_int32_t nestingDepth, u_int32_t& maxDepth);
+
+  /**
+   * \brief Recursive method used to validate if an IfStmt is valid for instrumentation.
+   * \param stmt Statement being traversed.
+   *
+   * \return Boolean value that indicates if the IfStmt is valid
+   */
+  bool validateIf(clang::Stmt* stmt);
 };
 
 /**
@@ -180,8 +207,9 @@ private:
 class InstrumentationConsumer : public clang::ASTConsumer {
 public:
   explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile,
-                                   std::string targetFunction)
-      : visitor(Context, rewriter), rewriter(rewriter), outputFile(outputFile), targetFunction(targetFunction) {}
+                                   std::string targetFunction, bool ignoreNonNewton)
+      : visitor(Context, rewriter, ignoreNonNewton), rewriter(rewriter), outputFile(outputFile),
+        targetFunction(targetFunction) {}
 
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
@@ -209,6 +237,7 @@ private:
   clang::Rewriter rewriter;
   std::string outputFile = "output.c";
   std::string targetFunction = "main";
+  bool ignoreNonNewton = false;
 };
 
 static clang::FrontendPluginRegistry::Add<InstrumentationAction> X("merlin",

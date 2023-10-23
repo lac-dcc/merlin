@@ -56,7 +56,6 @@ bool DependenceVisitor::VisitBinaryOperator(clang::BinaryOperator* binOp) {
 
     bool contains = this->containsRefToParam(binOp->getRHS(), decl);
 
-    
     if (!contains && !binOp->isCompoundAssignmentOp())
       this->paramRefs->erase(decl);
   }
@@ -177,30 +176,51 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
-void InstrumentationVisitor::checkNestedLoops(clang::Stmt* stmt, Stmt* loop) {
+bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
+  return isa<ForStmt>(stmt) || isa<WhileStmt>(stmt) || isa<DoStmt>(stmt);
+}
+
+bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32_t nestingDepth, u_int32_t& maxDepth) {
   Stmt* lastLoop = loop;
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
 
-    if (isa<ForStmt>(child) || isa<WhileStmt>(child) || isa<DoStmt>(child)) {
+    u_int32_t nextNestingDepth = nestingDepth;
+    if (this->isLoop(child)) {
       this->parentLoops[child] = loop;
       this->visitedLoops.insert(child);
       lastLoop = child;
+
+      nextNestingDepth++;
+      maxDepth = std::max(maxDepth, nextNestingDepth);
     }
 
-    this->checkNestedLoops(child, lastLoop);
+    if (this->ignoreNonNewton && isa<ReturnStmt>(child))
+      return false;
+
+    bool childIsValid = this->validateLoop(child, lastLoop, nextNestingDepth, maxDepth);
+    if (this->ignoreNonNewton && !childIsValid)
+      return false;
 
     lastLoop = loop;
   }
+
+  return true;
 }
 
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (!this->visitedLoops.contains(loop)) {
     this->visitedLoops.insert(loop);
-    this->checkNestedLoops(loop, loop);
+
+    u_int32_t maxDepth = 1;
+    bool isValidLoop = this->validateLoop(loop, loop, 1, maxDepth);
+    this->maxNestingDepth = std::max(this->maxNestingDepth, maxDepth);
+
+    if (this->ignoreNonNewton && !isValidLoop)
+      return false;
   }
-  
+
   this->getParentControlVars(loop);
 
   // Add counter increment if this loop is within the target function
@@ -273,6 +293,31 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   return this->visitLoop(forStmt, bodyLoc);
 }
 
+bool InstrumentationVisitor::validateIf(Stmt* stmt) {
+  for (auto* child : stmt->children()) {
+    if (!child)
+      continue;
+
+    if (auto* childIf = dyn_cast<IfStmt>(child))
+      this->visitedIfs.insert(childIf);
+
+    if (this->isLoop(child) || !this->validateIf(child))
+      return false;
+  }
+
+  return true;
+}
+
+bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
+  if (!this->ignoreNonNewton || this->visitedIfs.contains(ifStmt))
+    return true;
+
+  this->visitedIfs.insert(ifStmt);
+
+  bool isValidIf = this->validateIf(ifStmt);
+  return isValidIf;
+}
+
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
   std::string inputFile = srcMgr.getFileEntryForID(srcMgr.getMainFileID())->getName().str();
@@ -285,6 +330,8 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
     raw_fd_ostream outFile("output/" + this->outputFile, error_code, sys::fs::FileAccess::FA_Write);
     this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);
     outFile.close();
+
+    outs() << this->visitor.maxNestingDepth << '\n';
   } else {
     outs() << "Unable to instrument the input\n";
   }
@@ -293,7 +340,7 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
 std::unique_ptr<ASTConsumer> InstrumentationAction::CreateASTConsumer(CompilerInstance& Compiler, StringRef InFile) {
   this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
   return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &(this->rewriter), this->outputFile,
-                                                   this->targetFunction);
+                                                   this->targetFunction, this->ignoreNonNewton);
 }
 
 bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const std::vector<std::string>& args) {
@@ -315,11 +362,15 @@ bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const st
 
       ++i;
       this->targetFunction = args[i];
+    } else if (args[i] == "-ignore-nonnewton") {
+      this->ignoreNonNewton = true;
+      ++i;
     } else if (args[i] == "-help") {
       errs() << "--- Merlin plugin ---\n";
       errs() << "Arguments:\n";
       errs() << " -output-file         Name of the instrumented output file.\n";
       errs() << " -target-function     Name of the function to be instrumented.\n";
+      errs() << " -ignore-nonnewton    Indicates that Non-Newton programs should be ignored by instrumentation.\n";
     } else {
       unsigned DiagID = diagnostics.getCustomDiagID(DiagnosticsEngine::Error, "Invalid argument '%0'");
       diagnostics.Report(DiagID) << args[i];

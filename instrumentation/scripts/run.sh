@@ -13,9 +13,11 @@
 #   input_file: Path to the input file.
 #   output_file: Name of the output file.
 #   target_function: Name of the function that should be instrumented.
+#   ignore_non_newton (optional): Indicates whether non-Newton programs should
+#                                 be ignored for instrumentation.
 
 if [ $# -lt 3 ]; then
-    echo 'Usage: run.sh <input_file> <output_file> <target_function>'
+    echo 'Usage: run.sh <input_file> <output_file> <target_function> [ignore_non_newton]'
     exit 1
 fi
 
@@ -25,12 +27,13 @@ LIB="./build/src/libMerlin.so"
 INPUT=$1
 OUTPUT=$2
 TARGET=$3
+IGNORE_NON_NEWTON=$(($# == 4 ? 1 : 0))
 
 FILE=$(basename $INPUT)
 EXT="${FILE##*.}"
 case $EXT in
     "cc" | "cpp") CC="$LLVM_BUILD_DIR/bin/clang++" ;;
-    "c") CC="$LLVM_BUILD_DIR/bin/clang" ;;
+    "c") CC="$LLVM_BUILD_DIR/bin/clang -std=c99" ;;
 esac
 
 mkdir -p output
@@ -38,9 +41,10 @@ mkdir -p output
 TEMP=$FILE
 $CLANG_FORMAT $INPUT --style="{BasedOnStyle: llvm, InsertBraces: true}" > $TEMP
 
-$CC -std=c99 -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
+$CC -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
 -Xclang -plugin-arg-merlin -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
 -Xclang -plugin-arg-merlin -Xclang -target-function -Xclang -plugin-arg-merlin -Xclang $TARGET \
+$( (( IGNORE_NON_NEWTON == 1 )) && printf %s '-Xclang -plugin-arg-merlin -Xclang -ignore-nonnewton' ) \
 $TEMP
 
 RET_VAL=$?
