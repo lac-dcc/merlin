@@ -15,6 +15,7 @@ Usage:
 import pandas as pd
 from os import listdir
 from subprocess import run
+from sys import argv, stderr, maxsize
 
 def find_func_name(file_name):
     start = file_name.find('.h_')
