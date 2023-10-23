@@ -14,7 +14,8 @@ int main() {
   vector<string> originLines(numInterp);
   vector<vector<double>> xValues(numInterp); // X variables
   vector<vector<double>> yValues(numInterp); // Y variable
-  vector<vector<double>> fValues(numInterp); // F(x)/F(x,y)
+  vector<vector<double>> zValues(numInterp); // Z variable
+  vector<vector<double>> fValues(numInterp); // F(x)/F(x,y)/F(x,y,z)
 
   for (int i = 0; i < numInterp; i++) {
     string varNames;
@@ -34,27 +35,38 @@ int main() {
 
   for (int i = 0; i < numPoints; i++) {
     for (int j = 0; j < numInterp; j++) {
-      double xi, yi, zi;
+      double xi, yi, zi, fi;
       switch (interpVars[j].size()) {
       case 1:
-        cin >> xi >> zi;
+        cin >> xi >> fi;
         xValues[j].push_back(xi);
-        fValues[j].push_back(zi);
+        fValues[j].push_back(fi);
         break;
       case 2:
-        cin >> xi >> yi >> zi;
+        cin >> xi >> yi >> fi;
         xValues[j].push_back(xi);
         yValues[j].push_back(yi);
-        fValues[j].push_back(zi);
+        fValues[j].push_back(fi);
+        break;
+      case 3:
+        cin >> xi >> yi >> zi >> fi;
+        xValues[j].push_back(xi);
+        yValues[j].push_back(yi);
+        zValues[j].push_back(zi);
+        fValues[j].push_back(fi);
         break;
       default:
         break;
       }
     }
   }
-  
+
   for (int i = 0; i < numInterp; i++) {
     int numVars = interpVars[i].size();
+    if (numPoints <= numVars) {
+      cout << "The number of input points must be greater than the number of variables.\n";
+      return 0;
+    }
     if (numVars == 1) {
       Interpolator interp(xValues[i], fValues[i]);
       cout << originLines[i] << endl;
@@ -65,9 +77,14 @@ int main() {
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
       cout << interp.interpolate() << endl << endl;
-    }
-    else if(numVars == 0) {
-      cout << "No variables identified!\n";
+    } else if (numVars == 3) {
+      Interpolator interp(xValues[i], yValues[i], zValues[i], fValues[i]);
+      cout << "x: " << interpVars[i][0] << endl;
+      cout << "y: " << interpVars[i][1] << endl;
+      cout << "z: " << interpVars[i][2] << endl;
+      cout << interp.interpolate() << endl << endl;
+    } else {
+      cout << "This tool works with at most 3 variables.";
     }
   }
 
