@@ -24,9 +24,12 @@ def find_func_name(file_name):
     return file_name[start + 3 : -2]
 
 if __name__ == '__main__':
+    if len(argv) < 2:
+        print(f'Usage: python {argv[0]} <directory>', file=stderr)
+        exit(1)
     run('rm -rf output', shell=True)
-    benchmark_dir = '../test/jotai_benchmarks'
-    inputs = listdir(benchmark_dir)
+    dir_name = argv[1]
+    inputs = listdir(dir_name)
     print(len(inputs))
 
     results = []
@@ -35,7 +38,7 @@ if __name__ == '__main__':
         print(f'Running: {input}')
         func_target = find_func_name(input) 
         proc = run(
-            f'./scripts/run.sh {benchmark_dir}/{input} {input} {func_target}', shell=True, capture_output=True, text=True)
+            f'./scripts/run.sh {dir_name}/{input} {input} {func_target}', shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
         not_instrumented = len(lines) > 1 and lines[1] == 'Unable to instrument the input'
