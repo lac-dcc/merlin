@@ -207,9 +207,9 @@ private:
 class InstrumentationConsumer : public clang::ASTConsumer {
 public:
   explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile,
-                                   std::string targetFunction, bool ignoreNonNewton)
+                                   std::string targetFunction, bool ignoreNonNewton, bool measureTime)
       : visitor(Context, rewriter, ignoreNonNewton), rewriter(rewriter), outputFile(outputFile),
-        targetFunction(targetFunction) {}
+        targetFunction(targetFunction), measureTime(measureTime) {}
 
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
@@ -218,6 +218,7 @@ private:
   clang::Rewriter* rewriter;
   std::string outputFile;
   std::string targetFunction;
+  bool measureTime;
 };
 
 /**
@@ -238,6 +239,7 @@ private:
   std::string outputFile = "output.c";
   std::string targetFunction = "main";
   bool ignoreNonNewton = false;
+  bool measureTime = false;
 };
 
 static clang::FrontendPluginRegistry::Add<InstrumentationAction> X("merlin",

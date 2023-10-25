@@ -13,11 +13,12 @@
 #   input_file: Path to the input file.
 #   output_file: Name of the output file.
 #   target_function: Name of the function that should be instrumented.
-#   ignore_non_newton (optional): Indicates whether non-Newton programs should
-#                                 be ignored for instrumentation.
+#   ignore_non_newton: Indicates whether non-Newton programs should be ignored
+#                      for instrumentation.
+#   measure_time: Indicates that the instrumentation time should be measured.
 
-if [ $# -lt 3 ]; then
-    echo 'Usage: run.sh <input_file> <output_file> <target_function> [ignore_non_newton]'
+if [ $# -lt 5 ]; then
+    echo 'Usage: run.sh <input_file> <output_file> <target_function> <ignore_non_newton> <measure_time>'
     exit 1
 fi
 
@@ -27,7 +28,19 @@ LIB="./build/src/libMerlin.so"
 INPUT=$1
 OUTPUT=$2
 TARGET=$3
-IGNORE_NON_NEWTON=$(($# == 4 ? 1 : 0))
+
+if [ $4 = "true" ]; then
+    IGNORE_NON_NEWTON=1
+else
+    IGNORE_NON_NEWTON=0
+fi
+
+if [ $5 = "true" ]; then
+    MEASURE_TIME=1
+else
+    MEASURE_TIME=0
+fi
+
 
 FILE=$(basename $INPUT)
 EXT="${FILE##*.}"
@@ -45,6 +58,7 @@ $CC -fsyntax-only -Xclang -load -Xclang $LIB -Xclang -plugin -Xclang merlin \
 -Xclang -plugin-arg-merlin -Xclang -output-file -Xclang -plugin-arg-merlin -Xclang $OUTPUT \
 -Xclang -plugin-arg-merlin -Xclang -target-function -Xclang -plugin-arg-merlin -Xclang $TARGET \
 $( (( IGNORE_NON_NEWTON == 1 )) && printf %s '-Xclang -plugin-arg-merlin -Xclang -ignore-nonnewton' ) \
+$( (( MEASURE_TIME == 1 )) && printf %s '-Xclang -plugin-arg-merlin -Xclang -measure-time' ) \
 $TEMP
 
 RET_VAL=$?

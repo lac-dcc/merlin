@@ -1,4 +1,7 @@
 #include "Instrumentation.hpp"
+#include <chrono>
+#include <iomanip>
+#include <iostream>
 
 using namespace clang;
 using namespace llvm;
@@ -318,11 +321,12 @@ bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
   return isValidIf;
 }
 
-void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
+void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {  
   clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
   std::string inputFile = srcMgr.getFileEntryForID(srcMgr.getMainFileID())->getName().str();
   this->visitor.functionName = this->targetFunction;
 
+  auto start = std::chrono::system_clock::now();
   bool success = this->visitor.TraverseDecl(Context.getTranslationUnitDecl());
 
   if (success) {
@@ -335,12 +339,18 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   } else {
     outs() << "Unable to instrument the input\n";
   }
+
+  auto end = std::chrono::system_clock::now();
+  if (this->measureTime) {
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    outs() << duration.count() << '\n';
+  }
 }
 
 std::unique_ptr<ASTConsumer> InstrumentationAction::CreateASTConsumer(CompilerInstance& Compiler, StringRef InFile) {
   this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
   return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &(this->rewriter), this->outputFile,
-                                                   this->targetFunction, this->ignoreNonNewton);
+                                                   this->targetFunction, this->ignoreNonNewton, this->measureTime);
 }
 
 bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const std::vector<std::string>& args) {
@@ -365,12 +375,16 @@ bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const st
     } else if (args[i] == "-ignore-nonnewton") {
       this->ignoreNonNewton = true;
       ++i;
+    } else if (args[i] == "-measure-time") {
+      this->measureTime = true;
+      ++i;
     } else if (args[i] == "-help") {
       errs() << "--- Merlin plugin ---\n";
       errs() << "Arguments:\n";
       errs() << " -output-file         Name of the instrumented output file.\n";
       errs() << " -target-function     Name of the function to be instrumented.\n";
       errs() << " -ignore-nonnewton    Indicates that Non-Newton programs should be ignored by instrumentation.\n";
+      errs() << " -measure-time        Indicates that Merlin should measure and output instrumentation time.\n";
     } else {
       unsigned DiagID = diagnostics.getCustomDiagID(DiagnosticsEngine::Error, "Invalid argument '%0'");
       diagnostics.Report(DiagID) << args[i];

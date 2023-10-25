@@ -1,4 +1,4 @@
-"""Run instrumentation for all benchmarks
+"""Run instrumentation for all benchmarks and single out non-Newton programs
 
 This script runs Merlin's instrumentation for all Jotai benchmarks using the 
 'run.sh' script and applying the validation of Newton programs. The output for
@@ -6,7 +6,8 @@ the instrumentation is saved in the 'output/' directory.
 
 The script reports any errors that occur during the execution of the
 instrumentation. It also generates a CSV file that gives the size of the 
-function instrumented for each file and wether it was instrumented or not.
+function instrumented for each file, its maximum nesting depth and wether it was
+instrumented or not.
 
 Usage:
     python checkNewtonPrograms.py
@@ -16,19 +17,15 @@ import pandas as pd
 from os import listdir
 from subprocess import run
 
-
-def find_func_name(file_name):
-    start = file_name.find('.h_')
-    if start == -1:
-        start = file_name.find('.c_')
-
-    return file_name[start + 3: -2]
+from find_func_name import find_func_name
 
 
 if __name__ == '__main__':
     run('rm -rf output', shell=True)
     benchmark_dir = '../test/jotai_benchmarks'
     inputs = listdir(benchmark_dir)
+    ignore_non_newton = 'true'
+    measure_time = 'false'
     print(len(inputs))
 
     results = []
@@ -36,9 +33,9 @@ if __name__ == '__main__':
     for input in inputs:
         print(f'Running: {input}')
         func_target = find_func_name(input)
-        proc = run(
-            f'./scripts/run.sh {benchmark_dir}/{input} {input} {func_target} true',
-            shell=True, capture_output=True, text=True)
+        proc = run(f'./scripts/run.sh \
+{benchmark_dir}/{input} {input} {func_target} {ignore_non_newton} {measure_time}',
+                   shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
 
