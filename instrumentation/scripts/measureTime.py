@@ -65,4 +65,4 @@ if __name__ == '__main__':
     with open('exp_RQ5.txt', mode='w') as file:
         file.write(
             f'Average Instrumentation Time: {avg_instrumentation_time_milli:.3f}ms\n')
-        file.write(f'Average Total Processing Time: {avg_total_time:.3f}s')
+        file.write(f'Average Total Processing Time: {avg_total_time:.3f}s\n')
