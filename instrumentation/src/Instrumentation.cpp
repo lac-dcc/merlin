@@ -85,7 +85,8 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string header = "";
   std::string counters = "";
 
-  header += "\nprintf(\"" + std::to_string(this->counters.size()) + "\\n\");\n";
+  header += "\nprintf(\"Maximum nesting depth: " + std::to_string(this->maxNestingDepth) + "\\n\");\n";
+  header += "printf(\"Number of loops: " + std::to_string(this->counters.size()) + "\\n\");\n";
   for (auto const& [loop, counterName] : this->counters) {
     header += "printf(\"at line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
 
@@ -321,7 +322,7 @@ bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
   return isValidIf;
 }
 
-void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {  
+void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
   std::string inputFile = srcMgr.getFileEntryForID(srcMgr.getMainFileID())->getName().str();
   this->visitor.functionName = this->targetFunction;
