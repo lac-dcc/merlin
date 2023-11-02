@@ -91,7 +91,8 @@ convert_fixed_to_float(POINTFX *pt, int count, unsigned int emsquare) {
     pt++;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 82 :");
   printf(" count\n");
   printf("%d %d\n", tempcount, counterconvert_fixed_to_float0);

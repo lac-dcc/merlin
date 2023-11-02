@@ -92,7 +92,8 @@ int sdsll2str(char *s, long long value) {
     p--;
   }
 
-  printf("2\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 2\n");
   printf("at line 79 :");
   printf(" s\n");
   printf("at line 65 :");

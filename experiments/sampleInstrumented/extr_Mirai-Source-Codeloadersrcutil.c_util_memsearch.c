@@ -64,7 +64,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
 
   if (mem_len > buf_len) {
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 65 :");
     printf(" buf_len\n");
     printf("%d %d\n", tempbuf_len, counterutil_memsearch0);
@@ -76,7 +77,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
     if (buf[i] == mem[matched]) {
       if (++matched == mem_len) {
 
-        printf("1\n");
+        printf("Maximum nesting depth: 1\n");
+        printf("Number of loops: 1\n");
         printf("at line 65 :");
         printf(" buf_len\n");
         printf("%d %d\n", tempbuf_len, counterutil_memsearch0);
@@ -87,7 +89,8 @@ int util_memsearch(char *buf, int buf_len, char *mem, int mem_len) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 65 :");
   printf(" buf_len\n");
   printf("%d %d\n", tempbuf_len, counterutil_memsearch0);

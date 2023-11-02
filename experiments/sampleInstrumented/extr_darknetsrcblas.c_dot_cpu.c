@@ -67,7 +67,8 @@ float dot_cpu(int N, float *X, int INCX, float *Y, int INCY) {
     dot += X[i * INCX] * Y[i * INCY];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf(" N\n");
   printf("%d %d\n", tempN, counterdot_cpu0);

@@ -67,7 +67,8 @@ __attribute__((used)) static size_t compute_minrun(size_t n) {
     n >>= 1;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 60 :");
   printf(" n\n");
   printf("%ld %d\n", tempn, countercompute_minrun0);

@@ -65,7 +65,8 @@ __attribute__((used)) static void stbi__jpeg_dequantize(short *data,
     data[i] *= dequant[i];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf("\n");
   printf("%d\n", counterstbi__jpeg_dequantize0);

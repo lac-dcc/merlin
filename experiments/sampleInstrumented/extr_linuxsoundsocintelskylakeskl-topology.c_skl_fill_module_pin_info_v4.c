@@ -90,7 +90,8 @@ skl_fill_module_pin_info_v4(struct skl_dfw_v4_module_pin *dfw_pin,
     m_pin[i].pin_state = SKL_PIN_UNBIND;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 80 :");
   printf(" max_pin\n");
   printf("%d %d\n", tempmax_pin, counterskl_fill_module_pin_info_v40);

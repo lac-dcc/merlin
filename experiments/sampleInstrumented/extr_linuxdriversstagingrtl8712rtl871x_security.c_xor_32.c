@@ -66,7 +66,8 @@ __attribute__((used)) static void xor_32(u8 *a, u8 *b, u8 *out) {
     out[i] = a[i] ^ b[i];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 62 :");
   printf("\n");
   printf("%d\n", counterxor_320);

@@ -65,7 +65,8 @@ __attribute__((used)) static bool is_duplicate_irq(int irq, int *irqs,
     counteris_duplicate_irq0++;
     if (irq == irqs[i]) {
 
-      printf("1\n");
+      printf("Maximum nesting depth: 1\n");
+      printf("Number of loops: 1\n");
       printf("at line 60 :");
       printf(" nr_irqs\n");
       printf("%d %d\n", tempnr_irqs, counteris_duplicate_irq0);
@@ -73,7 +74,8 @@ __attribute__((used)) static bool is_duplicate_irq(int irq, int *irqs,
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 60 :");
   printf(" nr_irqs\n");
   printf("%d %d\n", tempnr_irqs, counteris_duplicate_irq0);

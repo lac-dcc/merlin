@@ -55,11 +55,11 @@ typedef int bool;
 
 __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
                                        int uc, char *bf) {
-  unsigned counterui2a1 = 0;
   unsigned counterui2a0 = 0;
+  unsigned counterui2a1 = 0;
 
-  unsigned int tempbase = base;
   unsigned int tempnum = num;
+  unsigned int tempbase = base;
 
   int n = 0;
   unsigned int d = 1;
@@ -79,13 +79,14 @@ __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
   }
   *bf = 0;
 
-  printf("2\n");
-  printf("at line 63 :");
-  printf(" base\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 2\n");
   printf("at line 60 :");
   printf(" num base\n");
-  printf("%u %d\n", tempbase, counterui2a1);
+  printf("at line 63 :");
+  printf(" base\n");
   printf("%u %u %d\n", tempnum, tempbase, counterui2a0);
+  printf("%u %d\n", tempbase, counterui2a1);
 }
 
 // ------------------------------------------------------------------------- //

@@ -70,7 +70,8 @@ void scsi_sanitize_inquiry_string(unsigned char *s, int len) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 59 :");
   printf(" len\n");
   printf("%d %d\n", templen, counterscsi_sanitize_inquiry_string0);

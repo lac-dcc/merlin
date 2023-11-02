@@ -65,7 +65,8 @@ void flip_board(float *board) {
     board[i + 19 * 19 * 2] = 1 - board[i + 19 * 19 * 2];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 58 :");
   printf("\n");
   printf("%d\n", counterflip_board0);

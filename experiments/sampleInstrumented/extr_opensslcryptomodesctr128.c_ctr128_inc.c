@@ -68,7 +68,8 @@ __attribute__((used)) static void ctr128_inc(unsigned char *counter) {
     c >>= 8;
   } while (n);
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf("\n");
   printf("%d\n", counterctr128_inc0);

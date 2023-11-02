@@ -66,7 +66,8 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
   UINT i;
   if (idPlayer == DPID_SYSMSG) {
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 66 :");
     printf(" dpidSize\n");
     printf("%ld %d\n", tempdpidSize, counterdpid2char0);
@@ -76,7 +77,8 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
     counterdpid2char0++;
     if (idPlayer == dpid[i]) {
 
-      printf("1\n");
+      printf("Maximum nesting depth: 1\n");
+      printf("Number of loops: 1\n");
       printf("at line 66 :");
       printf(" dpidSize\n");
       printf("%ld %d\n", tempdpidSize, counterdpid2char0);
@@ -84,7 +86,8 @@ __attribute__((used)) static char dpid2char(DPID *dpid, DWORD dpidSize,
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 66 :");
   printf(" dpidSize\n");
   printf("%ld %d\n", tempdpidSize, counterdpid2char0);

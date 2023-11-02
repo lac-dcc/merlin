@@ -65,7 +65,8 @@ void delay(int a) {
     ;
   counterdelay0++;
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 60 :");
   printf(" a\n");
   printf("%d %d\n", tempa, counterdelay0);

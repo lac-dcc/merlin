@@ -74,7 +74,8 @@ int igcd(int a, int b) {
     b = c;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 65 :");
   printf(" a b\n");
   printf("%d %d %d\n", tempa, tempb, counterigcd0);

@@ -79,14 +79,16 @@ int ahc_verify_cksum(struct seeprom_config *sc) {
   }
   if (checksum == 0 || (checksum & 0xFFFF) != sc->checksum) {
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 72 :");
     printf(" sc\n");
     printf(" %d\n", *tempsc, counterahc_verify_cksum0);
     return (0);
   } else {
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 72 :");
     printf(" sc\n");
     printf(" %d\n", *tempsc, counterahc_verify_cksum0);

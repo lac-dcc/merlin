@@ -85,14 +85,16 @@ _dsi_unregister_isr(omap_dsi_isr_t isr, void *arg, u32 mask,
     isr_data->arg = NULL;
     isr_data->mask = 0;
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 72 :");
     printf(" isr_array_size\n");
     printf("%u %d\n", tempisr_array_size, counter_dsi_unregister_isr0);
     return 0;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 72 :");
   printf(" isr_array_size\n");
   printf("%u %d\n", tempisr_array_size, counter_dsi_unregister_isr0);

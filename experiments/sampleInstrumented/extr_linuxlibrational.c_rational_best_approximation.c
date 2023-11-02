@@ -91,7 +91,8 @@ void rational_best_approximation(unsigned long given_numerator,
   *best_numerator = n1;
   *best_denominator = d1;
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 67 :");
   printf("\n");
   printf("%d\n", counterrational_best_approximation0);

@@ -72,7 +72,8 @@ __attribute__((used)) static void bn_reverse(unsigned char *s, int len) {
     --iy;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 62 :");
   printf(" len\n");
   printf("%d %d\n", templen, counterbn_reverse0);

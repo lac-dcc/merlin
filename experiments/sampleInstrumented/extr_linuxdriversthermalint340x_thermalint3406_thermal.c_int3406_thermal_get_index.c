@@ -71,7 +71,8 @@ __attribute__((used)) static int int3406_thermal_get_index(int *array, int nr,
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 63 :");
   printf(" nr\n");
   printf("%d %d\n", tempnr, counterint3406_thermal_get_index0);

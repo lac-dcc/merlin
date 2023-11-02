@@ -71,7 +71,8 @@ int fru_header_cksum_ok(struct fru_common_header *header) {
     sum += ptr[i];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 65 :");
   printf(" header\n");
   printf(" %d\n", *tempheader, counterfru_header_cksum_ok0);

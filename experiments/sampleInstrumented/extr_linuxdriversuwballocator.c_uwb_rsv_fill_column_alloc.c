@@ -75,8 +75,8 @@ unsigned char UWB_RSV_MAS_UNSAFE;
 
 __attribute__((used)) static void
 uwb_rsv_fill_column_alloc(struct uwb_rsv_alloc_info *ai) {
-  unsigned counteruwb_rsv_fill_column_alloc1 = 0;
   unsigned counteruwb_rsv_fill_column_alloc0 = 0;
+  unsigned counteruwb_rsv_fill_column_alloc1 = 0;
 
   struct uwb_rsv_alloc_info *tempai = ai;
 
@@ -109,13 +109,14 @@ uwb_rsv_fill_column_alloc(struct uwb_rsv_alloc_info *ai) {
     }
   }
 
-  printf("2\n");
-  printf("at line 88 :");
-  printf(" ai\n");
+  printf("Maximum nesting depth: 2\n");
+  printf("Number of loops: 2\n");
   printf("at line 83 :");
   printf(" ai\n");
-  printf(" %d\n", *tempai, counteruwb_rsv_fill_column_alloc1);
+  printf("at line 88 :");
+  printf(" ai\n");
   printf(" %d\n", *tempai, counteruwb_rsv_fill_column_alloc0);
+  printf(" %d\n", *tempai, counteruwb_rsv_fill_column_alloc1);
 }
 
 // ------------------------------------------------------------------------- //

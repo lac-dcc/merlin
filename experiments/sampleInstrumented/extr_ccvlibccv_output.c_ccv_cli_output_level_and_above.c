@@ -62,7 +62,8 @@ int ccv_cli_output_level_and_above(int level) {
 
   if (level == CCV_CLI_NONE) {
 
-    printf("1\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 1\n");
     printf("at line 66 :");
     printf("\n");
     printf("%d\n", counterccv_cli_output_level_and_above0);
@@ -77,7 +78,8 @@ int ccv_cli_output_level_and_above(int level) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 66 :");
   printf("\n");
   printf("%d\n", counterccv_cli_output_level_and_above0);

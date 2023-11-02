@@ -58,8 +58,8 @@ typedef int u8;
 
 __attribute__((used)) static void
 qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
-  unsigned counterqeth_l3_convert_addr_to_bits1 = 0;
   unsigned counterqeth_l3_convert_addr_to_bits0 = 0;
+  unsigned counterqeth_l3_convert_addr_to_bits1 = 0;
 
   int templen = len;
 
@@ -76,13 +76,14 @@ qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
     }
   }
 
-  printf("2\n");
-  printf("at line 66 :");
-  printf(" len\n");
+  printf("Maximum nesting depth: 2\n");
+  printf("Number of loops: 2\n");
   printf("at line 64 :");
   printf(" len\n");
-  printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits1);
+  printf("at line 66 :");
+  printf(" len\n");
   printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits0);
+  printf("%d %d\n", templen, counterqeth_l3_convert_addr_to_bits1);
 }
 
 // ------------------------------------------------------------------------- //

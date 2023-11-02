@@ -67,7 +67,8 @@ __attribute__((used)) static u8 msdc_dma_calcs(u8 *buf, u32 len) {
     sum += buf[i];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf(" len\n");
   printf("%ld %d\n", templen, countermsdc_dma_calcs0);

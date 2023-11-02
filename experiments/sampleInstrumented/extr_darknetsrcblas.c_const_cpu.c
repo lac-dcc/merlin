@@ -64,7 +64,8 @@ void const_cpu(int N, float ALPHA, float *X, int INCX) {
     X[i * INCX] = ALPHA;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 58 :");
   printf(" N\n");
   printf("%d %d\n", tempN, counterconst_cpu0);

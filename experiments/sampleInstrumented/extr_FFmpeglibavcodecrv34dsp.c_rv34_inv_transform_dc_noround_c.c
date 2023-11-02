@@ -70,7 +70,8 @@ rv34_inv_transform_dc_noround_c(int16_t *block) {
     }
   }
 
-  printf("2\n");
+  printf("Maximum nesting depth: 2\n");
+  printf("Number of loops: 2\n");
   printf("at line 63 :");
   printf("\n");
   printf("at line 62 :");

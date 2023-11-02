@@ -78,7 +78,8 @@ __attribute__((used)) static void R_BlendOverTexture(byte *data, int pixelCount,
     data[2] = (data[2] * inverseAlpha + premult[2]) >> 9;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 70 :");
   printf(" pixelCount\n");
   printf("%d %d\n", temppixelCount, counterR_BlendOverTexture0);

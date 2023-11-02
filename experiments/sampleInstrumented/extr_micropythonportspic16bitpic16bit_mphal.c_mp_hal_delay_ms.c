@@ -71,7 +71,8 @@ void mp_hal_delay_ms(mp_uint_t ms) {
     }
   }
 
-  printf("2\n");
+  printf("Maximum nesting depth: 2\n");
+  printf("Number of loops: 2\n");
   printf("at line 63 :");
   printf(" ms\n");
   printf("at line 62 :");

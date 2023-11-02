@@ -73,7 +73,8 @@ __attribute__((used)) static int has_channel(RT_CHANNEL_INFO *channel_set,
     counterhas_channel0++;
     if (channel_set[i].ChannelNum == chan) {
 
-      printf("1\n");
+      printf("Maximum nesting depth: 1\n");
+      printf("Number of loops: 1\n");
       printf("at line 68 :");
       printf(" chanset_size\n");
       printf("%d %d\n", tempchanset_size, counterhas_channel0);
@@ -81,7 +82,8 @@ __attribute__((used)) static int has_channel(RT_CHANNEL_INFO *channel_set,
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 68 :");
   printf(" chanset_size\n");
   printf("%d %d\n", tempchanset_size, counterhas_channel0);

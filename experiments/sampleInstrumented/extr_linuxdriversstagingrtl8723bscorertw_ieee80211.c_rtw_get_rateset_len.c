@@ -67,7 +67,8 @@ uint rtw_get_rateset_len(u8 *rateset) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf("\n");
   printf("%d\n", counterrtw_get_rateset_len0);

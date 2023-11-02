@@ -63,7 +63,8 @@ int maccpy(u8b dest[16], u8b source[16]) {
     dest[i] = source[i];
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 59 :");
   printf("\n");
   printf("%d\n", countermaccpy0);

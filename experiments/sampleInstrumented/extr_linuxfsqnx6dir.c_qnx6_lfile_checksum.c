@@ -67,7 +67,8 @@ __attribute__((used)) static unsigned qnx6_lfile_checksum(char *name,
     crc = ((crc >> 1) + *(name++)) ^ ((crc & 0x00000001) ? 0x80000000 : 0);
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 60 :");
   printf(" name size\n");
   printf("%c %u %d\n", *tempname, tempsize, counterqnx6_lfile_checksum0);

@@ -78,7 +78,8 @@ __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
     }
   }
 
-  printf("2\n");
+  printf("Maximum nesting depth: 2\n");
+  printf("Number of loops: 2\n");
   printf("at line 62 :");
   printf(" len\n");
   printf("at line 64 :");

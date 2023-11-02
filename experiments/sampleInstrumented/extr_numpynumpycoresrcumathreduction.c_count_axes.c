@@ -69,7 +69,8 @@ __attribute__((used)) static int count_axes(int ndim, npy_bool *axis_flags) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf(" ndim\n");
   printf("%d %d\n", tempndim, countercount_axes0);

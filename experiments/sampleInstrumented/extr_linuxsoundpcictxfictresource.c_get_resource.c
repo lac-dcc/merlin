@@ -59,11 +59,11 @@ int ENOENT;
 __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
                                               unsigned int multi,
                                               unsigned int *ridx) {
-  unsigned counterget_resource1 = 0;
   unsigned counterget_resource0 = 0;
+  unsigned counterget_resource1 = 0;
 
-  unsigned int tempmulti = multi;
   unsigned int tempamount = amount;
+  unsigned int tempmulti = multi;
 
   int i, j, k, n;
 
@@ -84,13 +84,14 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
   if (i >= amount) {
     /* Can not find sufficient contiguous resources */
 
-    printf("2\n");
-    printf("at line 83 :");
-    printf(" multi\n");
+    printf("Maximum nesting depth: 1\n");
+    printf("Number of loops: 2\n");
     printf("at line 65 :");
     printf(" amount\n");
-    printf("%u %d\n", tempmulti, counterget_resource1);
+    printf("at line 83 :");
+    printf(" multi\n");
     printf("%u %d\n", tempamount, counterget_resource0);
+    printf("%u %d\n", tempmulti, counterget_resource1);
     return -ENOENT;
   }
 
@@ -105,13 +106,14 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
 
   *ridx = i + 1;
 
-  printf("2\n");
-  printf("at line 83 :");
-  printf(" multi\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 2\n");
   printf("at line 65 :");
   printf(" amount\n");
-  printf("%u %d\n", tempmulti, counterget_resource1);
+  printf("at line 83 :");
+  printf(" multi\n");
   printf("%u %d\n", tempamount, counterget_resource0);
+  printf("%u %d\n", tempmulti, counterget_resource1);
   return 0;
 }
 

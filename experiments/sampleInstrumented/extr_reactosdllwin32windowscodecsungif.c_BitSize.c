@@ -67,7 +67,8 @@ __attribute__((used)) static int BitSize(int n) {
     }
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 62 :");
   printf("\n");
   printf("%d\n", counterBitSize0);

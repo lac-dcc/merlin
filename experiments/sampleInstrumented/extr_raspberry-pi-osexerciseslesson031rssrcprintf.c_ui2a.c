@@ -79,7 +79,8 @@ __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
   }
   *bf = 0;
 
-  printf("2\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 2\n");
   printf("at line 60 :");
   printf(" num base\n");
   printf("at line 63 :");

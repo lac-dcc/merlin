@@ -70,7 +70,8 @@ __attribute__((used)) static unsigned long rev(unsigned long v) {
     v = ((v >> s) & mask) | ((v << s) & ~mask);
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 63 :");
   printf(" v\n");
   printf("%ld %d\n", tempv, counterrev0);

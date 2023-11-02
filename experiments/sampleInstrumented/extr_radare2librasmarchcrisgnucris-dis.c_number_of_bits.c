@@ -67,7 +67,8 @@ __attribute__((used)) static int number_of_bits(unsigned int val) {
     bits++;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 61 :");
   printf(" val\n");
   printf("%u %d\n", tempval, counternumber_of_bits0);

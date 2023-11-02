@@ -56,8 +56,8 @@ typedef int int16_t;
 /* Variables and functions */
 
 __attribute__((used)) static void dct4x4(int16_t *coef) {
-  unsigned counterdct4x40 = 0;
   unsigned counterdct4x41 = 0;
+  unsigned counterdct4x40 = 0;
 
   int i;
   for (i = 0; i < 4; i++) {
@@ -83,13 +83,14 @@ __attribute__((used)) static void dct4x4(int16_t *coef) {
     coef[i + 3 * 4] = (d1 * 2217 - c1 * 5352 + 51000) >> 16;
   }
 
-  printf("2\n");
-  printf("at line 60 :");
-  printf("\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 2\n");
   printf("at line 70 :");
   printf("\n");
-  printf("%d\n", counterdct4x40);
+  printf("at line 60 :");
+  printf("\n");
   printf("%d\n", counterdct4x41);
+  printf("%d\n", counterdct4x40);
 }
 
 // ------------------------------------------------------------------------- //

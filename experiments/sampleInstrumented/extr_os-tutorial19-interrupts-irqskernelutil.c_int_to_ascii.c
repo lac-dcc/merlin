@@ -75,7 +75,8 @@ void int_to_ascii(int n, char str[]) {
 
   /* TODO: implement "reverse" */
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 62 :");
   printf(" n\n");
   printf("%d %d\n", tempn, counterint_to_ascii0);

@@ -74,7 +74,8 @@ __attribute__((used)) static void window_global_sum(struct window_global *wg,
     w->pool_low += d->pool_low;
   }
 
-  printf("1\n");
+  printf("Maximum nesting depth: 1\n");
+  printf("Number of loops: 1\n");
   printf("at line 66 :");
   printf(" size\n");
   printf("%d %d\n", tempsize, counterwindow_global_sum0);
