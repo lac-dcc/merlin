@@ -1,0 +1,40 @@
+Maximum nesting depth: 1
+Number of loops: 2
+at line 79 : s
+at line 65 : value
+1 1
+ 10
+
+end
+Maximum nesting depth: 1
+Number of loops: 2
+at line 79 : s
+at line 65 : value
+1 1
+ 100
+
+end
+Maximum nesting depth: 1
+Number of loops: 2
+at line 79 : s
+at line 65 : value
+2 1
+ 255
+
+end
+Maximum nesting depth: 1
+Number of loops: 2
+at line 79 : s
+at line 65 : value
+1 1
+ 150
+
+end
+Maximum nesting depth: 1
+Number of loops: 2
+at line 79 : s
+at line 65 : value
+2 1
+ 200
+
+end

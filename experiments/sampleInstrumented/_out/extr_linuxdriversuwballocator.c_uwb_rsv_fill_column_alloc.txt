@@ -1,0 +1,40 @@
+Maximum nesting depth: 2
+Number of loops: 2
+at line 83 : ai
+at line 88 : ai
+ -674942304
+ -674942304
+
+end
+Maximum nesting depth: 2
+Number of loops: 2
+at line 83 : ai
+at line 88 : ai
+ -1308747536
+ -1308747536
+
+end
+Maximum nesting depth: 2
+Number of loops: 2
+at line 83 : ai
+at line 88 : ai
+ 815620768
+ 815620768
+
+end
+Maximum nesting depth: 2
+Number of loops: 2
+at line 83 : ai
+at line 88 : ai
+ -605302112
+ -605302112
+
+end
+Maximum nesting depth: 2
+Number of loops: 2
+at line 83 : ai
+at line 88 : ai
+ -399666528
+ -399666528
+
+end

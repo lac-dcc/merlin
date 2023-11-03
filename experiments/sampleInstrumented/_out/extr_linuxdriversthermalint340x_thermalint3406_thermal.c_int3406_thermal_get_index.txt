@@ -1,0 +1,30 @@
+Maximum nesting depth: 1
+Number of loops: 1
+at line 63 : nr
+255 253
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 63 : nr
+10 8
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 63 : nr
+100 98
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 63 : nr
+150 148
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 63 : nr
+200 198
+
+end

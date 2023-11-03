@@ -1,0 +1,30 @@
+Maximum nesting depth: 1
+Number of loops: 1
+at line 61 : slot_count
+100 6
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 61 : slot_count
+255 7
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 61 : slot_count
+10 3
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 61 : slot_count
+150 7
+
+end
+Maximum nesting depth: 1
+Number of loops: 1
+at line 61 : slot_count
+200 7
+
+end

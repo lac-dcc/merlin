@@ -1,0 +1,50 @@
+Maximum nesting depth: 2
+Number of loops: 3
+at line 64 : buflen
+at line 78 : buflen
+at line 65 : buflen
+10 1
+10 2
+10 1
+
+end
+Maximum nesting depth: 2
+Number of loops: 3
+at line 64 : buflen
+at line 78 : buflen
+at line 65 : buflen
+100 1
+100 4
+100 12
+
+end
+Maximum nesting depth: 2
+Number of loops: 3
+at line 64 : buflen
+at line 78 : buflen
+at line 65 : buflen
+255 1
+255 7
+255 31
+
+end
+Maximum nesting depth: 2
+Number of loops: 3
+at line 64 : buflen
+at line 78 : buflen
+at line 65 : buflen
+150 1
+150 6
+150 18
+
+end
+Maximum nesting depth: 2
+Number of loops: 3
+at line 64 : buflen
+at line 78 : buflen
+at line 65 : buflen
+200 1
+200 0
+200 25
+
+end
