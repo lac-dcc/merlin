@@ -43,7 +43,7 @@ if __name__ == '__main__':
         output_str = ''
         for entry in range(5):
             out = run(f'{programs_dir}/{input} {entry}',
-                      shell=True, capture_output=True, text=True).stdout
+                      shell=True, capture_output=True, text=True, encoding='unicode_escape').stdout
 
             if out.split('\n')[0].strip() == 'Usage:':
                 break
