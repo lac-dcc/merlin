@@ -86,7 +86,7 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string counters = "";
 
   header += "\nprintf(\"Maximum nesting depth: " + std::to_string(this->maxNestingDepth) + "\\n\");\n";
-  header += "printf(\"Number of loops: " + std::to_string(this->counters.size()) + "\\n\");\n";
+  header += "printf(\"Number of counters: " + std::to_string(this->counters.size()) + "\\n\");\n";
   for (auto const& [loop, counterName] : this->counters) {
     header += "printf(\"at line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
 
@@ -230,7 +230,7 @@ bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   // Add counter increment if this loop is within the target function
   if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
     std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
-    counters[loop] = counter;
+    this->counters[loop] = counter;
 
     std::string increment = "\n" + counter + "++;";
     this->rewriter->InsertTextAfterToken(bodyLoc, increment);
