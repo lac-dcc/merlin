@@ -4,7 +4,7 @@ from os import listdir
 
 if __name__ == '__main__':
     if len(argv) < 3:
-        print(f'Usage: {argv[0]} <input_dir>', file=stderr)
+        print(f'Usage: {argv[0]} <input_dir> <output_dir>', file=stderr)
         exit(1)
     
     input_dir = argv[1]

@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
 using namespace std;
 
 int main() {
@@ -11,6 +10,7 @@ int main() {
   cin >> numPoints;
   cin.ignore();
   vector<vector<string>> interpVars(numInterp);
+  vector<int> nestingDepth(numInterp);
   vector<string> originLines(numInterp);
   vector<vector<double>> xValues(numInterp); // X variables
   vector<vector<double>> yValues(numInterp); // Y variable
@@ -19,10 +19,13 @@ int main() {
 
   for (int i = 0; i < numInterp; i++) {
     string varNames;
+    string expectedDepth;
     getline(cin, varNames);
+    getline(cin, expectedDepth);
     originLines[i] = varNames;
     varNames = varNames.substr(varNames.find(':') + 1, varNames.length());
-
+    expectedDepth = expectedDepth.substr(expectedDepth.find(':') + 1, expectedDepth.length());
+    nestingDepth.push_back(stoi(expectedDepth));
     if (varNames.size() <= 0)
       continue;
 
@@ -71,17 +74,20 @@ int main() {
       Interpolator interp(xValues[i], fValues[i]);
       cout << originLines[i] << endl;
       cout << "x: " << interpVars[i][0] << endl;
+      cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else if (numVars == 2) {
       Interpolator interp(xValues[i], yValues[i], fValues[i]);
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
+      cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else if (numVars == 3) {
       Interpolator interp(xValues[i], yValues[i], zValues[i], fValues[i]);
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
       cout << "z: " << interpVars[i][2] << endl;
+      cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else {
       cout << "This tool works with at most 3 variables.";
