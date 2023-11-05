@@ -121,8 +121,6 @@ public:
 
   std::string functionName; ///< Name of the function to be instrumented.
 
-  u_int32_t maxNestingDepth = 0; ///< Maximum loop nesting depth
-
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
@@ -130,6 +128,7 @@ private:
   llvm::DenseMap<clang::Stmt*, std::string> counters;
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
 
+  llvm::DenseMap<clang::Stmt*, u_int32_t> nestingDepth;   ///< Map that associates loops with ther nesting depth
   llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
   llvm::SmallSet<clang::Stmt*, 3> visitedLoops;           ///< Set of visited loops.
 
@@ -180,15 +179,14 @@ private:
 
   /**
    * \brief Recursive method used to validate if a loop is valid for instrumentation.
-   *        Also identifies the maximum depth nesting for this loop.
+   *        Also identifies nesting for this loop and all of its children loops.
    * \param stmt Statement being traversed.
    * \param loop Current outermost loop.
    * \param nestingDepth Current loop nesting depth.
-   * \param maxDepth Maximum nesting depth for this loop.
    *
    * \return Boolean value that indicates if the loop is valid
    */
-  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop, u_int32_t nestingDepth, u_int32_t& maxDepth);
+  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop, u_int32_t nestingDepth);
 
   /**
    * \brief Recursive method used to validate if an IfStmt is valid for instrumentation.

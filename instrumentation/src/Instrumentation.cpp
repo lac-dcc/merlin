@@ -85,10 +85,9 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string header = "";
   std::string counters = "";
 
-  header += "\nprintf(\"Maximum nesting depth: " + std::to_string(this->maxNestingDepth) + "\\n\");\n";
-  header += "printf(\"Number of counters: " + std::to_string(this->counters.size()) + "\\n\");\n";
+  header += "\nprintf(\"Number of counters: " + std::to_string(this->counters.size()) + "\\n\");\n";
   for (auto const& [loop, counterName] : this->counters) {
-    header += "printf(\"at line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
+    header += "printf(\"At line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
 
     std::string format = "";
     std::string variables = "";
@@ -114,7 +113,9 @@ std::string InstrumentationVisitor::getPrintString() {
 
     counters += "printf(\"" + format + "\\n\", " + variables + ");\n";
     header += "printf(\"" + originalNames + "\\n\");\n";
+    header += "printf(\"Nesting depth: " + std::to_string(this->nestingDepth[loop]) + "\\n\");\n";
   }
+
   return header + counters;
 }
 
@@ -184,7 +185,7 @@ bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
   return isa<ForStmt>(stmt) || isa<WhileStmt>(stmt) || isa<DoStmt>(stmt);
 }
 
-bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32_t nestingDepth, u_int32_t& maxDepth) {
+bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32_t nestingDepth) {
   Stmt* lastLoop = loop;
   for (auto* child : stmt->children()) {
     if (!child)
@@ -192,18 +193,19 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32
 
     u_int32_t nextNestingDepth = nestingDepth;
     if (this->isLoop(child)) {
+      nextNestingDepth++;
+      this->nestingDepth[child] = nextNestingDepth;
+
       this->parentLoops[child] = loop;
       this->visitedLoops.insert(child);
-      lastLoop = child;
 
-      nextNestingDepth++;
-      maxDepth = std::max(maxDepth, nextNestingDepth);
+      lastLoop = child;
     }
 
     if (this->ignoreNonNewton && isa<ReturnStmt>(child))
       return false;
 
-    bool childIsValid = this->validateLoop(child, lastLoop, nextNestingDepth, maxDepth);
+    bool childIsValid = this->validateLoop(child, lastLoop, nextNestingDepth);
     if (this->ignoreNonNewton && !childIsValid)
       return false;
 
@@ -215,12 +217,10 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32
 
 bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (!this->visitedLoops.contains(loop)) {
+    this->nestingDepth[loop] = 1;
     this->visitedLoops.insert(loop);
 
-    u_int32_t maxDepth = 1;
-    bool isValidLoop = this->validateLoop(loop, loop, 1, maxDepth);
-    this->maxNestingDepth = std::max(this->maxNestingDepth, maxDepth);
-
+    bool isValidLoop = this->validateLoop(loop, loop, 1);
     if (this->ignoreNonNewton && !isValidLoop)
       return false;
   }
@@ -335,8 +335,6 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
     raw_fd_ostream outFile("output/" + this->outputFile, error_code, sys::fs::FileAccess::FA_Write);
     this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);
     outFile.close();
-
-    outs() << this->visitor.maxNestingDepth << '\n';
   } else {
     outs() << "Unable to instrument the input\n";
   }
