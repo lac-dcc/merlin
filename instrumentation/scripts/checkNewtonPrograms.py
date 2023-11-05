@@ -6,8 +6,7 @@ the instrumentation is saved in the 'output/' directory.
 
 The script reports any errors that occur during the execution of the
 instrumentation. It also generates a CSV file that gives the size of the 
-function instrumented for each file, its maximum nesting depth and wether it was
-instrumented or not.
+function instrumented for each file and wether it was instrumented or not.
 
 Usage:
     python checkNewtonPrograms.py
@@ -41,12 +40,10 @@ if __name__ == '__main__':
 
         not_instrumented = len(
             lines) > 1 and lines[1] == 'Unable to instrument the input'
-        nesting_depth = -1 if not_instrumented else lines[1]
 
         results.append({
             'name': input,
             'func_size': int(lines[0]),
-            'nesting_depth': nesting_depth,
             'instrumented': not not_instrumented
         })
 
@@ -59,6 +56,6 @@ if __name__ == '__main__':
             print(f'======================{input}======================')
             print(err)
 
-    columns = ['name', 'func_size', 'nesting_depth', 'instrumented']
+    columns = ['name', 'func_size', 'instrumented']
     df = pd.DataFrame(data=results, columns=columns)
     df.to_csv('experimentRQ4.csv', mode='w', header=True, index=False)

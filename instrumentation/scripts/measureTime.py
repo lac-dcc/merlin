@@ -31,7 +31,7 @@ def run_instrumentation_and_measure_time(inputs):
         proc = run(command, shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
-        times.append(int(lines[2]))
+        times.append(int(lines[1]))
 
     instrumentation_time_micro = sum(times)
 
