@@ -55,8 +55,8 @@ typedef int bool;
 /* Variables and functions */
 
 __attribute__((used)) static int addr_crc(unsigned char *addr) {
-  unsigned counteraddr_crc1 = 0;
   unsigned counteraddr_crc0 = 0;
+  unsigned counteraddr_crc1 = 0;
 
   int crc = 0;
   int i;
@@ -75,14 +75,14 @@ __attribute__((used)) static int addr_crc(unsigned char *addr) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 65 :");
-  printf("\n");
-  printf("Nesting depth: 2\n");
   printf("At line 61 :");
   printf("\n");
   printf("Nesting depth: 1\n");
-  printf("%d\n", counteraddr_crc1);
+  printf("At line 65 :");
+  printf("\n");
+  printf("Nesting depth: 2\n");
   printf("%d\n", counteraddr_crc0);
+  printf("%d\n", counteraddr_crc1);
   return crc;
 }
 

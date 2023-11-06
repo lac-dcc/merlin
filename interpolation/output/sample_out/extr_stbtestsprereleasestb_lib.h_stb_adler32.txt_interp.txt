@@ -1,0 +1,23 @@
+Size: 5
+10 100 255 150 200 
+10 100 255 150 200 
+10 100 255 150 200 
+
+1 12 31 18 25 
+1 1 1 1 1 
+2 4 7 6 0 
+At line 65 : buflen
+x: buflen
+Expected Nesting Depth: 2
+F(x) = -1.76558e-8*x**4 + 9.257841e-6*x**3 - 0.00153835605*x**2 + 0.2082947242*x - 0.93819292
+
+At line 64 : buflen
+x: buflen
+Expected Nesting Depth: 1
+F(x) = 1
+
+At line 78 : buflen
+x: buflen
+Expected Nesting Depth: 2
+F(x) = 1.41246e-7*x**4 - 7.406253e-5*x**3 + 0.0123068178*x**2 - 0.666357981*x + 7.5055481
+

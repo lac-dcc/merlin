@@ -1,60 +1,60 @@
 Number of counters: 3
-At line 78 : buflen
+At line 65 : buflen
 Nesting depth: 2
 At line 64 : buflen
 Nesting depth: 1
-At line 65 : buflen
+At line 78 : buflen
 Nesting depth: 2
+10 1
+10 1
 10 2
-10 1
-10 1
 
 end
 Number of counters: 3
-At line 78 : buflen
+At line 65 : buflen
 Nesting depth: 2
 At line 64 : buflen
 Nesting depth: 1
-At line 65 : buflen
+At line 78 : buflen
 Nesting depth: 2
-100 4
-100 1
 100 12
+100 1
+100 4
 
 end
 Number of counters: 3
-At line 78 : buflen
+At line 65 : buflen
 Nesting depth: 2
 At line 64 : buflen
 Nesting depth: 1
-At line 65 : buflen
+At line 78 : buflen
 Nesting depth: 2
-255 7
-255 1
 255 31
+255 1
+255 7
 
 end
 Number of counters: 3
-At line 78 : buflen
+At line 65 : buflen
 Nesting depth: 2
 At line 64 : buflen
 Nesting depth: 1
-At line 65 : buflen
+At line 78 : buflen
 Nesting depth: 2
-150 6
-150 1
 150 18
+150 1
+150 6
 
 end
 Number of counters: 3
-At line 78 : buflen
+At line 65 : buflen
 Nesting depth: 2
 At line 64 : buflen
 Nesting depth: 1
-At line 65 : buflen
+At line 78 : buflen
 Nesting depth: 2
-200 0
-200 1
 200 25
+200 1
+200 0
 
 end

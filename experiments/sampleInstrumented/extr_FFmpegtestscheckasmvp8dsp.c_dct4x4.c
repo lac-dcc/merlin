@@ -56,8 +56,8 @@ typedef int int16_t;
 /* Variables and functions */
 
 __attribute__((used)) static void dct4x4(int16_t *coef) {
-  unsigned counterdct4x40 = 0;
   unsigned counterdct4x41 = 0;
+  unsigned counterdct4x40 = 0;
 
   int i;
   for (i = 0; i < 4; i++) {
@@ -84,14 +84,14 @@ __attribute__((used)) static void dct4x4(int16_t *coef) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 60 :");
-  printf("\n");
-  printf("Nesting depth: 1\n");
   printf("At line 70 :");
   printf("\n");
   printf("Nesting depth: 1\n");
-  printf("%d\n", counterdct4x40);
+  printf("At line 60 :");
+  printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterdct4x41);
+  printf("%d\n", counterdct4x40);
 }
 
 // ------------------------------------------------------------------------- //

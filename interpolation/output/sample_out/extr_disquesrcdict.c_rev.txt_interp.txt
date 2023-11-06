@@ -1,0 +1,9 @@
+Size: 5
+100 255 10 150 200 
+
+6 6 6 6 6 
+At line 63 : v
+x: v
+Expected Nesting Depth: 1
+F(x) = 6
+

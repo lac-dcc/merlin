@@ -56,11 +56,11 @@ typedef int bool;
 
 __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
                                        int uc, char *bf) {
-  unsigned counterui2a0 = 0;
   unsigned counterui2a1 = 0;
+  unsigned counterui2a0 = 0;
 
-  unsigned int tempnum = num;
   unsigned int tempbase = base;
+  unsigned int tempnum = num;
 
   int n = 0;
   unsigned int d = 1;
@@ -81,14 +81,14 @@ __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
   *bf = 0;
 
   printf("Number of counters: 2\n");
-  printf("At line 61 :");
-  printf(" num base\n");
-  printf("Nesting depth: 1\n");
   printf("At line 64 :");
   printf(" base\n");
   printf("Nesting depth: 1\n");
-  printf("%u %u %d\n", tempnum, tempbase, counterui2a0);
+  printf("At line 61 :");
+  printf(" num base\n");
+  printf("Nesting depth: 1\n");
   printf("%u %d\n", tempbase, counterui2a1);
+  printf("%u %u %d\n", tempnum, tempbase, counterui2a0);
 }
 
 // ------------------------------------------------------------------------- //

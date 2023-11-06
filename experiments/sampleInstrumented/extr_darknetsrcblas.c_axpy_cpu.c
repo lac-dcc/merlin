@@ -199,7 +199,7 @@ int main(int argc, char *argv[]) {
     break;
   }
   case 3: {
-    int N = 250;
+    int N = 150;
 
     float ALPHA =
         ((-2.0 * (next_i() % 2)) + 1.0) *
@@ -207,9 +207,9 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
 
-    int INCX = 250;
+    int INCX = 150;
 
-    int INCY = 250;
+    int INCY = 150;
 
     int _len_X0 = 22500;
     float *X = (float *)malloc(_len_X0 * sizeof(float));
