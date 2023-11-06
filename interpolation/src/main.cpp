@@ -40,6 +40,10 @@ int main() {
     for (int j = 0; j < numInterp; j++) {
       double xi, yi, zi, fi;
       switch (interpVars[j].size()) {
+      case 0:
+        cin >> fi;
+        fValues[j].push_back(fi);
+        break;
       case 1:
         cin >> xi >> fi;
         xValues[j].push_back(xi);
@@ -63,27 +67,15 @@ int main() {
       }
     }
   }
-  cout <<"Size: " << xValues[0].size() << endl;
-  for (auto& i : xValues) {
-    for(auto& j : i) {
-      cout << j << " ";
-    }
-    cout << endl;
-  }
-  cout << endl;
-  for (auto& i : fValues) {
-    for(auto& j : i) {
-      cout << j << " ";
-    }
-    cout << endl;
-  }
   for (int i = 0; i < numInterp; i++) {
     int numVars = interpVars[i].size();
     if (numPoints <= numVars) {
       cout << "The number of input points must be greater than the number of variables.\n";
       return 0;
     }
-    if (numVars == 1) {
+    if (numVars == 0) {
+      cout << "This program runs in constant time. Constant Factor: " << fValues[i][0] << endl;
+    } else if (numVars == 1) {
       Interpolator interp(xValues[i], fValues[i]);
       cout << originLines[i] << endl;
       cout << "x: " << interpVars[i][0] << endl;
