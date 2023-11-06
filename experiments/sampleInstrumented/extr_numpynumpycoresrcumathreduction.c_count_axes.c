@@ -69,10 +69,10 @@ __attribute__((used)) static int count_axes(int ndim, npy_bool *axis_flags) {
     }
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 61 :");
+  printf("Number of counters: 1\n");
+  printf("At line 61 :");
   printf(" ndim\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempndim, countercount_axes0);
   return naxes;
 }

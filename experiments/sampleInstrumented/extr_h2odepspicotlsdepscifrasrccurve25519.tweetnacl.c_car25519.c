@@ -69,10 +69,10 @@ __attribute__((used)) static void car25519(gf o) {
     o[i] -= c << 16;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 62 :");
+  printf("Number of counters: 1\n");
+  printf("At line 62 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", countercar255190);
 }
 

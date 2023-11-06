@@ -1,39 +1,44 @@
-Maximum nesting depth: 1
-Number of loops: 2
-at line 61 : num base
-at line 64 : base
+Number of counters: 2
+At line 61 : num base
+Nesting depth: 1
+At line 64 : base
+Nesting depth: 1
 255 255 1
 255 2
 
 end
-Maximum nesting depth: 1
-Number of loops: 2
-at line 61 : num base
-at line 64 : base
+Number of counters: 2
+At line 61 : num base
+Nesting depth: 1
+At line 64 : base
+Nesting depth: 1
 10 10 1
 10 2
 
 end
-Maximum nesting depth: 1
-Number of loops: 2
-at line 61 : num base
-at line 64 : base
+Number of counters: 2
+At line 61 : num base
+Nesting depth: 1
+At line 64 : base
+Nesting depth: 1
 150 150 1
 150 2
 
 end
-Maximum nesting depth: 1
-Number of loops: 2
-at line 61 : num base
-at line 64 : base
+Number of counters: 2
+At line 61 : num base
+Nesting depth: 1
+At line 64 : base
+Nesting depth: 1
 100 100 1
 100 2
 
 end
-Maximum nesting depth: 1
-Number of loops: 2
-at line 61 : num base
-at line 64 : base
+Number of counters: 2
+At line 61 : num base
+Nesting depth: 1
+At line 64 : base
+Nesting depth: 1
 200 200 1
 200 2
 

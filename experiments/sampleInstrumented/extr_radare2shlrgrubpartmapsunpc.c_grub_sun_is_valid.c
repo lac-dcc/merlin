@@ -73,10 +73,10 @@ grub_sun_is_valid(struct grub_sun_pc_block *label) {
     sum ^= *pos;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 66 :");
+  printf("Number of counters: 1\n");
+  printf("At line 66 :");
   printf(" label\n");
+  printf("Nesting depth: 1\n");
   printf(" %d\n", *templabel, countergrub_sun_is_valid0);
   return !sum;
 }

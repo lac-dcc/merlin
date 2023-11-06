@@ -75,10 +75,10 @@ __attribute__((used)) static __inline void _FixStringW(PWSTR String,
     p++;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 64 :");
+  printf("Number of counters: 1\n");
+  printf("At line 64 :");
   printf(" String\n");
+  printf("Nesting depth: 1\n");
   printf("%ld %d\n", *tempString, counter_FixStringW0);
 }
 

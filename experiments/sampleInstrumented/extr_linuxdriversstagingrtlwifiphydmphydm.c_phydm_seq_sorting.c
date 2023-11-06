@@ -58,10 +58,10 @@ typedef scalar_t__ u32;
 
 void phydm_seq_sorting(void *dm_void, u32 *value, u32 *rank_idx, u32 *idx_out,
                        u8 seq_length) {
-  unsigned counterphydm_seq_sorting0 = 0;
   unsigned counterphydm_seq_sorting3 = 0;
-  unsigned counterphydm_seq_sorting2 = 0;
+  unsigned counterphydm_seq_sorting0 = 0;
   unsigned counterphydm_seq_sorting1 = 0;
+  unsigned counterphydm_seq_sorting2 = 0;
 
   u8 tempseq_length = seq_length;
 
@@ -101,20 +101,23 @@ void phydm_seq_sorting(void *dm_void, u32 *value, u32 *rank_idx, u32 *idx_out,
     /**/
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 4\n");
-  printf("at line 65 :");
+  printf("Number of counters: 4\n");
+  printf("At line 88 :");
   printf(" seq_length\n");
-  printf("at line 88 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 65 :");
   printf(" seq_length\n");
-  printf("at line 71 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 70 :");
   printf(" seq_length\n");
-  printf("at line 70 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 71 :");
   printf(" seq_length\n");
-  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting0);
+  printf("Nesting depth: 2\n");
   printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting3);
-  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting2);
+  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting0);
   printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting1);
+  printf("%ld %d\n", tempseq_length, counterphydm_seq_sorting2);
 }
 
 // ------------------------------------------------------------------------- //

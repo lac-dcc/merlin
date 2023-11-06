@@ -94,10 +94,10 @@ sirfsoc_uart_calc_sample_div(unsigned long baud_rate, unsigned long ioclk_rate,
     }
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 75 :");
+  printf("Number of counters: 1\n");
+  printf("At line 75 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", countersirfsoc_uart_calc_sample_div0);
   return regv;
 }

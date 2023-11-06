@@ -1,0 +1,9 @@
+At line 80 : max_pin
+x: max_pin
+0 -nan -nan -nan -nan 
+0 -nan -nan -nan 0 
+0 -nan -nan 0 0 
+0 -nan 0 0 0 
+0 0 0 0 0 
+Couldn't find a solution! Try again with more sample points.
+

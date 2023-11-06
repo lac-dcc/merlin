@@ -1,4 +1,0 @@
-at line 61 : len
-x: len
-F(x) = x
-

@@ -70,10 +70,10 @@ __attribute__((used)) static int swap_bits(int v) {
     v >>= 1;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 62 :");
+  printf("Number of counters: 1\n");
+  printf("At line 62 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterswap_bits0);
   return r;
 }

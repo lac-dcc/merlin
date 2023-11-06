@@ -84,10 +84,10 @@ __attribute__((used)) static struct unwind_table *find_table(unsigned long pc) {
     }
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 77 :");
+  printf("Number of counters: 1\n");
+  printf("At line 77 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterfind_table0);
   return table;
 }

@@ -1,4 +1,0 @@
-at line 66 : length
-x: length
-F(x) = x
-

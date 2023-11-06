@@ -92,12 +92,13 @@ int sdsll2str(char *s, long long value) {
     p--;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 2\n");
-  printf("at line 79 :");
+  printf("Number of counters: 2\n");
+  printf("At line 79 :");
   printf(" s\n");
-  printf("at line 65 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 65 :");
   printf(" value\n");
+  printf("Nesting depth: 1\n");
   printf("%c %d\n", *temps, countersdsll2str1);
   printf(" %d\n", tempvalue, countersdsll2str0);
   return l;

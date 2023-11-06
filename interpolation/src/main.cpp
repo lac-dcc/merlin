@@ -10,7 +10,7 @@ int main() {
   cin >> numPoints;
   cin.ignore();
   vector<vector<string>> interpVars(numInterp);
-  vector<int> nestingDepth(numInterp);
+  vector<int> nestingDepth;
   vector<string> originLines(numInterp);
   vector<vector<double>> xValues(numInterp); // X variables
   vector<vector<double>> yValues(numInterp); // Y variable
@@ -63,7 +63,20 @@ int main() {
       }
     }
   }
-
+  cout <<"Size: " << xValues[0].size() << endl;
+  for (auto& i : xValues) {
+    for(auto& j : i) {
+      cout << j << " ";
+    }
+    cout << endl;
+  }
+  cout << endl;
+  for (auto& i : fValues) {
+    for(auto& j : i) {
+      cout << j << " ";
+    }
+    cout << endl;
+  }
   for (int i = 0; i < numInterp; i++) {
     int numVars = interpVars[i].size();
     if (numPoints <= numVars) {

@@ -56,8 +56,8 @@ typedef scalar_t__ stb_uchar;
 /* Variables and functions */
 
 stb_uint stb_adler32(stb_uint adler32, stb_uchar *buffer, stb_uint buflen) {
-  unsigned counterstb_adler320 = 0;
   unsigned counterstb_adler322 = 0;
+  unsigned counterstb_adler320 = 0;
   unsigned counterstb_adler321 = 0;
 
   stb_uint tempbuflen = buflen;
@@ -93,16 +93,18 @@ stb_uint stb_adler32(stb_uint adler32, stb_uchar *buffer, stb_uint buflen) {
     blocklen = 5552;
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 3\n");
-  printf("at line 64 :");
+  printf("Number of counters: 3\n");
+  printf("At line 78 :");
   printf(" buflen\n");
-  printf("at line 78 :");
+  printf("Nesting depth: 2\n");
+  printf("At line 64 :");
   printf(" buflen\n");
-  printf("at line 65 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 65 :");
   printf(" buflen\n");
-  printf("%d %d\n", tempbuflen, counterstb_adler320);
+  printf("Nesting depth: 2\n");
   printf("%d %d\n", tempbuflen, counterstb_adler322);
+  printf("%d %d\n", tempbuflen, counterstb_adler320);
   printf("%d %d\n", tempbuflen, counterstb_adler321);
   return (s2 << 16) + s1;
 }

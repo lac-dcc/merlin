@@ -1,4 +1,0 @@
-at line 63 : nr
-x: nr
-F(x) = x - 2
-

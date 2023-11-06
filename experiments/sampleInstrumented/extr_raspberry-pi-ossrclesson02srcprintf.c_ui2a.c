@@ -79,12 +79,13 @@ __attribute__((used)) static void ui2a(unsigned int num, unsigned int base,
   }
   *bf = 0;
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 2\n");
-  printf("at line 60 :");
+  printf("Number of counters: 2\n");
+  printf("At line 60 :");
   printf(" num base\n");
-  printf("at line 63 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 63 :");
   printf(" base\n");
+  printf("Nesting depth: 1\n");
   printf("%u %u %d\n", tempnum, tempbase, counterui2a0);
   printf("%u %d\n", tempbase, counterui2a1);
 }

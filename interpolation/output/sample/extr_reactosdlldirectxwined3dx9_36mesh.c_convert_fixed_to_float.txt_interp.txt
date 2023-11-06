@@ -1,4 +1,0 @@
-at line 82 : count
-x: count
-F(x) = x
-

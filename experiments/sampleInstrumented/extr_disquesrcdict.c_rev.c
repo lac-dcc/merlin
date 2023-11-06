@@ -70,10 +70,10 @@ __attribute__((used)) static unsigned long rev(unsigned long v) {
     v = ((v >> s) & mask) | ((v << s) & ~mask);
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 63 :");
+  printf("Number of counters: 1\n");
+  printf("At line 63 :");
   printf(" v\n");
+  printf("Nesting depth: 1\n");
   printf("%ld %d\n", tempv, counterrev0);
   return v;
 }

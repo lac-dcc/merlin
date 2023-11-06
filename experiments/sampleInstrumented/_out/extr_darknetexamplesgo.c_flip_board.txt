@@ -1,26 +1,26 @@
-Maximum nesting depth: 1
-Number of loops: 1
-at line 58 :
+Number of counters: 1
+At line 58 :
+Nesting depth: 1
 361
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 58 :
+Number of counters: 1
+At line 58 :
+Nesting depth: 1
 361
 
 end
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 58 :
+Number of counters: 1
+At line 58 :
+Nesting depth: 1
 361
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 58 :
+Number of counters: 1
+At line 58 :
+Nesting depth: 1
 361
 
 end

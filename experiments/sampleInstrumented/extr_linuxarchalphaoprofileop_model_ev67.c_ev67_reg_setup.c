@@ -119,10 +119,10 @@ __attribute__((used)) static void ev67_reg_setup(struct op_register_config *reg,
   reg->reset_values = reset;
   reg->need_reset = need_reset;
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 101 :");
+  printf("Number of counters: 1\n");
+  printf("At line 101 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterev67_reg_setup0);
 }
 

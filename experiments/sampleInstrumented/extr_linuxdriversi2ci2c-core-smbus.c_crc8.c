@@ -71,10 +71,10 @@ __attribute__((used)) static u8 crc8(u16 data) {
     data = data << 1;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 64 :");
+  printf("Number of counters: 1\n");
+  printf("At line 64 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", countercrc80);
   return (u8)(data >> 8);
 }

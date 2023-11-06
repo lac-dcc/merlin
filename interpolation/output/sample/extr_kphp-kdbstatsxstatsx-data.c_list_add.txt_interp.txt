@@ -1,4 +1,0 @@
-at line 63 : cnt
-x: cnt
-F(x) = x
-

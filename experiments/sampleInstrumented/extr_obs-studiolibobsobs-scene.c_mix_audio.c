@@ -71,10 +71,10 @@ __attribute__((used)) static inline void mix_audio(float *p_out, float *p_in,
     *(out++) += *(in++);
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 63 :");
+  printf("Number of counters: 1\n");
+  printf("At line 63 :");
   printf(" p_in pos count\n");
+  printf("Nesting depth: 1\n");
   printf("%f %ld %ld %d\n", *tempp_in, temppos, tempcount, countermix_audio0);
 }
 

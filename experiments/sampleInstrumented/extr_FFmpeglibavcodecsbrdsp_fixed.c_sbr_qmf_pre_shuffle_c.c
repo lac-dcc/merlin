@@ -65,10 +65,10 @@ __attribute__((used)) static void sbr_qmf_pre_shuffle_c(int *z) {
     z[64 + 2 * k + 1] = z[k + 1];
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 60 :");
+  printf("Number of counters: 1\n");
+  printf("At line 60 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", countersbr_qmf_pre_shuffle_c0);
 }
 

@@ -65,10 +65,10 @@ u8 ixgbe_calculate_checksum(u8 *buffer, u32 length) {
 
   if (!buffer) {
 
-    printf("Maximum nesting depth: 1\n");
-    printf("Number of loops: 1\n");
-    printf("at line 66 :");
+    printf("Number of counters: 1\n");
+    printf("At line 66 :");
     printf(" length\n");
+    printf("Nesting depth: 1\n");
     printf("%ld %d\n", templength, counterixgbe_calculate_checksum0);
     return 0;
   }
@@ -78,10 +78,10 @@ u8 ixgbe_calculate_checksum(u8 *buffer, u32 length) {
     sum += buffer[i];
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 66 :");
+  printf("Number of counters: 1\n");
+  printf("At line 66 :");
   printf(" length\n");
+  printf("Nesting depth: 1\n");
   printf("%ld %d\n", templength, counterixgbe_calculate_checksum0);
   return (u8)(0 - sum);
 }

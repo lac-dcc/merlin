@@ -1,4 +1,0 @@
-at line 72 : sc
-x: sc
-F(x) = 1
-

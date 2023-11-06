@@ -109,12 +109,13 @@ uwb_rsv_fill_column_alloc(struct uwb_rsv_alloc_info *ai) {
     }
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 2\n");
-  printf("at line 83 :");
+  printf("Number of counters: 2\n");
+  printf("At line 83 :");
   printf(" ai\n");
-  printf("at line 88 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 88 :");
   printf(" ai\n");
+  printf("Nesting depth: 2\n");
   printf(" %d\n", *tempai, counteruwb_rsv_fill_column_alloc0);
   printf(" %d\n", *tempai, counteruwb_rsv_fill_column_alloc1);
 }

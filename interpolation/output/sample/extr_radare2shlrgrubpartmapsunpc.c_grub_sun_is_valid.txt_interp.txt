@@ -1,4 +1,0 @@
-at line 66 : label
-x: label
-F(x) = 1
-

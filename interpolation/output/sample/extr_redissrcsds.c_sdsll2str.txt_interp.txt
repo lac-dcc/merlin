@@ -1,5 +1,0 @@
-No variables identified!
-at line 79 : s
-x: s
-F(x) = inf*(x - 2)*(x - 1) - 2*x + 5
-

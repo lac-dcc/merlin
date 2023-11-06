@@ -1,39 +1,44 @@
-Maximum nesting depth: 2
-Number of loops: 2
-at line 63 : ms
-at line 62 : ms
+Number of counters: 2
+At line 63 : ms
+Nesting depth: 2
+At line 62 : ms
+Nesting depth: 1
 100 500000
 100 100
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 63 : ms
-at line 62 : ms
+Number of counters: 2
+At line 63 : ms
+Nesting depth: 2
+At line 62 : ms
+Nesting depth: 1
 255 1275000
 255 255
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 63 : ms
-at line 62 : ms
+Number of counters: 2
+At line 63 : ms
+Nesting depth: 2
+At line 62 : ms
+Nesting depth: 1
 10 50000
 10 10
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 63 : ms
-at line 62 : ms
+Number of counters: 2
+At line 63 : ms
+Nesting depth: 2
+At line 62 : ms
+Nesting depth: 1
 150 750000
 150 150
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 63 : ms
-at line 62 : ms
+Number of counters: 2
+At line 63 : ms
+Nesting depth: 2
+At line 62 : ms
+Nesting depth: 1
 200 1000000
 200 200
 

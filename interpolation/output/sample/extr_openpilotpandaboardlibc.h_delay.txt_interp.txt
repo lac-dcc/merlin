@@ -1,4 +1,0 @@
-at line 60 : a
-x: a
-F(x) = 1
-

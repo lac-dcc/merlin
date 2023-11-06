@@ -63,19 +63,19 @@ int ok_cp1251(char *s, int n) {
     counterok_cp12510++;
     if (s[i] == (char)0x98) {
 
-      printf("Maximum nesting depth: 1\n");
-      printf("Number of loops: 1\n");
-      printf("at line 58 :");
+      printf("Number of counters: 1\n");
+      printf("At line 58 :");
       printf(" n\n");
+      printf("Nesting depth: 1\n");
       printf("%d %d\n", tempn, counterok_cp12510);
       return 0;
     }
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 58 :");
+  printf("Number of counters: 1\n");
+  printf("At line 58 :");
   printf(" n\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempn, counterok_cp12510);
   return 1;
 }

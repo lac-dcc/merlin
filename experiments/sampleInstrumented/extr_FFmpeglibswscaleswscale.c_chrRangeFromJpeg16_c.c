@@ -72,10 +72,10 @@ chrRangeFromJpeg16_c(int16_t *_dstU, int16_t *_dstV, int width) {
     dstV[i] = (dstV[i] * 1799 + (4081085 << 4)) >> 11; // 1469
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 65 :");
+  printf("Number of counters: 1\n");
+  printf("At line 65 :");
   printf(" width\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempwidth, counterchrRangeFromJpeg16_c0);
 }
 

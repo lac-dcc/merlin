@@ -71,10 +71,10 @@ __attribute__((used)) static void blend_vline(uint8_t *dst, int height,
     dst += linesize * step;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 62 :");
+  printf("Number of counters: 1\n");
+  printf("At line 62 :");
   printf(" step height\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d %d\n", tempstep, tempheight, counterblend_vline0);
 }
 

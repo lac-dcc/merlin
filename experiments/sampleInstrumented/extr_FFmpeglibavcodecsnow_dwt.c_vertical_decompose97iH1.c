@@ -72,10 +72,10 @@ vertical_decompose97iH1(DWTELEM *b0, DWTELEM *b1, DWTELEM *b2, int width) {
     b1[i] += (W_CM * (b0[i] + b2[i]) + W_CO) >> W_CS;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 66 :");
+  printf("Number of counters: 1\n");
+  printf("At line 66 :");
   printf(" width\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempwidth, countervertical_decompose97iH10);
 }
 

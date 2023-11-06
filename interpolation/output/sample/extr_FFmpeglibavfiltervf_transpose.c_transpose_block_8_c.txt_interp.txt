@@ -1,7 +1,0 @@
-at line 64 : h
-x: h
-F(x) = -inf*(x - 255)*(x - 10) + x
-
-at line 65 : w
-x: w
-F(x) = nan

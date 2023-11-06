@@ -56,8 +56,8 @@ typedef int int16_t;
 
 __attribute__((used)) static void
 rv34_inv_transform_dc_noround_c(int16_t *block) {
-  unsigned counterrv34_inv_transform_dc_noround_c1 = 0;
   unsigned counterrv34_inv_transform_dc_noround_c0 = 0;
+  unsigned counterrv34_inv_transform_dc_noround_c1 = 0;
 
   int16_t dc = (13 * 13 * 3 * block[0]) >> 11;
   int i, j;
@@ -70,14 +70,15 @@ rv34_inv_transform_dc_noround_c(int16_t *block) {
     }
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 2\n");
-  printf("at line 63 :");
+  printf("Number of counters: 2\n");
+  printf("At line 62 :");
   printf("\n");
-  printf("at line 62 :");
+  printf("Nesting depth: 1\n");
+  printf("At line 63 :");
   printf("\n");
-  printf("%d\n", counterrv34_inv_transform_dc_noround_c1);
+  printf("Nesting depth: 2\n");
   printf("%d\n", counterrv34_inv_transform_dc_noround_c0);
+  printf("%d\n", counterrv34_inv_transform_dc_noround_c1);
 }
 
 // ------------------------------------------------------------------------- //

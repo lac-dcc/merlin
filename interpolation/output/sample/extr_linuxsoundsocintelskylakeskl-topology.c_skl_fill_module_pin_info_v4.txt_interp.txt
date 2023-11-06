@@ -1,4 +1,0 @@
-at line 80 : max_pin
-x: max_pin
-F(x) = nan
-

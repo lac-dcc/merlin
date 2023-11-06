@@ -82,10 +82,10 @@ __attribute__((used)) static char *print_flags(struct cris_disasm_data *disdata,
     }
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 76 :");
+  printf("Number of counters: 1\n");
+  printf("At line 76 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterprint_flags0);
   return cp;
 }

@@ -68,10 +68,10 @@ __attribute__((used)) static size_t stbds_log2(size_t slot_count) {
     ++n;
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 61 :");
+  printf("Number of counters: 1\n");
+  printf("At line 61 :");
   printf(" slot_count\n");
+  printf("Nesting depth: 1\n");
   printf("%ld %d\n", tempslot_count, counterstbds_log20);
   return n;
 }

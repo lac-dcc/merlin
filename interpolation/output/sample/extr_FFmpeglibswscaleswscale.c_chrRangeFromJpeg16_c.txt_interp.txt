@@ -1,4 +1,0 @@
-at line 65 : width
-x: width
-F(x) = x
-

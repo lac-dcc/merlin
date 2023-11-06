@@ -1,8 +1,0 @@
-at line 63 : base
-x: base
-F(x) = 2
-
-at line 60 : base
-x: base
-F(x) = 1
-

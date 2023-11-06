@@ -1,4 +1,0 @@
-at line 60 : N
-x: N
-F(x) = x
-

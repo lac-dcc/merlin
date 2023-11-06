@@ -75,12 +75,13 @@ transpose_block_8_c(uint8_t *src, ptrdiff_t src_linesize, uint8_t *dst,
     }
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 2\n");
-  printf("at line 65 :");
+  printf("Number of counters: 2\n");
+  printf("At line 65 :");
   printf(" w h\n");
-  printf("at line 64 :");
+  printf("Nesting depth: 2\n");
+  printf("At line 64 :");
   printf(" h\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d %d\n", tempw, temph, countertranspose_block_8_c1);
   printf("%d %d\n", temph, countertranspose_block_8_c0);
 }

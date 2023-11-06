@@ -1,30 +1,30 @@
-Maximum nesting depth: 1
-Number of loops: 1
-at line 63 : p_in pos count
+Number of counters: 1
+At line 63 : p_in pos count
+Nesting depth: 1
 16777216.000000 255 255 255
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 63 : p_in pos count
+Number of counters: 1
+At line 63 : p_in pos count
+Nesting depth: 1
 16777216.000000 10 10 10
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 63 : p_in pos count
+Number of counters: 1
+At line 63 : p_in pos count
+Nesting depth: 1
 16777216.000000 100 100 100
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 63 : p_in pos count
+Number of counters: 1
+At line 63 : p_in pos count
+Nesting depth: 1
 16777216.000000 150 150 150
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 63 : p_in pos count
+Number of counters: 1
+At line 63 : p_in pos count
+Nesting depth: 1
 16777216.000000 200 200 200
 
 end

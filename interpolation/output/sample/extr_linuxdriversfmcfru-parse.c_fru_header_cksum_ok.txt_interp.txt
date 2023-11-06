@@ -1,4 +1,0 @@
-at line 65 : header
-x: header
-F(x) = 4
-

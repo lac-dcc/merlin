@@ -66,10 +66,10 @@ void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY) {
     Y[i * INCY] += ALPHA * X[i * INCX];
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 60 :");
+  printf("Number of counters: 1\n");
+  printf("At line 60 :");
   printf(" N\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempN, counteraxpy_cpu0);
 }
 

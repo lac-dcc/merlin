@@ -71,12 +71,13 @@ void mp_hal_delay_ms(mp_uint_t ms) {
     }
   }
 
-  printf("Maximum nesting depth: 2\n");
-  printf("Number of loops: 2\n");
-  printf("at line 63 :");
+  printf("Number of counters: 2\n");
+  printf("At line 63 :");
   printf(" ms\n");
-  printf("at line 62 :");
+  printf("Nesting depth: 2\n");
+  printf("At line 62 :");
   printf(" ms\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempms, countermp_hal_delay_ms1);
   printf("%d %d\n", tempms, countermp_hal_delay_ms0);
 }

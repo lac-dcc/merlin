@@ -1,30 +1,30 @@
-Maximum nesting depth: 1
-Number of loops: 1
-at line 61 : val
+Number of counters: 1
+At line 61 : val
+Nesting depth: 1
 100 3
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 61 : val
+Number of counters: 1
+At line 61 : val
+Nesting depth: 1
 255 8
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 61 : val
+Number of counters: 1
+At line 61 : val
+Nesting depth: 1
 10 2
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 61 : val
+Number of counters: 1
+At line 61 : val
+Nesting depth: 1
 150 4
 
 end
-Maximum nesting depth: 1
-Number of loops: 1
-at line 61 : val
+Number of counters: 1
+At line 61 : val
+Nesting depth: 1
 200 3
 
 end

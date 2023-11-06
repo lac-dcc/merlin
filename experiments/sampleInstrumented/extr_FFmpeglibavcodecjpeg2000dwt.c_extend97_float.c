@@ -65,10 +65,10 @@ __attribute__((used)) static inline void extend97_float(float *p, int i0,
     p[i1 + i - 1] = p[i1 - i - 1];
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 60 :");
+  printf("Number of counters: 1\n");
+  printf("At line 60 :");
   printf("\n");
+  printf("Nesting depth: 1\n");
   printf("%d\n", counterextend97_float0);
 }
 

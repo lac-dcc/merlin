@@ -62,10 +62,10 @@ __attribute__((used)) static void list_add(int *a, int *b, int cnt) {
 
   if (!a || !b) {
 
-    printf("Maximum nesting depth: 1\n");
-    printf("Number of loops: 1\n");
-    printf("at line 63 :");
+    printf("Number of counters: 1\n");
+    printf("At line 63 :");
     printf(" cnt\n");
+    printf("Nesting depth: 1\n");
     printf("%d %d\n", tempcnt, counterlist_add0);
     return;
   }
@@ -75,10 +75,10 @@ __attribute__((used)) static void list_add(int *a, int *b, int cnt) {
     a[i] += b[i];
   }
 
-  printf("Maximum nesting depth: 1\n");
-  printf("Number of loops: 1\n");
-  printf("at line 63 :");
+  printf("Number of counters: 1\n");
+  printf("At line 63 :");
   printf(" cnt\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempcnt, counterlist_add0);
 }
 

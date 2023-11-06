@@ -1,4 +1,0 @@
-at line 68 : chanset_size
-x: chanset_size
-F(x) = x
-

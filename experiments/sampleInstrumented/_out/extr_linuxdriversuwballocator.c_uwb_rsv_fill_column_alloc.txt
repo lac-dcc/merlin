@@ -1,40 +1,45 @@
-Maximum nesting depth: 2
-Number of loops: 2
-at line 83 : ai
-at line 88 : ai
- -674942304
- -674942304
+Number of counters: 2
+At line 83 : ai
+Nesting depth: 1
+At line 88 : ai
+Nesting depth: 2
+ 1572496032
+ 1572496032
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 83 : ai
-at line 88 : ai
- -1308747536
- -1308747536
+Number of counters: 2
+At line 83 : ai
+Nesting depth: 1
+At line 88 : ai
+Nesting depth: 2
+ -922486544
+ -922486544
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 83 : ai
-at line 88 : ai
- 815620768
- 815620768
+Number of counters: 2
+At line 83 : ai
+Nesting depth: 1
+At line 88 : ai
+Nesting depth: 2
+ -1245724000
+ -1245724000
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 83 : ai
-at line 88 : ai
- -605302112
- -605302112
+Number of counters: 2
+At line 83 : ai
+Nesting depth: 1
+At line 88 : ai
+Nesting depth: 2
+ 44565152
+ 44565152
 
 end
-Maximum nesting depth: 2
-Number of loops: 2
-at line 83 : ai
-at line 88 : ai
- -399666528
- -399666528
+Number of counters: 2
+At line 83 : ai
+Nesting depth: 1
+At line 88 : ai
+Nesting depth: 2
+ -1758960992
+ -1758960992
 
 end
