@@ -35,7 +35,6 @@ int main() {
       interpVars[i].push_back(name);
     }
   }
-
   for (int i = 0; i < numPoints; i++) {
     for (int j = 0; j < numInterp; j++) {
       double xi, yi, zi, fi;
@@ -74,7 +73,8 @@ int main() {
       return 0;
     }
     if (numVars == 0) {
-      cout << "This program runs in constant time. Constant Factor: " << fValues[i][0] << endl;
+      cout << originLines[i] << endl;
+      cout << "This path runs in constant time. Constant Factor: " << fValues[i][0] << endl;
     } else if (numVars == 1) {
       Interpolator interp(xValues[i], fValues[i]);
       cout << originLines[i] << endl;
@@ -83,12 +83,14 @@ int main() {
       cout << interp.interpolate() << endl << endl;
     } else if (numVars == 2) {
       Interpolator interp(xValues[i], yValues[i], fValues[i]);
+      cout << originLines[i] << endl;
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
       cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else if (numVars == 3) {
       Interpolator interp(xValues[i], yValues[i], zValues[i], fValues[i]);
+      cout << originLines[i] << endl;
       cout << "x: " << interpVars[i][0] << endl;
       cout << "y: " << interpVars[i][1] << endl;
       cout << "z: " << interpVars[i][2] << endl;

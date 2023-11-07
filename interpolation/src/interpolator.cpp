@@ -75,8 +75,10 @@ std::string Interpolator::newtonDividedDifference() {
       formula << ")";
     }
   }
-
-  std::string command = "python3 reduce.py \"" + formula.str() + "\"";
+  std::string formula_str =  formula.str();
+  if (formula_str.empty()) formula_str = "0";
+  
+  std::string command = "python3 reduce.py \"" + formula_str + "\"";
   std::ostringstream result_stream;
   FILE* pipe = popen(command.c_str(), "r");
   if (!pipe) {
@@ -88,8 +90,8 @@ std::string Interpolator::newtonDividedDifference() {
     result_stream << buffer;
   }
   pclose(pipe);
-
   std::string result = result_stream.str();
+
   if (!result.empty() && result[result.length() - 1] == '\n') {
     result.erase(result.length() - 1);
   }
