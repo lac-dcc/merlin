@@ -4,10 +4,6 @@ This scripts compiles and runs programs from a directory that contains
 instrumented Jotai programs and counts the number of counters that were inserted
 by Merlin.
 
-All Jotai benchmarks can receive arguments from 0 to 5. The script tries all the
-possible arguments and saves the outputs in a separate text file. These outputs
-can be used by Merlin's interpolation.
-
 Usage:
     python countCounters.py <sample_dir>
 
@@ -45,9 +41,9 @@ if __name__ == '__main__':
                     shell=True, capture_output=True, text=True, encoding='unicode_escape').stdout
         lines = out.split('\n')
         if lines[0].strip() == 'Usage:':
-            break
+            continue
 
-        counters += int(lines[0])
+        counters += int(lines[0].split(': ')[1])
     
     print(f'NUMBER OF PROGRAMS: {len(programs)}')
     print(f'NUMBER OF COUNTERS: {counters}')
