@@ -1,38 +1,38 @@
 Number of counters: 2
-At line 63 :
-Nesting depth: 2
 At line 62 :
 Nesting depth: 1
-16
+At line 63 :
+Nesting depth: 2
 4
+16
 
 end
 
 end
 Number of counters: 2
-At line 63 :
-Nesting depth: 2
 At line 62 :
 Nesting depth: 1
-16
+At line 63 :
+Nesting depth: 2
 4
+16
 
 end
 Number of counters: 2
-At line 63 :
-Nesting depth: 2
 At line 62 :
 Nesting depth: 1
-16
+At line 63 :
+Nesting depth: 2
 4
+16
 
 end
 Number of counters: 2
-At line 63 :
-Nesting depth: 2
 At line 62 :
 Nesting depth: 1
-16
+At line 63 :
+Nesting depth: 2
 4
+16
 
 end

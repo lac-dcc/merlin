@@ -1,0 +1,9 @@
+1
+5
+At line 61 : slot_count
+Nesting depth: 1
+100 6
+255 7
+10 3
+150 7
+200 7

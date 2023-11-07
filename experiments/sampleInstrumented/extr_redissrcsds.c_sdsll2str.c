@@ -54,11 +54,11 @@ typedef int bool;
 /* Variables and functions */
 
 int sdsll2str(char *s, long long value) {
-  unsigned countersdsll2str0 = 0;
   unsigned countersdsll2str1 = 0;
+  unsigned countersdsll2str0 = 0;
 
-  long long tempvalue = value;
   char *temps = s;
+  long long tempvalue = value;
 
   char *p, aux;
   unsigned long long v;
@@ -93,14 +93,14 @@ int sdsll2str(char *s, long long value) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 65 :");
-  printf(" value\n");
-  printf("Nesting depth: 1\n");
   printf("At line 79 :");
   printf(" s\n");
   printf("Nesting depth: 1\n");
-  printf(" %d\n", tempvalue, countersdsll2str0);
+  printf("At line 65 :");
+  printf(" value\n");
+  printf("Nesting depth: 1\n");
   printf("%c %d\n", *temps, countersdsll2str1);
+  printf(" %d\n", tempvalue, countersdsll2str0);
   return l;
 }
 

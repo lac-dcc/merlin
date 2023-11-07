@@ -56,8 +56,8 @@ typedef int uint16_t;
 /* Variables and functions */
 
 __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
-  unsigned countercrc160 = 0;
   unsigned countercrc161 = 0;
+  unsigned countercrc160 = 0;
 
   unsigned int templen = len;
 
@@ -79,14 +79,14 @@ __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 62 :");
-  printf(" len\n");
-  printf("Nesting depth: 1\n");
   printf("At line 64 :");
   printf(" len\n");
   printf("Nesting depth: 2\n");
-  printf("%u %d\n", templen, countercrc160);
+  printf("At line 62 :");
+  printf(" len\n");
+  printf("Nesting depth: 1\n");
   printf("%u %d\n", templen, countercrc161);
+  printf("%u %d\n", templen, countercrc160);
   return crc;
 }
 

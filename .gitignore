@@ -7,4 +7,4 @@ instrumentation/*.csv
 instrumentation/exp_*
 interpolation/obj/
 interpolation/bin/
-interpolation/input/
+
