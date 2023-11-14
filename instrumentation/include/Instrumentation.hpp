@@ -1,6 +1,7 @@
 #ifndef INSTRUMENTATION_H
 #define INSTRUMENTATION_H
 
+#include "Loop.hpp"
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Frontend/CompilerInstance.h"
@@ -11,6 +12,7 @@
 #include "llvm/ADT/SmallVector.h"
 #include <string>
 #include <unordered_map>
+#include <memory>
 
 /**
  * \class InsertPrintVisitor
@@ -92,11 +94,6 @@ public:
  */
 class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
 public:
-  /**
-   * \brief Constructor method.
-   * \param context ASTContext to be used by the visitor.
-   * \param rewriter Object use to rewrite the code and add instrumentation.
-   */
   explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter, bool ignoreNonNewton)
       : context(context), rewriter(rewriter), ignoreNonNewton(ignoreNonNewton) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
@@ -128,16 +125,13 @@ private:
   llvm::DenseMap<clang::Stmt*, std::string> counters;
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
 
-  llvm::DenseMap<clang::Stmt*, u_int32_t> nestingDepth;   ///< Map that associates loops with ther nesting depth
-  llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
-  llvm::SmallSet<clang::Stmt*, 3> visitedLoops;           ///< Set of visited loops.
+  /// @brief Map that associates a loop statement node with its Loop object.
+  llvm::DenseMap<clang::Stmt*, std::shared_ptr<Loop>> loopMap;
 
   llvm::SmallSet<clang::IfStmt*, 3> visitedIfs; ///< Set of visited if statements.
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
-  /// @brief Map that associates a loop with all function parameters that control it.
-  llvm::DenseMap<clang::Stmt*, llvm::SmallSet<clang::ParmVarDecl*, 3>> controlVariables;
 
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
@@ -152,19 +146,23 @@ private:
   std::string getPrintString();
 
   /**
-   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
+   * \brief Gets all controlling variables for a given loop that appear in a statement
+   * and updates the loop's controlVariables set.
    * \param node Statement being considered.
+   * \param loop Loop object to.
    */
-  void getControlVars(clang::Stmt* node, clang::Stmt* loop);
+  void getControlVars(clang::Stmt* node, std::shared_ptr<Loop> loop);
 
   /**
-   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
-   * \param node Statement being considered.
+   * \brief Gets all controlling variables from a loop's parent and updates the child's
+   * controlVariables set.
+   * \param loop Loop to be considered.
    */
-  void getParentControlVars(clang::Stmt* loop);
+  void getParentControlVars(std::shared_ptr<Loop> loop);
 
   /**
    * \brief Determines if a Stmt node is a loop.
+   * \param stmt Statement being considered.
    *
    * \return Boolean value that indicates whether the node is a loop.
    */

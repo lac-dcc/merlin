@@ -92,7 +92,7 @@ std::string InstrumentationVisitor::getPrintString() {
     std::string format = "";
     std::string variables = "";
     std::string originalNames = "";
-    for (ParmVarDecl* controlParam : this->controlVariables[loop]) {
+    for (ParmVarDecl* controlParam : this->loopMap[loop]->controlVariables) {
       std::string paramName = controlParam->getNameAsString();
       originalNames += " " + paramName;
 
@@ -113,7 +113,7 @@ std::string InstrumentationVisitor::getPrintString() {
 
     counters += "printf(\"" + format + "\\n\", " + variables + ");\n";
     header += "printf(\"" + originalNames + "\\n\");\n";
-    header += "printf(\"Nesting depth: " + std::to_string(this->nestingDepth[loop]) + "\\n\");\n";
+    header += "printf(\"Nesting depth: " + std::to_string(this->loopMap[loop]->nestingDepth) + "\\n\");\n";
   }
 
   return header + counters;
@@ -123,12 +123,12 @@ void InstrumentationVisitor::addTempVariables() {
   std::string tempVariables = "\n";
   DenseMap<ParmVarDecl*, bool> added;
 
-  for (auto const& [_, controlParams] : this->controlVariables) {
-    for (ParmVarDecl* controlParam : controlParams) {
-      if (added.find(controlParam) == added.end()) {
-        added[controlParam] = true;
-        std::string name = controlParam->getNameAsString();
-        tempVariables += controlParam->getType().getAsString() + " temp" + name + " = " + name + ";\n";
+  for (auto const& [_, loop] : this->loopMap) {
+    for (ParmVarDecl* controlVar : loop->controlVariables) {
+      if (added.find(controlVar) == added.end()) {
+        added[controlVar] = true;
+        std::string name = controlVar->getNameAsString();
+        tempVariables += controlVar->getType().getAsString() + " temp" + name + " = " + name + ";\n";
       }
     }
   }
@@ -181,8 +181,83 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
   return true;
 }
 
-bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
-  return isa<ForStmt>(stmt) || isa<WhileStmt>(stmt) || isa<DoStmt>(stmt);
+bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
+  SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
+  bool isValidLoop = this->visitLoop(whileStmt, bodyLoc);
+  if (this->ignoreNonNewton && !isValidLoop)
+    return false;
+
+  this->getControlVars(whileStmt->getCond(), this->loopMap[whileStmt]);
+
+  return true;
+}
+
+bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
+  SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
+  bool isValidLoop = this->visitLoop(doStmt, bodyLoc);
+  if (this->ignoreNonNewton && !isValidLoop)
+    return false;
+
+  this->getControlVars(doStmt->getCond(), this->loopMap[doStmt]);
+
+  return true;
+}
+
+bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
+  SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
+  bool isValidLoop = this->visitLoop(forStmt, bodyLoc);
+  if (this->ignoreNonNewton && !isValidLoop)
+    return false;
+
+  if (Stmt* init = forStmt->getInit())
+    this->getControlVars(init, this->loopMap[forStmt]);
+
+  if (Expr* cond = forStmt->getCond())
+    this->getControlVars(cond, this->loopMap[forStmt]);
+
+  return true;
+}
+
+void InstrumentationVisitor::getControlVars(Stmt* node, std::shared_ptr<Loop> loop) {
+  for (auto* child : node->children()) {
+    if (!child)
+      continue;
+
+    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
+      NamedDecl* decl = refExpr->getFoundDecl();
+      if (this->paramRefs.find(decl) != this->paramRefs.end()) {
+        for (ParmVarDecl* param : this->paramRefs[decl]) {
+          loop->controlVariables.insert(param);
+        }
+      }
+    }
+
+    this->getControlVars(child, loop);
+  }
+}
+
+bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
+  if (this->loopMap.find(loop) == this->loopMap.end()) {
+    auto loopPtr = std::make_shared<Loop>(1);
+    this->loopMap[loop] = loopPtr;
+
+    bool isValidLoop = this->validateLoop(loop, loop, 1);
+    if (this->ignoreNonNewton && !isValidLoop)
+      return false;
+  }
+
+  this->getParentControlVars(this->loopMap[loop]);
+
+  // Add counter increment if this loop is within the target function
+  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
+    std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
+    this->counters[loop] = counter;
+
+    std::string increment = "\n" + counter + "++;";
+    this->rewriter->InsertTextAfterToken(bodyLoc, increment);
+  }
+
+  return true;
 }
 
 bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32_t nestingDepth) {
@@ -194,10 +269,9 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32
     u_int32_t nextNestingDepth = nestingDepth;
     if (this->isLoop(child)) {
       nextNestingDepth++;
-      this->nestingDepth[child] = nextNestingDepth;
 
-      this->parentLoops[child] = loop;
-      this->visitedLoops.insert(child);
+      auto childLoop = std::make_shared<Loop>(nextNestingDepth, this->loopMap[loop]);
+      this->loopMap[child] = childLoop;
 
       lastLoop = child;
     }
@@ -215,86 +289,27 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32
   return true;
 }
 
-bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
-  if (!this->visitedLoops.contains(loop)) {
-    this->nestingDepth[loop] = 1;
-    this->visitedLoops.insert(loop);
-
-    bool isValidLoop = this->validateLoop(loop, loop, 1);
-    if (this->ignoreNonNewton && !isValidLoop)
-      return false;
-  }
-
-  this->getParentControlVars(loop);
-
-  // Add counter increment if this loop is within the target function
-  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
-    std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
-    this->counters[loop] = counter;
-
-    std::string increment = "\n" + counter + "++;";
-    this->rewriter->InsertTextAfterToken(bodyLoc, increment);
-  }
-
-  return true;
+bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
+  return isa<ForStmt>(stmt) || isa<WhileStmt>(stmt) || isa<DoStmt>(stmt);
 }
 
-void InstrumentationVisitor::getControlVars(Stmt* node, Stmt* loop) {
-  for (auto* child : node->children()) {
-    if (!child)
-      continue;
-
-    if (auto* refExpr = dyn_cast<DeclRefExpr>(child)) {
-      NamedDecl* decl = refExpr->getFoundDecl();
-      if (this->paramRefs.find(decl) != this->paramRefs.end()) {
-        for (ParmVarDecl* param : this->paramRefs[decl]) {
-          this->controlVariables[loop].insert(param);
-        }
-      }
-    }
-
-    this->getControlVars(child, loop);
-  }
-}
-
-void InstrumentationVisitor::getParentControlVars(Stmt* loop) {
-  if (this->parentLoops.find(loop) == this->parentLoops.end())
+void InstrumentationVisitor::getParentControlVars(std::shared_ptr<Loop> loop) {
+  if (loop->parent == nullptr)
     return;
 
-  Stmt* parentLoop = this->parentLoops[loop];
-  for (ParmVarDecl* controlVar : this->controlVariables[parentLoop]) {
-    this->controlVariables[loop].insert(controlVar);
+  const auto& parentControlVars = loop->parent->controlVariables;
+  for (ParmVarDecl* controlVar : parentControlVars) {
+    loop->controlVariables.insert(controlVar);
   }
 }
 
-bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
-  this->getControlVars(whileStmt->getCond(), whileStmt);
+bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
+  if (!this->ignoreNonNewton || this->visitedIfs.contains(ifStmt))
+    return true;
 
-  SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
-  return this->visitLoop(whileStmt, bodyLoc);
-}
+  this->visitedIfs.insert(ifStmt);
 
-bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
-  this->getControlVars(doStmt->getCond(), doStmt);
-
-  SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
-  return this->visitLoop(doStmt, bodyLoc);
-}
-
-bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
-  if (forStmt->getInit()) {
-    if (auto* binOp = dyn_cast<BinaryOperator>(forStmt->getInit())) {
-      this->VisitBinaryOperator(binOp);
-    } else {
-      this->getControlVars(forStmt->getInit(), forStmt);
-    }
-  }
-
-  if (Expr* cond = forStmt->getCond())
-    this->getControlVars(cond, forStmt);
-
-  SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
-  return this->visitLoop(forStmt, bodyLoc);
+  return this->validateIf(ifStmt);
 }
 
 bool InstrumentationVisitor::validateIf(Stmt* stmt) {
@@ -310,16 +325,6 @@ bool InstrumentationVisitor::validateIf(Stmt* stmt) {
   }
 
   return true;
-}
-
-bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
-  if (!this->ignoreNonNewton || this->visitedIfs.contains(ifStmt))
-    return true;
-
-  this->visitedIfs.insert(ifStmt);
-
-  bool isValidIf = this->validateIf(ifStmt);
-  return isValidIf;
 }
 
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
