@@ -85,14 +85,14 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string header = "";
   std::string counters = "";
 
-  header += "\nprintf(\"Number of counters: " + std::to_string(this->counters.size()) + "\\n\");\n";
-  for (auto const& [loop, counterName] : this->counters) {
-    header += "printf(\"At line " + std::to_string(srcMgr.getSpellingLineNumber(loop->getBeginLoc())) + " :\");\n";
+  header += "\nprintf(\"Number of counters: " + std::to_string(this->instrumentedLoops) + "\\n\");\n";
+  for (auto const& [loopNode, loop] : this->loopMap) {
+    header += "printf(\"At line " + std::to_string(srcMgr.getSpellingLineNumber(loopNode->getBeginLoc())) + " :\");\n";
 
     std::string format = "";
     std::string variables = "";
     std::string originalNames = "";
-    for (ParmVarDecl* controlParam : this->loopMap[loop]->controlVariables) {
+    for (ParmVarDecl* controlParam : loop->controlVariables) {
       std::string paramName = controlParam->getNameAsString();
       originalNames += " " + paramName;
 
@@ -109,11 +109,11 @@ std::string InstrumentationVisitor::getPrintString() {
     }
 
     format += "%d";
-    variables += counterName;
+    variables += loop->counterName;
 
     counters += "printf(\"" + format + "\\n\", " + variables + ");\n";
     header += "printf(\"" + originalNames + "\\n\");\n";
-    header += "printf(\"Nesting depth: " + std::to_string(this->loopMap[loop]->nestingDepth) + "\\n\");\n";
+    header += "printf(\"Nesting depth: " + std::to_string(loop->nestingDepth) + "\\n\");\n";
   }
 
   return header + counters;
@@ -165,8 +165,8 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
     // function
 
     std::string countersDecls = "";
-    for (auto const& [_, counterName] : this->counters) {
-      countersDecls += "unsigned " + counterName + " = 0;\n";
+    for (auto const& [_, loop] : this->loopMap) {
+      countersDecls += "unsigned " + loop->counterName + " = 0;\n";
     }
 
     if (auto* body = this->currFunc->getBody())
@@ -182,38 +182,62 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
 }
 
 bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
+  if (this->currFunc == nullptr || this->currFunc->getNameAsString() != this->functionName)
+    return true;
+
   SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
-  bool isValidLoop = this->visitLoop(whileStmt, bodyLoc);
+  bool isValidLoop = this->createAndInstrumentLoop(whileStmt, bodyLoc);
   if (this->ignoreNonNewton && !isValidLoop)
     return false;
 
-  this->getControlVars(whileStmt->getCond(), this->loopMap[whileStmt]);
+  auto loopPtr = this->loopMap[whileStmt];
+  this->getControlVars(whileStmt->getCond(), loopPtr);
+
+  loopPtr->verifyAndSetIsConstantLoop();
+  loopPtr->computeNestingDepth();
+  loopPtr->takeParentControlVars();
 
   return true;
 }
 
 bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
+  if (this->currFunc == nullptr || this->currFunc->getNameAsString() != this->functionName)
+    return true;
+
   SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
-  bool isValidLoop = this->visitLoop(doStmt, bodyLoc);
+  bool isValidLoop = this->createAndInstrumentLoop(doStmt, bodyLoc);
   if (this->ignoreNonNewton && !isValidLoop)
     return false;
 
-  this->getControlVars(doStmt->getCond(), this->loopMap[doStmt]);
+  auto loopPtr = this->loopMap[doStmt];
+  this->getControlVars(doStmt->getCond(), loopPtr);
+
+  loopPtr->verifyAndSetIsConstantLoop();
+  loopPtr->computeNestingDepth();
+  loopPtr->takeParentControlVars();
 
   return true;
 }
 
 bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
+  if (this->currFunc == nullptr || this->currFunc->getNameAsString() != this->functionName)
+    return true;
+
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
-  bool isValidLoop = this->visitLoop(forStmt, bodyLoc);
+  bool isValidLoop = this->createAndInstrumentLoop(forStmt, bodyLoc);
   if (this->ignoreNonNewton && !isValidLoop)
     return false;
 
+  auto loopPtr = this->loopMap[forStmt];
   if (Stmt* init = forStmt->getInit())
-    this->getControlVars(init, this->loopMap[forStmt]);
+    this->getControlVars(init, loopPtr);
 
   if (Expr* cond = forStmt->getCond())
-    this->getControlVars(cond, this->loopMap[forStmt]);
+    this->getControlVars(cond, loopPtr);
+  
+  loopPtr->verifyAndSetIsConstantLoop();
+  loopPtr->computeNestingDepth();
+  loopPtr->takeParentControlVars();
 
   return true;
 }
@@ -236,41 +260,35 @@ void InstrumentationVisitor::getControlVars(Stmt* node, std::shared_ptr<Loop> lo
   }
 }
 
-bool InstrumentationVisitor::visitLoop(Stmt* loop, SourceLocation& bodyLoc) {
+bool InstrumentationVisitor::createAndInstrumentLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (this->loopMap.find(loop) == this->loopMap.end()) {
-    auto loopPtr = std::make_shared<Loop>(1);
+    auto loopPtr = std::make_shared<Loop>(nullptr);
     this->loopMap[loop] = loopPtr;
 
-    bool isValidLoop = this->validateLoop(loop, loop, 1);
+    bool isValidLoop = this->validateLoop(loop, loop);
     if (this->ignoreNonNewton && !isValidLoop)
       return false;
   }
 
-  this->getParentControlVars(this->loopMap[loop]);
+  // Add counter increment to the loop
+  std::string counter = "counter" + this->functionName + std::to_string(this->instrumentedLoops);
+  this->instrumentedLoops++;
+  this->loopMap[loop]->counterName = counter;
 
-  // Add counter increment if this loop is within the target function
-  if (this->currFunc != nullptr && this->currFunc->getNameAsString() == this->functionName) {
-    std::string counter = "counter" + this->functionName + std::to_string(this->counters.size());
-    this->counters[loop] = counter;
-
-    std::string increment = "\n" + counter + "++;";
-    this->rewriter->InsertTextAfterToken(bodyLoc, increment);
-  }
+  std::string increment = "\n" + counter + "++;";
+  this->rewriter->InsertTextAfterToken(bodyLoc, increment);
 
   return true;
 }
 
-bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32_t nestingDepth) {
+bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop) {
   Stmt* lastLoop = loop;
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
 
-    u_int32_t nextNestingDepth = nestingDepth;
     if (this->isLoop(child)) {
-      nextNestingDepth++;
-
-      auto childLoop = std::make_shared<Loop>(nextNestingDepth, this->loopMap[loop]);
+      auto childLoop = std::make_shared<Loop>(this->loopMap[loop]);
       this->loopMap[child] = childLoop;
 
       lastLoop = child;
@@ -279,7 +297,7 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop, u_int32
     if (this->ignoreNonNewton && isa<ReturnStmt>(child))
       return false;
 
-    bool childIsValid = this->validateLoop(child, lastLoop, nextNestingDepth);
+    bool childIsValid = this->validateLoop(child, lastLoop);
     if (this->ignoreNonNewton && !childIsValid)
       return false;
 
@@ -293,17 +311,10 @@ bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
   return isa<ForStmt>(stmt) || isa<WhileStmt>(stmt) || isa<DoStmt>(stmt);
 }
 
-void InstrumentationVisitor::getParentControlVars(std::shared_ptr<Loop> loop) {
-  if (loop->parent == nullptr)
-    return;
-
-  const auto& parentControlVars = loop->parent->controlVariables;
-  for (ParmVarDecl* controlVar : parentControlVars) {
-    loop->controlVariables.insert(controlVar);
-  }
-}
-
 bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
+  if (this->currFunc == nullptr || this->currFunc->getNameAsString() != this->functionName)
+    return true;
+
   if (!this->ignoreNonNewton || this->visitedIfs.contains(ifStmt))
     return true;
 

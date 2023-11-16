@@ -121,9 +121,8 @@ public:
 private:
   clang::ASTContext* context; ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
-  /// @brief Vector with the names of the counters used for instrumentation.
-  llvm::DenseMap<clang::Stmt*, std::string> counters;
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
+  u_int32_t instrumentedLoops; ///< Counter for the number of instrumented loops.
 
   /// @brief Map that associates a loop statement node with its Loop object.
   llvm::DenseMap<clang::Stmt*, std::shared_ptr<Loop>> loopMap;
@@ -154,13 +153,6 @@ private:
   void getControlVars(clang::Stmt* node, std::shared_ptr<Loop> loop);
 
   /**
-   * \brief Gets all controlling variables from a loop's parent and updates the child's
-   * controlVariables set.
-   * \param loop Loop to be considered.
-   */
-  void getParentControlVars(std::shared_ptr<Loop> loop);
-
-  /**
    * \brief Determines if a Stmt node is a loop.
    * \param stmt Statement being considered.
    *
@@ -169,22 +161,21 @@ private:
   bool isLoop(clang::Stmt* stmt);
 
   /**
-   * \brief Auxiliary method used to visit loops and insert instrumentation.
-   * \param loop Loop being visited.
+   * \brief Auxiliary method used to create the Loop instance for a given loop
+   * and its children. It also validates the loop when needed.
+   * \param loop Loop being considered.
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
    */
-  bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
+  bool createAndInstrumentLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
 
   /**
    * \brief Recursive method used to validate if a loop is valid for instrumentation.
-   *        Also identifies nesting for this loop and all of its children loops.
    * \param stmt Statement being traversed.
    * \param loop Current outermost loop.
-   * \param nestingDepth Current loop nesting depth.
    *
    * \return Boolean value that indicates if the loop is valid
    */
-  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop, u_int32_t nestingDepth);
+  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop);
 
   /**
    * \brief Recursive method used to validate if an IfStmt is valid for instrumentation.
