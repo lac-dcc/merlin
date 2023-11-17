@@ -79,7 +79,7 @@ qeth_l3_convert_addr_to_bits(u8 *addr, u8 *bits, int len) {
   printf("Number of counters: 2\n");
   printf("At line 66 :");
   printf(" len\n");
-  printf("Nesting depth: 2\n");
+  printf("Nesting depth: 1\n");
   printf("At line 64 :");
   printf(" len\n");
   printf("Nesting depth: 1\n");

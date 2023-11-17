@@ -85,7 +85,7 @@ __attribute__((used)) static char *print_flags(struct cris_disasm_data *disdata,
   printf("Number of counters: 1\n");
   printf("At line 76 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterprint_flags0);
   return cp;
 }

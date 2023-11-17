@@ -74,7 +74,7 @@ __attribute__((used)) static u8 crc8(u16 data) {
   printf("Number of counters: 1\n");
   printf("At line 64 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", countercrc80);
   return (u8)(data >> 8);
 }

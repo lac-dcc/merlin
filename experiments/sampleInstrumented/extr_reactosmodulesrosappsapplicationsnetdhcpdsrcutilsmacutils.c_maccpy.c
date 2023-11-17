@@ -66,7 +66,7 @@ int maccpy(u8b dest[16], u8b source[16]) {
   printf("Number of counters: 1\n");
   printf("At line 59 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", countermaccpy0);
   return 0;
 }

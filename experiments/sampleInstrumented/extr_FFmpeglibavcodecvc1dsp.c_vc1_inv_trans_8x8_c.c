@@ -57,8 +57,8 @@ typedef int int16_t;
 /* Variables and functions */
 
 __attribute__((used)) static void vc1_inv_trans_8x8_c(int16_t block[64]) {
-  unsigned countervc1_inv_trans_8x8_c0 = 0;
   unsigned countervc1_inv_trans_8x8_c1 = 0;
+  unsigned countervc1_inv_trans_8x8_c0 = 0;
 
   int i;
   register int t1, t2, t3, t4, t5, t6, t7, t8;
@@ -129,14 +129,14 @@ __attribute__((used)) static void vc1_inv_trans_8x8_c(int16_t block[64]) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 66 :");
-  printf("\n");
-  printf("Nesting depth: 1\n");
   printf("At line 97 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
-  printf("%d\n", countervc1_inv_trans_8x8_c0);
+  printf("Nesting depth: 0\n");
+  printf("At line 66 :");
+  printf("\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", countervc1_inv_trans_8x8_c1);
+  printf("%d\n", countervc1_inv_trans_8x8_c0);
 }
 
 // ------------------------------------------------------------------------- //

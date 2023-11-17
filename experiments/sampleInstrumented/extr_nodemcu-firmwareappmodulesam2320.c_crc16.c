@@ -81,7 +81,7 @@ __attribute__((used)) static uint16_t crc16(uint8_t *ptr, unsigned int len) {
   printf("Number of counters: 2\n");
   printf("At line 64 :");
   printf(" len\n");
-  printf("Nesting depth: 2\n");
+  printf("Nesting depth: 1\n");
   printf("At line 62 :");
   printf(" len\n");
   printf("Nesting depth: 1\n");

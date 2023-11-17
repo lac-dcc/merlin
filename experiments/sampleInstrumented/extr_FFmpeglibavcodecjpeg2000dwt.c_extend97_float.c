@@ -68,7 +68,7 @@ __attribute__((used)) static inline void extend97_float(float *p, int i0,
   printf("Number of counters: 1\n");
   printf("At line 60 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterextend97_float0);
 }
 

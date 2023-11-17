@@ -87,7 +87,7 @@ __attribute__((used)) static struct unwind_table *find_table(unsigned long pc) {
   printf("Number of counters: 1\n");
   printf("At line 77 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterfind_table0);
   return table;
 }

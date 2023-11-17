@@ -68,7 +68,7 @@ void flip_board(float *board) {
   printf("Number of counters: 1\n");
   printf("At line 58 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterflip_board0);
 }
 

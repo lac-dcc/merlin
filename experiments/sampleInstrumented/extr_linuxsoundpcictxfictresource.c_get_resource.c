@@ -89,10 +89,10 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
     printf(" multi\n");
     printf("Nesting depth: 1\n");
     printf("At line 65 :");
-    printf(" amount\n");
+    printf(" multi amount\n");
     printf("Nesting depth: 1\n");
     printf("%u %d\n", tempmulti, counterget_resource1);
-    printf("%u %d\n", tempamount, counterget_resource0);
+    printf("%u %u %d\n", tempmulti, tempamount, counterget_resource0);
     return -ENOENT;
   }
 
@@ -112,10 +112,10 @@ __attribute__((used)) static int get_resource(u8 *rscs, unsigned int amount,
   printf(" multi\n");
   printf("Nesting depth: 1\n");
   printf("At line 65 :");
-  printf(" amount\n");
+  printf(" multi amount\n");
   printf("Nesting depth: 1\n");
   printf("%u %d\n", tempmulti, counterget_resource1);
-  printf("%u %d\n", tempamount, counterget_resource0);
+  printf("%u %u %d\n", tempmulti, tempamount, counterget_resource0);
   return 0;
 }
 

@@ -68,7 +68,7 @@ __attribute__((used)) static void sbr_qmf_pre_shuffle_c(int *z) {
   printf("Number of counters: 1\n");
   printf("At line 60 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", countersbr_qmf_pre_shuffle_c0);
 }
 

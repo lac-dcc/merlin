@@ -94,7 +94,7 @@ void rational_best_approximation(unsigned long given_numerator,
   printf("Number of counters: 1\n");
   printf("At line 67 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterrational_best_approximation0);
 }
 

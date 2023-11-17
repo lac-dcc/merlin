@@ -68,7 +68,7 @@ __attribute__((used)) static void stbi__jpeg_dequantize(short *data,
   printf("Number of counters: 1\n");
   printf("At line 61 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterstbi__jpeg_dequantize0);
 }
 

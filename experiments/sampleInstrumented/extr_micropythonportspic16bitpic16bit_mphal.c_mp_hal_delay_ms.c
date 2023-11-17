@@ -58,8 +58,8 @@ typedef int mp_uint_t;
 /* Variables and functions */
 
 void mp_hal_delay_ms(mp_uint_t ms) {
-  unsigned countermp_hal_delay_ms1 = 0;
   unsigned countermp_hal_delay_ms0 = 0;
+  unsigned countermp_hal_delay_ms1 = 0;
 
   mp_uint_t tempms = ms;
 
@@ -72,14 +72,14 @@ void mp_hal_delay_ms(mp_uint_t ms) {
   }
 
   printf("Number of counters: 2\n");
-  printf("At line 63 :");
-  printf(" ms\n");
-  printf("Nesting depth: 2\n");
   printf("At line 62 :");
   printf(" ms\n");
   printf("Nesting depth: 1\n");
-  printf("%d %d\n", tempms, countermp_hal_delay_ms1);
+  printf("At line 63 :");
+  printf(" ms\n");
+  printf("Nesting depth: 1\n");
   printf("%d %d\n", tempms, countermp_hal_delay_ms0);
+  printf("%d %d\n", tempms, countermp_hal_delay_ms1);
 }
 
 // ------------------------------------------------------------------------- //

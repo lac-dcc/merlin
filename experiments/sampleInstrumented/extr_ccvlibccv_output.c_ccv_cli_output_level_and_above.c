@@ -65,7 +65,7 @@ int ccv_cli_output_level_and_above(int level) {
     printf("Number of counters: 1\n");
     printf("At line 66 :");
     printf("\n");
-    printf("Nesting depth: 1\n");
+    printf("Nesting depth: 0\n");
     printf("%d\n", counterccv_cli_output_level_and_above0);
     return CCV_CLI_NONE;
   }
@@ -81,7 +81,7 @@ int ccv_cli_output_level_and_above(int level) {
   printf("Number of counters: 1\n");
   printf("At line 66 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterccv_cli_output_level_and_above0);
   return (int)levels;
 }

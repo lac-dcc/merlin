@@ -73,7 +73,7 @@ __attribute__((used)) static int swap_bits(int v) {
   printf("Number of counters: 1\n");
   printf("At line 62 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterswap_bits0);
   return r;
 }

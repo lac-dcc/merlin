@@ -71,7 +71,7 @@ __attribute__((used)) static void ctr128_inc(unsigned char *counter) {
   printf("Number of counters: 1\n");
   printf("At line 61 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterctr128_inc0);
 }
 

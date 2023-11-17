@@ -70,7 +70,7 @@ uint rtw_get_rateset_len(u8 *rateset) {
   printf("Number of counters: 1\n");
   printf("At line 61 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterrtw_get_rateset_len0);
   return i;
 }

@@ -69,7 +69,7 @@ __attribute__((used)) static int nearestPower(GLuint value) {
     printf("Number of counters: 1\n");
     printf("At line 69 :");
     printf("\n");
-    printf("Nesting depth: 1\n");
+    printf("Nesting depth: 0\n");
     printf("%d\n", counternearestPower0);
     return -1;
   }
@@ -81,7 +81,7 @@ __attribute__((used)) static int nearestPower(GLuint value) {
       printf("Number of counters: 1\n");
       printf("At line 69 :");
       printf("\n");
-      printf("Nesting depth: 1\n");
+      printf("Nesting depth: 0\n");
       printf("%d\n", counternearestPower0);
       return i;
     } else if (value == 3) {
@@ -89,7 +89,7 @@ __attribute__((used)) static int nearestPower(GLuint value) {
       printf("Number of counters: 1\n");
       printf("At line 69 :");
       printf("\n");
-      printf("Nesting depth: 1\n");
+      printf("Nesting depth: 0\n");
       printf("%d\n", counternearestPower0);
       return i * 4;
     }

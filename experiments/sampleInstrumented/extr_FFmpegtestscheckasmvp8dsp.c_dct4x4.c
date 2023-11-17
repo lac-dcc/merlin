@@ -86,10 +86,10 @@ __attribute__((used)) static void dct4x4(int16_t *coef) {
   printf("Number of counters: 2\n");
   printf("At line 60 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("At line 70 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", counterdct4x40);
   printf("%d\n", counterdct4x41);
 }

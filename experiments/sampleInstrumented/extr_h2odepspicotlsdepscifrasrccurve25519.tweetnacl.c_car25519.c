@@ -72,7 +72,7 @@ __attribute__((used)) static void car25519(gf o) {
   printf("Number of counters: 1\n");
   printf("At line 62 :");
   printf("\n");
-  printf("Nesting depth: 1\n");
+  printf("Nesting depth: 0\n");
   printf("%d\n", countercar255190);
 }
 
