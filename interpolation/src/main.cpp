@@ -74,6 +74,7 @@ int main() {
     }
     if (numVars == 0) {
       cout << originLines[i] << endl;
+      cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << "This path runs in constant time. Constant Factor: " << fValues[i][0] << endl;
     } else if (numVars == 1) {
       Interpolator interp(xValues[i], fValues[i]);
