@@ -72,9 +72,9 @@ __attribute__((used)) static unsigned long rev(unsigned long v) {
 
   printf("Number of counters: 1\n");
   printf("At line 63 :");
-  printf(" v\n");
+  printf("\n");
   printf("Nesting depth: 1\n");
-  printf("%ld %d\n", tempv, counterrev0);
+  printf("%d\n", counterrev0);
   return v;
 }
 

@@ -1,30 +1,30 @@
 Number of counters: 1
 At line 77 :
-Nesting depth: 1
+Nesting depth: 0
 1
 
 end
 Number of counters: 1
 At line 77 :
-Nesting depth: 1
+Nesting depth: 0
 1
 
 end
 Number of counters: 1
 At line 77 :
-Nesting depth: 1
+Nesting depth: 0
 1
 
 end
 Number of counters: 1
 At line 77 :
-Nesting depth: 1
+Nesting depth: 0
 1
 
 end
 Number of counters: 1
 At line 77 :
-Nesting depth: 1
+Nesting depth: 0
 1
 
 end

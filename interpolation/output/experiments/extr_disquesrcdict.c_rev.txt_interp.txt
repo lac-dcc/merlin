@@ -1,5 +1,2 @@
-At line 63 : v
-x: v
-Expected Nesting Depth: 1
-F(x) = 6
-
+At line 63 :
+This path runs in constant time. Constant Factor: 6

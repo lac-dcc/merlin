@@ -1,6 +1,5 @@
-At line 60 : name size
-x: name
-y: size
+At line 60 : size
+x: size
 Expected Nesting Depth: 1
-F(x, y) 
+F(x) = x
 

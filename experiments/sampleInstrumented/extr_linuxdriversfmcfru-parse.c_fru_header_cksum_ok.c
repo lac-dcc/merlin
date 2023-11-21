@@ -73,9 +73,9 @@ int fru_header_cksum_ok(struct fru_common_header *header) {
 
   printf("Number of counters: 1\n");
   printf("At line 65 :");
-  printf(" header\n");
+  printf("\n");
   printf("Nesting depth: 1\n");
-  printf(" %d\n", *tempheader, counterfru_header_cksum_ok0);
+  printf("%d\n", counterfru_header_cksum_ok0);
   return (sum & 0xff) == 0;
 }
 

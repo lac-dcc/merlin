@@ -3,8 +3,9 @@ x: multi
 Expected Nesting Depth: 1
 F(x) = 0
 
-At line 65 : amount
-x: amount
+At line 65 : multi amount
+x: multi
+y: amount
 Expected Nesting Depth: 1
-F(x) = x
+F(x, y) = 1*x 
 

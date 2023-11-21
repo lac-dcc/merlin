@@ -69,9 +69,9 @@ __attribute__((used)) static unsigned qnx6_lfile_checksum(char *name,
 
   printf("Number of counters: 1\n");
   printf("At line 60 :");
-  printf(" name size\n");
+  printf(" size\n");
   printf("Nesting depth: 1\n");
-  printf("%c %u %d\n", *tempname, tempsize, counterqnx6_lfile_checksum0);
+  printf("%u %d\n", tempsize, counterqnx6_lfile_checksum0);
   return crc;
 }
 

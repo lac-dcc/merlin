@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
     case 0:
     {
           int a = 100;
-          int b = 100;
+          int b = 1;
           int benchRet = igcd(a,b); 
         
         break;
@@ -102,7 +102,7 @@ int main(int argc, char *argv[]) {
     case 1:
     {
           int a = 255;
-          int b = 255;
+          int b = 2;
           int benchRet = igcd(a,b); 
         
         break;
@@ -111,7 +111,7 @@ int main(int argc, char *argv[]) {
     case 2:
     {
           int a = 10;
-          int b = 10;
+          int b = 3;
           int benchRet = igcd(a,b); 
         
         break;
@@ -119,7 +119,7 @@ int main(int argc, char *argv[]) {
     case 3:
     {
           int a = 150;
-          int b = 150;
+          int b = 4;
           int benchRet = igcd(a,b); 
         
         break;
@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
     case 4:
     {
           int a = 200;
-          int b = 200;
+          int b = 5;
           int benchRet = igcd(a,b); 
         
         break;

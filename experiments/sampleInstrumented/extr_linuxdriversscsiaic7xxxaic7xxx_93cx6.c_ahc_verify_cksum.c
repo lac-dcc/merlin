@@ -81,17 +81,17 @@ int ahc_verify_cksum(struct seeprom_config *sc) {
 
     printf("Number of counters: 1\n");
     printf("At line 72 :");
-    printf(" sc\n");
+    printf("\n");
     printf("Nesting depth: 1\n");
-    printf(" %d\n", *tempsc, counterahc_verify_cksum0);
+    printf("%d\n",counterahc_verify_cksum0);
     return (0);
   } else {
 
     printf("Number of counters: 1\n");
     printf("At line 72 :");
-    printf(" sc\n");
+    printf("\n");
     printf("Nesting depth: 1\n");
-    printf(" %d\n", *tempsc, counterahc_verify_cksum0);
+    printf("%d\n", counterahc_verify_cksum0);
     return (1);
   }
 }

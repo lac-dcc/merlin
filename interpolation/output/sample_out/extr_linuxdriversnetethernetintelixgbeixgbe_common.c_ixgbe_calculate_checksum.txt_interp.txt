@@ -1,9 +1,0 @@
-Size: 5
-10 100 255 150 200 
-
-10 100 255 150 200 
-At line 66 : length
-x: length
-Expected Nesting Depth: 1
-F(x) = x
-

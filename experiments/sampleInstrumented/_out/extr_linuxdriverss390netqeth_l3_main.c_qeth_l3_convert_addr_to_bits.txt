@@ -1,6 +1,6 @@
 Number of counters: 2
 At line 66 : len
-Nesting depth: 2
+Nesting depth: 1
 At line 64 : len
 Nesting depth: 1
 255 2040
@@ -9,7 +9,7 @@ Nesting depth: 1
 end
 Number of counters: 2
 At line 66 : len
-Nesting depth: 2
+Nesting depth: 1
 At line 64 : len
 Nesting depth: 1
 10 80
@@ -18,7 +18,7 @@ Nesting depth: 1
 end
 Number of counters: 2
 At line 66 : len
-Nesting depth: 2
+Nesting depth: 1
 At line 64 : len
 Nesting depth: 1
 100 800
@@ -27,7 +27,7 @@ Nesting depth: 1
 end
 Number of counters: 2
 At line 66 : len
-Nesting depth: 2
+Nesting depth: 1
 At line 64 : len
 Nesting depth: 1
 150 1200
@@ -36,7 +36,7 @@ Nesting depth: 1
 end
 Number of counters: 2
 At line 66 : len
-Nesting depth: 2
+Nesting depth: 1
 At line 64 : len
 Nesting depth: 1
 200 1600

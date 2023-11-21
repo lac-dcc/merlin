@@ -53,7 +53,7 @@ typedef int bool;
 
 /* Variables and functions */
 
-int sdsll2str(char *s, long long value) {
+int sdsll2str(char *s, long long value, int lens) {
   unsigned countersdsll2str0 = 0;
   unsigned countersdsll2str1 = 0;
 
@@ -99,8 +99,8 @@ int sdsll2str(char *s, long long value) {
   printf("At line 79 :");
   printf(" s\n");
   printf("Nesting depth: 1\n");
-  printf(" %d\n", tempvalue, countersdsll2str0);
-  printf("%c %d\n", *temps, countersdsll2str1);
+  printf("%lld %d\n", tempvalue, countersdsll2str0);
+  printf("%d %d\n", lens, countersdsll2str1);
   return l;
 }
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
 
     free(s);
 
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
 
     free(s);
 
@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
 
     free(s);
 
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
 
     free(s);
 
@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
     for (int _i0 = 0; _i0 < _len_s0; _i0++) {
       s[_i0] = ((-2 * (next_i() % 2)) + 1) * next_i();
     }
-    int benchRet = sdsll2str(s, value);
+    int benchRet = sdsll2str(s, value, _len_s0);
 
     free(s);
 

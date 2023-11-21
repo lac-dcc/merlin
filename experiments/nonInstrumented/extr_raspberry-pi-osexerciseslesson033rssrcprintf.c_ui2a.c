@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
           unsigned int num = 255;
         
-          unsigned int base = 255;
+          unsigned int base = 1;
         
           int uc = 255;
         
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned int num = 10;
         
-          unsigned int base = 10;
+          unsigned int base = 2;
         
           int uc = 10;
         
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned int num = 150;
         
-          unsigned int base = 150;
+          unsigned int base = 3;
         
           int uc = 150;
         
@@ -172,7 +172,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned int num = 100;
         
-          unsigned int base = 100;
+          unsigned int base = 4;
         
           int uc = 100;
         
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
     {
           unsigned int num = 200;
         
-          unsigned int base = 200;
+          unsigned int base = 5;
         
           int uc = 200;
         

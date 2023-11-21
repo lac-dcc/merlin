@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
     case 0:
     {
           unsigned int num = 10;
-          unsigned int base = 10;
+          unsigned int base = 1;
           int uc = 10;
           int _len_bf0 = 100;
           char * bf = (char *) malloc(_len_bf0*sizeof(char));
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     case 1:
     {
           unsigned int num = 100;
-          unsigned int base = 100;
+          unsigned int base = 2;
           int uc = 100;
           int _len_bf0 = 10000;
           char * bf = (char *) malloc(_len_bf0*sizeof(char));
@@ -124,7 +124,7 @@ int main(int argc, char *argv[]) {
     case 2:
     {
           unsigned int num = 150;
-          unsigned int base = 150;
+          unsigned int base = 3;
           int uc = 150;
           int _len_bf0 = 22500;
           char * bf = (char *) malloc(_len_bf0*sizeof(char));
@@ -139,7 +139,7 @@ int main(int argc, char *argv[]) {
     case 3:
     {
           unsigned int num = 255;
-          unsigned int base = 255;
+          unsigned int base = 4;
           int uc = 255;
           int _len_bf0 = 65025;
           char * bf = (char *) malloc(_len_bf0*sizeof(char));
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]) {
     case 4:
     {
           unsigned int num = 200;
-          unsigned int base = 200;
+          unsigned int base = 5;
           int uc = 200;
           int _len_bf0 = 40000;
           char * bf = (char *) malloc(_len_bf0*sizeof(char));

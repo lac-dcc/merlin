@@ -1,9 +1,0 @@
-Size: 5
-0 0 0 0 0 
-
-6.9107e-310 6.9107e-310 6.9107e-310 6.9107e-310 6.9107e-310 
-x: name
-y: size
-Expected Nesting Depth: 1
-F(x, y) 
-

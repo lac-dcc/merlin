@@ -1,10 +1,10 @@
-At line 79 : s
-x: s
-Expected Nesting Depth: 1
-F(x) = -inf*x**4 + 260*inf*x**3 - 1283*inf*x**2 + 1791*inf*x - 767*inf + 1
-
 At line 65 : value
 x: value
 Expected Nesting Depth: 1
-F(x) = nan
+F(x) = -1.70494e-9*x**4 + 1.2019831e-6*x**3 - 0.000306463207*x**2 + 0.0333742287*x + 1.6957191
+
+At line 79 : s
+x: s
+Expected Nesting Depth: 1
+F(x) = 1
 

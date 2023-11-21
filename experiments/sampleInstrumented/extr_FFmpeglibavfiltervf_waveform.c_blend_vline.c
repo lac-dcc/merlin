@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
     int v = 10;
-    int step = 10;
+    int step = 1;
     int _len_dst0 = 100;
     float *dst = (float *)malloc(_len_dst0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
     int v = 255;
-    int step = 255;
+    int step = 5;
     int _len_dst0 = 65025;
     float *dst = (float *)malloc(_len_dst0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
@@ -163,7 +163,7 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
     int v = 100;
-    int step = 100;
+    int step = 2;
     int _len_dst0 = 10000;
     float *dst = (float *)malloc(_len_dst0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
     int v = 150;
-    int step = 150;
+    int step = 75;
     int _len_dst0 = 22500;
     float *dst = (float *)malloc(_len_dst0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_dst0; _i0++) {
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
          (float)next_f() /
              (((float)16777215.000000 / (16777215.000000 - -16777216.000000))));
     int v = 200;
-    int step = 200;
+    int step = 2;
     int _len_dst0 = 40000;
     float *dst = (float *)malloc(_len_dst0 * sizeof(float));
     for (int _i0 = 0; _i0 < _len_dst0; _i0++) {

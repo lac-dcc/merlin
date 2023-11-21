@@ -1,4 +1,4 @@
-At line 62 :
-This path runs in constant time. Constant Factor: 4
 At line 63 :
 This path runs in constant time. Constant Factor: 16
+At line 62 :
+This path runs in constant time. Constant Factor: 4

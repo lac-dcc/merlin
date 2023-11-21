@@ -1,5 +1,2 @@
-At line 65 : header
-x: header
-Expected Nesting Depth: 1
-F(x) = nan
-
+At line 65 :
+This path runs in constant time. Constant Factor: 4

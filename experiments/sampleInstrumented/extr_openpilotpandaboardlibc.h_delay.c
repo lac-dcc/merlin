@@ -61,9 +61,9 @@ void delay(int a) {
   int tempa = a;
 
   volatile int i;
-  for (i = 0; i < a; i++)
-    ;
+  for (i = 0; i < a; i++) {
   counterdelay0++;
+  }
 
   printf("Number of counters: 1\n");
   printf("At line 60 :");
