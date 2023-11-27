@@ -37,7 +37,7 @@ int main() {
   }
   for (int i = 0; i < numPoints; i++) {
     for (int j = 0; j < numInterp; j++) {
-      double xi, yi, zi, fi;
+      double xi, yi, zi, fi, trash;
       switch (interpVars[j].size()) {
       case 0:
         cin >> fi;
@@ -62,6 +62,9 @@ int main() {
         fValues[j].push_back(fi);
         break;
       default:
+        for(int i = 0; i < interpVars[j].size() + 1; i++) {
+          cin >> trash;
+        }
         break;
       }
     }
@@ -98,7 +101,7 @@ int main() {
       cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else {
-      cout << "This tool works with at most 3 variables.";
+      cout << "This tool works with at most 3 variables.\n";
     }
   }
 
