@@ -167,15 +167,17 @@ std::string Interpolator::LeastSquares2var() {
   for (int i = 0; i < answer.size(); i++) {
     std::string term = monomials_str.front();
     monomials_str.pop_front();
-    if (abs(answer(i)) <= 1e-5)
-      result << answer(i) << " + ";
-    else 
+    if (abs(answer(i)) > 1e-5)
       result << answer(i) << "*" << term << " + ";
   }
 
   std::string interpolated_function = result.str();
-  interpolated_function.pop_back();
-  interpolated_function.pop_back();
+  if(interpolated_function.compare( "F(x, y) = "))
+    interpolated_function = "F(x, y) = 0";
+  else {
+    interpolated_function.pop_back();
+    interpolated_function.pop_back();
+  }
   return interpolated_function;
 }
 
@@ -253,14 +255,16 @@ std::string Interpolator::LeastSquares3var() {
   for (int i = 0; i < answer.size(); i++) {
     std::string term = monomials_str.front();
     monomials_str.pop_front();
-    if (abs(answer(i)) <= 1e-5)
-      result << answer(i) << " + ";
-    else 
+    if (abs(answer(i)) >= 1e-5)
       result << answer(i) << "*" << term << " + ";
   }
 
   std::string interpolated_function = result.str();
-  interpolated_function.pop_back();
-  interpolated_function.pop_back();
+  if(interpolated_function.compare( "F(x, y, z) = "))
+    interpolated_function = "F(x, y, z) = 0";
+  else {
+    interpolated_function.pop_back();
+    interpolated_function.pop_back();
+  }
   return interpolated_function;
 }
