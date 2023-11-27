@@ -168,8 +168,9 @@ std::string Interpolator::LeastSquares2var() {
     std::string term = monomials_str.front();
     monomials_str.pop_front();
     if (abs(answer(i)) <= 1e-5)
-      continue;
-    result << answer(i) << "*" << term << " + ";
+      result << answer(i) << " + ";
+    else 
+      result << answer(i) << "*" << term << " + ";
   }
 
   std::string interpolated_function = result.str();
