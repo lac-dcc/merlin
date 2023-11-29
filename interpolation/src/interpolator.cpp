@@ -172,7 +172,7 @@ std::string Interpolator::LeastSquares2var() {
   }
 
   std::string interpolated_function = result.str();
-  if(interpolated_function.compare( "F(x, y) = "))
+  if(interpolated_function.compare("F(x, y) = ") == 0)
     interpolated_function = "F(x, y) = 0";
   else {
     interpolated_function.pop_back();
@@ -260,7 +260,7 @@ std::string Interpolator::LeastSquares3var() {
   }
 
   std::string interpolated_function = result.str();
-  if(interpolated_function.compare( "F(x, y, z) = "))
+  if(interpolated_function.compare( "F(x, y, z) = ") == 0)
     interpolated_function = "F(x, y, z) = 0";
   else {
     interpolated_function.pop_back();
