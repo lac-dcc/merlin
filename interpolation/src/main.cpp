@@ -101,7 +101,8 @@ int main() {
       cout << "Expected Nesting Depth: " << nestingDepth[i] << endl;
       cout << interp.interpolate() << endl << endl;
     } else {
-      cout << "This tool works with at most 3 variables.\n";
+      cout << originLines[i] << endl;
+      cout << "At line This tool works with at most 3 variables.\n\n";
     }
   }
 
