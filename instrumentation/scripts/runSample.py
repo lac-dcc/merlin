@@ -48,7 +48,7 @@ if __name__ == '__main__':
             if out.split('\n')[0].strip() == 'Usage:':
                 break
 
-            output_str += out + '\nend\n'
+            output_str += out
 
         with open(f'{output_dir}/{input}.txt', 'w') as output:
             output.write(output_str)

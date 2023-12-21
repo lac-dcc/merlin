@@ -116,7 +116,7 @@ std::string InstrumentationVisitor::getPrintString() {
     header += "printf(\"Nesting depth: " + std::to_string(loop->nestingDepth) + "\\n\");\n";
   }
 
-  return header + counters;
+  return header + counters + "printf(\"\\nend\\n\");\n";
 }
 
 void InstrumentationVisitor::addTempVariables() {
