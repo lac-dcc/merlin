@@ -31,7 +31,85 @@ These are the most important dependencies for building and running Merlin:
 Building LLVM on your computer may be troublesome. To make things easier, we have made a Docker image with all Merlin's dependencies that is available [here](./docker/).
 
 ## Running
-To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name target_function`, where `input_file` is the directory for the file you want to instrument, `output_file_name` is just the name for the output file, and `target_function` is the name of the function to add the counters. After running the instrumentation, the instrumented program will be available in the `output` folder. 
+To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name target_function ignore_non_newton measure_time`. `input_file` is the directory for the file you want to instrument, `output_file_name` is just the name for the output file, `target_function` is the name of the function to be instrumented, `ignore_non_newton` and `measure_time` are boolean parameters that determine, respectively, whether non-Newton programs should be ignored and if Merlin should output its execution time. After running the instrumentation, the instrumented program will be available in the `output` folder.
+
+## Simplified Execution
+Consider the following Matrix Multiplication implementation:
+```c++
+int matrix_multiplication(int** A, int** B, int** C, int a_row, int a_col, int b_row, int b_col) {
+  if (a_col != b_row)
+    return 0;
+  for (int i = 0; i < a_row; i++) {
+    for (int j = 0; j < a_col; j++) {
+      for (int k = 0; k < b_col; k++) {
+        C[i][k] += A[i][j] * B[j][k];
+      }
+    }
+  }
+  return 1;
+}
+```
+We need to add a `main` function in the same file. This function will take input values to test the matrix multiplication. In this case, we can use the following `main` function: 
+````c++
+int main() { 
+    int** A; int** B; int** C;
+    int rowsA, colsA, rowsB, colsB;
+    cin >> rowsA >> colsA >> rowsB >> colsB;
+    
+    alocateMatrixNxM(A, rowsA, colsA);
+    alocateMatrixNxM(B, rowsB, colsB);
+    alocateMatrixNxM(C, rowsA, colsB);
+    fillMatrix(A, rowsA, colsA);
+    fillMatrix(B, rowsB, colsB);
+    cleanMatriz(C, rowsA, colsB);
+    matrix_multiplication(A, B, C, rowsA, colsA, rowsB, colsB);
+    deleteMatrix(A, rowsA, colsA);
+    deleteMatrix(B, rowsB, colsB);
+    deleteMatrix(C, rowsA, colsB);
+
+    return 0; 
+}
+````
+After that, we need to create the test bench. The test bench must be in a separeted folder containing all the test files, as the following example: 
+```
+matrix_multiplication
+|_ matrix_multiplication.cpp
+|_ tests
+. |_ input0.txt
+. |_ input1.txt
+. |_ input2.txt
+. |_ input3.txt
+```
+In our case, an example of input file contains the matrices constraints, it could be:
+```
+3 3
+3 3
+```
+
+Finnaly, all we need to do is to run the script `merlin.sh`. The script `merlin.sh` receives three inputs: the path to the program file, the name of the function we will analyze, and the path to the directory of the test bench. 
+To run this script for our matrix_multiplication example, we can do the following:
+`merlin.sh matrix_multiplication/matrix_multiplication.cpp matrix_multiplication matrix_multiplication/tests`
+
+Merlin will emit the following result for this example: 
+```
+At line 19 : a_row              --> Program Point analysed 
+x: a_row                        --> Variable represented by x
+Expected Nesting Depth: 1
+F(x) = x                        --> Interpolated function for the Program Point
+
+At line 20 : a_col a_row        --> Program Point analysed 
+x: a_col                        --> Variable represented by x
+y: a_row                        --> Variable represented by y
+Expected Nesting Depth: 2
+F(x, y) = 1*xy                  --> Interpolated function for the Program Point
+
+At line 21 : b_col a_col a_row  --> Program Point analysed 
+x: b_col                        --> Variable represented by x
+y: a_col                        --> Variable represented by y
+z: a_row                        --> Variable represented by z
+Expected Nesting Depth: 3
+F(x, y, z) = 1*xyz              --> Interpolated function for the Program Point
+````
 
 ### Step By Step 
 Consider the following Bubble Sort algorithm implementation:
@@ -56,7 +134,7 @@ void bubble_sort(int n, int *arr) {
 }
 ```
 
-After instrumenting this code by using `scripts/run.sh BubbleSort.c BubbleSort.c bubble_sort`, the following instrumented code is generated:
+After instrumenting this code by using `scripts/run.sh BubbleSort.c BubbleSort.c bubble_sort false false`, the following instrumented code is generated:
 ``` c++
 void swap(int *a, int *b) {
   int temp = *a;
@@ -76,7 +154,7 @@ void bubble_sort(int n, int *arr) {
     int j = i + 1;
     while (j < n) {
       counterbubble_sort1++;
-      if (arr[j] < arr[i]) { 
+      if (arr[j] < arr[i]) { // compare
         swap(&arr[i], &arr[j]);
       }
       j++;
@@ -84,13 +162,16 @@ void bubble_sort(int n, int *arr) {
     i++;
   }
 
-  printf("2\n");                                    // Number of Counters
-  printf("at line 9 :");                            // Program Point of the first counter
-  printf(" n\n");                                   // Input variable that controls the counter
-  printf("at line 11 :");                           // Program Point of the second counter
-  printf(" n\n");                                   // Input variable that controls the counter
-  printf("%d %d\n", tempn, counterbubble_sort0);    // First Counter result
-  printf("%d %d\n", tempn, counterbubble_sort1);    // Second Counter result
+  printf("Number of counters: 2\n");
+  printf("At line 9 :");
+  printf(" n\n");
+  printf("Nesting depth: 1\n");
+  printf("At line 11 :");
+  printf(" n\n");
+  printf("Nesting depth: 2\n");
+  printf("%d %d\n", tempn, counterbubble_sort0);
+  printf("%d %d\n", tempn, counterbubble_sort1);
+  printf("\nend\n");
 }
 ```
 
@@ -111,64 +192,85 @@ int main() {
 }
 ```
 
-By running the program with these specific inputs, we obtained the following results:
+By compiling and running the program with these specific inputs, we obtained the following results:
 ```
-2
-at line 9 : n
-at line 11 : n
+Number of counters: 2
+At line 9 : n
+Nesting depth: 1
+At line 11 : n
+Nesting depth: 2
 5 5
 5 10
-2
-at line 9 : n
-at line 11 : n
+
+end
+Number of counters: 2
+At line 9 : n
+Nesting depth: 1
+At line 11 : n
+Nesting depth: 2
 3 3
 3 3
-2
-at line 9 : n
-at line 11 : n
+
+end
+Number of counters: 2
+At line 9 : n
+Nesting depth: 1
+At line 11 : n
+Nesting depth: 2
 7 7
 7 21
-2
-at line 9 : n
-at line 11 : n
+
+end
+Number of counters: 2
+At line 9 : n
+Nesting depth: 1
+At line 11 : n
+Nesting depth: 2
 10 10
 10 45
+
+end
 ```
-In order to perform the interpolation on this data, it is essential to eliminate any repetitions in both the counter numbers and the program point indications. Additionally, you should include the number of points being used after the number of counters. In this case, we are utilizing four points for the interpolation.
+In order to perform the interpolation on this data, it is essential to eliminate any repetitions in both the counter numbers and the program point indications. Additionally, you should include the number of points being used after the number of counters. In this case, we are utilizing three points for the interpolation. You can use the script `produceInput.py` in the interpolation directory to execute this task automatically. You can use this script as follows: `python3 produceInput.py programOutput.txt interpolationInput.txt`.
+The first argument is the name of the program output and the second argument is the desired name of the interpolation input. After running this script, the interpolation input will look like this:
 ```
 2
-4 --> Number of Points
-at line 9 : n
-at line 11 : n
+3
+At line 9 : n
+Nesting depth: 1
+At line 11 : n
+Nesting depth: 2
 5 5
 5 10
 3 3
 3 3
 7 7
 7 21
-10 10
-10 45
 ```
 
 You can generate the interpolations using the compiled interpolator by running the command, in the `interpolation` directory, `bin/interpolator < input/bubbleSortData.txt`. When this command is executed, it produces the following result:
 ```
-at line 9 : n
+At line 9 : n
 x: n
+Expected Nesting Depth: 1
 F(x) = x
 
-at line 11 : n
+At line 11 : n
 x: n
+Expected Nesting Depth: 2
 F(x) = 0.5*x*(x - 1)
 ```
 
 This output indicates the following:
 ```
-at line 9 : n           --> Program Point analysed 
+At line 9 : n           --> Program Point analysed 
 x: n                    --> Variable represented by x
+Expected Nesting Depth: 1
 F(x) = x                --> Interpolated function for the Program Point
 
-at line 11 : n          --> Program Point analysed 
+At line 11 : n          --> Program Point analysed 
 x: n                    --> Variable represented by x
+Expected Nesting Depth: 2
 F(x) = 0.5*x*(x - 1)    --> Interpolated function for the Program Point
 ```
 In this case, the first program point is the outer while statement, which is influenced by the variable `n` and has the cost function `F(n) = n`. For the second program point, representing the inner while statement, which is solely influenced by the variable `n`, the cost function is `F(n) = 0.5 * n * (n - 1)`.
