@@ -10,9 +10,9 @@
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
+#include <memory>
 #include <string>
 #include <unordered_map>
-#include <memory>
 
 /**
  * \class InsertPrintVisitor
@@ -119,15 +119,17 @@ public:
   std::string functionName; ///< Name of the function to be instrumented.
 
 private:
-  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
+  clang::ASTContext* context;              ///< ASTContext to be used by the visitor.
+  clang::Rewriter* rewriter;               ///< Object used to rewrite the code and add instrumentation.
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
-  u_int32_t instrumentedLoops; ///< Counter for the number of instrumented loops.
+  u_int32_t instrumentedLoops;             ///< Counter for the number of instrumented loops.
 
   /// @brief Map that associates a loop statement node with its Loop object.
   llvm::DenseMap<clang::Stmt*, std::shared_ptr<Loop>> loopMap;
+  /// @brief Vector that store Loop objects based on the order in which they appear in the source code.
+  llvm::SmallVector<std::shared_ptr<Loop>, 4> loopVec;
 
-  llvm::SmallSet<clang::IfStmt*, 3> visitedIfs; ///< Set of visited if statements.
+  llvm::SmallSet<clang::IfStmt*, 4> visitedIfs; ///< Set of visited if statements.
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
@@ -184,6 +186,14 @@ private:
    * \return Boolean value that indicates if the IfStmt is valid
    */
   bool validateIf(clang::Stmt* stmt);
+
+  /**
+   * \brief Auxiliary method to create a new Loop and insert it in the appropriate containers.
+   * \param loop Statement node of the loop.
+   * \param parent Pointer to the loop's parent object.
+   *
+   */
+  void insertNewLoop(clang::Stmt* loop, std::shared_ptr<Loop> parent);
 };
 
 /**

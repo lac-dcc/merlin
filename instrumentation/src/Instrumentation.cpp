@@ -86,8 +86,8 @@ std::string InstrumentationVisitor::getPrintString() {
   std::string counters = "";
 
   header += "\nprintf(\"Number of counters: " + std::to_string(this->instrumentedLoops) + "\\n\");\n";
-  for (auto const& [loopNode, loop] : this->loopMap) {
-    header += "printf(\"At line " + std::to_string(srcMgr.getSpellingLineNumber(loopNode->getBeginLoc())) + " :\");\n";
+  for (auto const& loop : this->loopVec) {
+    header += "printf(\"At line " + std::to_string(loop->line) + " :\");\n";
 
     std::string format = "";
     std::string variables = "";
@@ -123,7 +123,7 @@ void InstrumentationVisitor::addTempVariables() {
   std::string tempVariables = "\n";
   DenseMap<ParmVarDecl*, bool> added;
 
-  for (auto const& [_, loop] : this->loopMap) {
+  for (auto const& loop : this->loopVec) {
     for (ParmVarDecl* controlVar : loop->controlVariables) {
       if (added.find(controlVar) == added.end()) {
         added[controlVar] = true;
@@ -165,7 +165,7 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
     // function
 
     std::string countersDecls = "";
-    for (auto const& [_, loop] : this->loopMap) {
+    for (auto const& loop : this->loopVec) {
       countersDecls += "unsigned " + loop->counterName + " = 0;\n";
     }
 
@@ -234,7 +234,7 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
 
   if (Expr* cond = forStmt->getCond())
     this->getControlVars(cond, loopPtr);
-  
+
   loopPtr->verifyAndSetIsConstantLoop();
   loopPtr->computeNestingDepth();
   loopPtr->takeParentControlVars();
@@ -262,8 +262,7 @@ void InstrumentationVisitor::getControlVars(Stmt* node, std::shared_ptr<Loop> lo
 
 bool InstrumentationVisitor::createAndInstrumentLoop(Stmt* loop, SourceLocation& bodyLoc) {
   if (this->loopMap.find(loop) == this->loopMap.end()) {
-    auto loopPtr = std::make_shared<Loop>(nullptr);
-    this->loopMap[loop] = loopPtr;
+    this->insertNewLoop(loop, nullptr);
 
     bool isValidLoop = this->validateLoop(loop, loop);
     if (this->ignoreNonNewton && !isValidLoop)
@@ -288,8 +287,7 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop) {
       continue;
 
     if (this->isLoop(child)) {
-      auto childLoop = std::make_shared<Loop>(this->loopMap[loop]);
-      this->loopMap[child] = childLoop;
+      this->insertNewLoop(child, this->loopMap[loop]);
 
       lastLoop = child;
     }
@@ -336,6 +334,14 @@ bool InstrumentationVisitor::validateIf(Stmt* stmt) {
   }
 
   return true;
+}
+
+void InstrumentationVisitor::insertNewLoop(Stmt* loop, std::shared_ptr<Loop> parent) {
+  unsigned int line = this->rewriter->getSourceMgr().getSpellingLineNumber(loop->getBeginLoc());
+  auto loopPtr = std::make_shared<Loop>(parent, line);
+
+  this->loopMap[loop] = loopPtr;
+  this->loopVec.push_back(loopPtr);
 }
 
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
