@@ -15,6 +15,8 @@ ENV LANG en_US.utf8
 RUN apt-get update -y && apt-get install -y gcc g++ ninja-build vim nano python3 python3-pip \
     python3-dev automake make build-essential
 
+RUN pip3 install sympy pandas
+
 ############################################# CMAKE #####################################################
 RUN wget -c https://github.com/Kitware/CMake/releases/download/v3.20.0/cmake-3.20.0-linux-x86_64.tar.gz \
     && tar -xvf cmake-3.20.0-linux-x86_64.tar.gz \
