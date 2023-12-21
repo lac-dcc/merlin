@@ -1,0 +1,5 @@
+At line 61 : slot_count
+x: slot_count
+Expected Nesting Depth: 1
+F(x) = 7.51715e-9*x**4 - 4.00926725e-6*x**3 + 0.000570562445*x**2 + 0.00672269887500001*x + 2.8796579125
+

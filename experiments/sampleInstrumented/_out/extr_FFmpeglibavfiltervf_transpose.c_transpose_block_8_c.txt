@@ -1,0 +1,45 @@
+Number of counters: 2
+At line 65 : w h
+Nesting depth: 2
+At line 64 : h
+Nesting depth: 1
+255 255 65025
+255 255
+
+end
+Number of counters: 2
+At line 65 : w h
+Nesting depth: 2
+At line 64 : h
+Nesting depth: 1
+10 10 100
+10 10
+
+end
+Number of counters: 2
+At line 65 : w h
+Nesting depth: 2
+At line 64 : h
+Nesting depth: 1
+100 100 10000
+100 100
+
+end
+Number of counters: 2
+At line 65 : w h
+Nesting depth: 2
+At line 64 : h
+Nesting depth: 1
+150 150 22500
+150 150
+
+end
+Number of counters: 2
+At line 65 : w h
+Nesting depth: 2
+At line 64 : h
+Nesting depth: 1
+200 200 40000
+200 200
+
+end

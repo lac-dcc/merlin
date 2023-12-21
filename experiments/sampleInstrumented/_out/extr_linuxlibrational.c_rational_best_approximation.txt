@@ -1,0 +1,30 @@
+Number of counters: 1
+At line 67 :
+Nesting depth: 0
+2
+
+end
+Number of counters: 1
+At line 67 :
+Nesting depth: 0
+2
+
+end
+Number of counters: 1
+At line 67 :
+Nesting depth: 0
+2
+
+end
+Number of counters: 1
+At line 67 :
+Nesting depth: 0
+2
+
+end
+Number of counters: 1
+At line 67 :
+Nesting depth: 0
+2
+
+end

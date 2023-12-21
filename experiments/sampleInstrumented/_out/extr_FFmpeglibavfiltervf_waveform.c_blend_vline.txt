@@ -1,0 +1,30 @@
+Number of counters: 1
+At line 62 : step height
+Nesting depth: 1
+1 10 10
+
+end
+Number of counters: 1
+At line 62 : step height
+Nesting depth: 1
+5 255 51
+
+end
+Number of counters: 1
+At line 62 : step height
+Nesting depth: 1
+2 100 50
+
+end
+Number of counters: 1
+At line 62 : step height
+Nesting depth: 1
+75 150 2
+
+end
+Number of counters: 1
+At line 62 : step height
+Nesting depth: 1
+2 200 100
+
+end

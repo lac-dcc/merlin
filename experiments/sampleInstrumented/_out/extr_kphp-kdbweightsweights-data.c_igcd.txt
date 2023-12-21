@@ -1,0 +1,30 @@
+Number of counters: 1
+At line 65 : a b
+Nesting depth: 1
+100 100 1
+
+end
+Number of counters: 1
+At line 65 : a b
+Nesting depth: 1
+255 255 1
+
+end
+Number of counters: 1
+At line 65 : a b
+Nesting depth: 1
+10 10 1
+
+end
+Number of counters: 1
+At line 65 : a b
+Nesting depth: 1
+150 150 1
+
+end
+Number of counters: 1
+At line 65 : a b
+Nesting depth: 1
+200 200 1
+
+end

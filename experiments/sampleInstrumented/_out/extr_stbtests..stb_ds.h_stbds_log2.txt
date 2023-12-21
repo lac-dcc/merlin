@@ -1,0 +1,30 @@
+Number of counters: 1
+At line 61 : slot_count
+Nesting depth: 1
+100 6
+
+end
+Number of counters: 1
+At line 61 : slot_count
+Nesting depth: 1
+255 7
+
+end
+Number of counters: 1
+At line 61 : slot_count
+Nesting depth: 1
+10 3
+
+end
+Number of counters: 1
+At line 61 : slot_count
+Nesting depth: 1
+150 7
+
+end
+Number of counters: 1
+At line 61 : slot_count
+Nesting depth: 1
+200 7
+
+end

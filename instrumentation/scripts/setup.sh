@@ -6,7 +6,7 @@
 # Notice that you must set the variable LLVM_BUILD_DIR to the directory where
 # LLVM is built in your computer.
 #
-# Usage: ./script <input_file> <output_file>
+# Usage: ./setup.sh
 
 LLVM_BUILD_DIR="$HOME/llvm-project/build"
 

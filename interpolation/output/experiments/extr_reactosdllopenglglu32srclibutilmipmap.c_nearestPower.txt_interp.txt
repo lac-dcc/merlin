@@ -1,0 +1,2 @@
+At line 69 :
+This path runs in constant time. Constant Factor: 6

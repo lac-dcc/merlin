@@ -1,6 +1,7 @@
-#ifndef TREE_BUILDER
-#define TREE_BUILDER
+#ifndef INSTRUMENTATION_H
+#define INSTRUMENTATION_H
 
+#include "Loop.hpp"
 #include "clang/AST/ASTConsumer.h"
 #include "clang/AST/RecursiveASTVisitor.h"
 #include "clang/Frontend/CompilerInstance.h"
@@ -9,6 +10,7 @@
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
+#include <memory>
 #include <string>
 #include <unordered_map>
 
@@ -44,7 +46,7 @@ private:
  */
 class NodeCounterVisitor : public clang::RecursiveASTVisitor<NodeCounterVisitor> {
 public:
-  unsigned nodeCount;
+  u_int32_t nodeCount;
 
   /**
    * \brief Constructor method.
@@ -92,13 +94,8 @@ public:
  */
 class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
 public:
-  /**
-   * \brief Constructor method.
-   * \param context ASTContext to be used by the visitor.
-   * \param rewriter Object use to rewrite the code and add instrumentation.
-   */
-  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter)
-      : context(context), rewriter(rewriter) {
+  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter, bool ignoreNonNewton)
+      : context(context), rewriter(rewriter), ignoreNonNewton(ignoreNonNewton) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
                              {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }
@@ -122,24 +119,25 @@ public:
   std::string functionName; ///< Name of the function to be instrumented.
 
 private:
-  clang::ASTContext* context; ///< ASTContext to be used by the visitor.
-  clang::Rewriter* rewriter;  ///< Object used to rewrite the code and add instrumentation.
-  /// @brief Vector with the names of the counters used for instrumentation.
-  llvm::DenseMap<clang::Stmt*, std::string> counters;
+  clang::ASTContext* context;              ///< ASTContext to be used by the visitor.
+  clang::Rewriter* rewriter;               ///< Object used to rewrite the code and add instrumentation.
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
+  u_int32_t instrumentedLoops;             ///< Counter for the number of instrumented loops.
 
-  llvm::DenseMap<clang::IfStmt*, bool> visitedIfs; ///< Map used to store visited If statements.
-  llvm::DenseMap<clang::Stmt*, bool> visitedLoops; ///< Map used to store visited loops.
+  /// @brief Map that associates a loop statement node with its Loop object.
+  llvm::DenseMap<clang::Stmt*, std::shared_ptr<Loop>> loopMap;
+  /// @brief Vector that store Loop objects based on the order in which they appear in the source code.
+  llvm::SmallVector<std::shared_ptr<Loop>, 4> loopVec;
 
-  llvm::DenseMap<clang::Stmt*, clang::Stmt*> parentLoops; ///< Map that associates nested loops with their parents
+  llvm::SmallSet<clang::IfStmt*, 4> visitedIfs; ///< Set of visited if statements.
 
   /// @brief Map that associates a declaration to the parameters that it references.
   llvm::DenseMap<clang::NamedDecl*, llvm::SmallVector<clang::ParmVarDecl*, 3>> paramRefs;
-  /// @brief Map that associates a loop with all function parameters that control it.
-  llvm::DenseMap<clang::Stmt*, llvm::SmallSet<clang::ParmVarDecl*, 3>> controlVariables;
 
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
+
+  bool ignoreNonNewton; ///< Flag that determines if non-Newton programs are instrumented
 
   /**
    * \brief Generate the string with the printf statement to be added to the function.
@@ -149,35 +147,53 @@ private:
   std::string getPrintString();
 
   /**
-   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
+   * \brief Gets all controlling variables for a given loop that appear in a statement
+   * and updates the loop's controlVariables set.
    * \param node Statement being considered.
+   * \param loop Loop object to.
    */
-  void getControlVars(clang::Stmt* node, clang::Stmt* loop);
+  void getControlVars(clang::Stmt* node, std::shared_ptr<Loop> loop);
 
   /**
-   * \brief Gets all tainted params for a given statement and updates the taintedVars map.
-   * \param node Statement being considered.
+   * \brief Determines if a Stmt node is a loop.
+   * \param stmt Statement being considered.
+   *
+   * \return Boolean value that indicates whether the node is a loop.
    */
-  void getParentControlVars(clang::Stmt* loop);
+  bool isLoop(clang::Stmt* stmt);
 
   /**
-   * \brief Auxiliary method used to visit loops and insert instrumentation.
-   * \param loop Loop being visited.
+   * \brief Auxiliary method used to create the Loop instance for a given loop
+   * and its children. It also validates the loop when needed.
+   * \param loop Loop being considered.
    * \param bodyLoc SourceLocation for the beginning of the loop's body.
    */
-  bool visitLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
+  bool createAndInstrumentLoop(clang::Stmt* loop, clang::SourceLocation& bodyLoc);
 
   /**
-   * \brief Recursive method used to indicate if an IfStmt is valid for instrumentation.
+   * \brief Recursive method used to validate if a loop is valid for instrumentation.
    * \param stmt Statement being traversed.
+   * \param loop Current outermost loop.
+   *
+   * \return Boolean value that indicates if the loop is valid
    */
-  bool isValidIf(clang::Stmt* stmt);
+  bool validateLoop(clang::Stmt* stmt, clang::Stmt* loop);
 
   /**
-   * \brief Recursive method used to indicate if a loop is valid for instrumentation.
+   * \brief Recursive method used to validate if an IfStmt is valid for instrumentation.
    * \param stmt Statement being traversed.
+   *
+   * \return Boolean value that indicates if the IfStmt is valid
    */
-  bool isValidLoop(clang::Stmt* stmt, clang::Stmt* loop);
+  bool validateIf(clang::Stmt* stmt);
+
+  /**
+   * \brief Auxiliary method to create a new Loop and insert it in the appropriate containers.
+   * \param loop Statement node of the loop.
+   * \param parent Pointer to the loop's parent object.
+   *
+   */
+  void insertNewLoop(clang::Stmt* loop, std::shared_ptr<Loop> parent);
 };
 
 /**
@@ -188,25 +204,18 @@ private:
 class InstrumentationConsumer : public clang::ASTConsumer {
 public:
   explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile,
-                                   std::string targetFunction)
-      : visitor(Context, rewriter), rewriter(rewriter), outputFile(outputFile), targetFunction(targetFunction) {}
+                                   std::string targetFunction, bool ignoreNonNewton, bool measureTime)
+      : visitor(Context, rewriter, ignoreNonNewton), rewriter(rewriter), outputFile(outputFile),
+        targetFunction(targetFunction), measureTime(measureTime) {}
 
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
 private:
-  /**
-   * \brief Assuming that we are testing Merlin on Jotai programs, this method will extract the name of the function to
-   * be instrumented from the input file name.
-   * \param inputFile Name of the input file.
-   *
-   * \return String with the name of the function to be instrumented.
-   */
-  std::string findFunctionName(std::string inputFile);
-
   InstrumentationVisitor visitor;
   clang::Rewriter* rewriter;
   std::string outputFile;
   std::string targetFunction;
+  bool measureTime;
 };
 
 /**
@@ -226,6 +235,8 @@ private:
   clang::Rewriter rewriter;
   std::string outputFile = "output.c";
   std::string targetFunction = "main";
+  bool ignoreNonNewton = false;
+  bool measureTime = false;
 };
 
 static clang::FrontendPluginRegistry::Add<InstrumentationAction> X("merlin",

@@ -1,0 +1,30 @@
+Number of counters: 1
+At line 62 : len
+Nesting depth: 1
+10 5
+
+end
+Number of counters: 1
+At line 62 : len
+Nesting depth: 1
+100 50
+
+end
+Number of counters: 1
+At line 62 : len
+Nesting depth: 1
+150 75
+
+end
+Number of counters: 1
+At line 62 : len
+Nesting depth: 1
+255 127
+
+end
+Number of counters: 1
+At line 62 : len
+Nesting depth: 1
+200 100
+
+end

@@ -1,0 +1,45 @@
+Number of counters: 2
+At line 62 : ms
+Nesting depth: 1
+At line 63 : ms
+Nesting depth: 1
+100 100
+100 500000
+
+end
+Number of counters: 2
+At line 62 : ms
+Nesting depth: 1
+At line 63 : ms
+Nesting depth: 1
+255 255
+255 1275000
+
+end
+Number of counters: 2
+At line 62 : ms
+Nesting depth: 1
+At line 63 : ms
+Nesting depth: 1
+10 10
+10 50000
+
+end
+Number of counters: 2
+At line 62 : ms
+Nesting depth: 1
+At line 63 : ms
+Nesting depth: 1
+150 150
+150 750000
+
+end
+Number of counters: 2
+At line 62 : ms
+Nesting depth: 1
+At line 63 : ms
+Nesting depth: 1
+200 200
+200 1000000
+
+end

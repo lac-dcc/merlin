@@ -1,0 +1,45 @@
+Number of counters: 2
+At line 65 :
+Nesting depth: 0
+At line 61 :
+Nesting depth: 0
+48
+6
+
+end
+Number of counters: 2
+At line 65 :
+Nesting depth: 0
+At line 61 :
+Nesting depth: 0
+48
+6
+
+end
+Number of counters: 2
+At line 65 :
+Nesting depth: 0
+At line 61 :
+Nesting depth: 0
+48
+6
+
+end
+Number of counters: 2
+At line 65 :
+Nesting depth: 0
+At line 61 :
+Nesting depth: 0
+48
+6
+
+end
+Number of counters: 2
+At line 65 :
+Nesting depth: 0
+At line 61 :
+Nesting depth: 0
+48
+6
+
+end

@@ -1,0 +1,45 @@
+Number of counters: 2
+At line 65 : value
+Nesting depth: 1
+At line 79 : s
+Nesting depth: 1
+10 2
+100 1
+
+end
+Number of counters: 2
+At line 65 : value
+Nesting depth: 1
+At line 79 : s
+Nesting depth: 1
+100 3
+10000 1
+
+end
+Number of counters: 2
+At line 65 : value
+Nesting depth: 1
+At line 79 : s
+Nesting depth: 1
+255 3
+65025 1
+
+end
+Number of counters: 2
+At line 65 : value
+Nesting depth: 1
+At line 79 : s
+Nesting depth: 1
+150 3
+22500 1
+
+end
+Number of counters: 2
+At line 65 : value
+Nesting depth: 1
+At line 79 : s
+Nesting depth: 1
+200 3
+40000 1
+
+end
