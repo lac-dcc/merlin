@@ -31,7 +31,7 @@ These are the most important dependencies for building and running Merlin:
 Building LLVM on your computer may be troublesome. To make things easier, we have made a Docker image with all Merlin's dependencies that is available [here](./docker/).
 
 ## Running
-To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name target_function ignore_non_newton measure_time`. `input_file` is the directory for the file you want to instrument, `output_file_name` is just the name for the output file, `target_function` is the name of the function to be instrumented, `ignore_non_newton` and `measure_time` are boolean parameters that determine, respectively, whether non-Newton programs should be ignored and if Merlin should output its execution time. After running the instrumentation, the instrumented program will be available in the `output` folder.
+To run the instrumentation,  access the script `merlin/instrumentation/scripts/run.sh` and set the variable `LLVM_BUILD_DIR` to the directory where LLVM is built on your computer. Then, in the `merlin/instrumentation` directory, execute the script by running `scripts/run.sh input_file output_file_name target_function`. `input_file` is the directory for the file you want to instrument, `output_file_name` is just the name for the output file, and `target_function` is the name of the function to be instrumented. There are additional optional arguments that can be seen in the script's documentation. After running the instrumentation, the instrumented program will be available in the `output` folder.
 
 ## Simplified Execution
 Consider the following Matrix Multiplication implementation:
@@ -134,7 +134,7 @@ void bubble_sort(int n, int *arr) {
 }
 ```
 
-After instrumenting this code by using `scripts/run.sh BubbleSort.c BubbleSort.c bubble_sort false false`, the following instrumented code is generated:
+After instrumenting this code by using `scripts/run.sh BubbleSort.c BubbleSort.c bubble_sort`, the following instrumented code is generated:
 ``` c++
 void swap(int *a, int *b) {
   int temp = *a;
