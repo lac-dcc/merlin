@@ -23,27 +23,25 @@ NUM_RUNS = 3
 
 
 def run_program(program, results):
-    ignore_non_newton = 'false'
-    measure_time = 'true'
     func_target = find_func_name(program)
 
-    command = f'./scripts/run.sh \
-{benchmark_dir}/{program} {program} {func_target} {ignore_non_newton} {measure_time}'
+    # First run is discarded
+    command = f'./scripts/run.sh {benchmark_dir}/{program} {program} {func_target} --measure-time'
     run(command, shell=True, capture_output=True, text=True)
 
     # Clear the contents of the temp file
     open(TEMP_FILE, 'w').close()
 
     command = f'/usr/bin/time -f %e -a -o {TEMP_FILE} ./scripts/run.sh \
-{benchmark_dir}/{program} {program} {func_target} {ignore_non_newton} {measure_time}'
+{benchmark_dir}/{program} {program} {func_target} --measure-time'
 
     times = []
     for _ in range(NUM_RUNS):
         proc = run(command, shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
-        size = int(lines[0])
-        times.append(int(lines[1]))
+        size = int(lines[0].split(': ')[1])
+        times.append(int(lines[1].split(': ')[1][:-2]))
 
     avg_instrumentation_time_micro = sum(times) / NUM_RUNS
 

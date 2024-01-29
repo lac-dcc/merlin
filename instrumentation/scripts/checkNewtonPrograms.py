@@ -23,8 +23,6 @@ if __name__ == '__main__':
     run('rm -rf output', shell=True)
     benchmark_dir = '../test/jotai_benchmarks'
     inputs = listdir(benchmark_dir)
-    ignore_non_newton = 'true'
-    measure_time = 'false'
     print(len(inputs))
 
     results = []
@@ -32,18 +30,17 @@ if __name__ == '__main__':
     for input in inputs:
         print(f'Running: {input}')
         func_target = find_func_name(input)
-        proc = run(f'./scripts/run.sh \
-{benchmark_dir}/{input} {input} {func_target} {ignore_non_newton} {measure_time}',
+        proc = run(f'./scripts/run.sh {benchmark_dir}/{input} {input} {func_target} --ignore-non-scp',
                    shell=True, capture_output=True, text=True)
 
         lines = list(map(lambda x: x.strip(), proc.stdout.split('\n')))
 
         not_instrumented = len(
-            lines) > 1 and lines[1] == 'Unable to instrument the input'
+            lines) > 1 and lines[1] == 'Input is not SCP'
 
         results.append({
             'name': input,
-            'func_size': int(lines[0]),
+            'func_size': int(lines[0].split(': ')[1]),
             'instrumented': not not_instrumented
         })
 
