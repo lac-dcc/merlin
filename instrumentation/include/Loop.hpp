@@ -39,10 +39,10 @@ struct Loop {
 
   std::shared_ptr<Loop> parent;                            ///< Pointer to the parent loop, if there is any.
   llvm::SmallSet<clang::ParmVarDecl*, 3> controlVariables; ///< Set of variables that control the loop's complexity.
-  u_int32_t nestingDepth;                                  ///< Nesting depth for this loop.
+  unsigned nestingDepth;                                   ///< Nesting depth for this loop.
   bool isConstantLoop = false;                             ///< Flag to indicate if the loop is constant.
   std::string counterName;                                 ///< Name of the counter used to instrument the loop.
-  unsigned int line;                                       ///< Line where the loop is in the source code.
+  unsigned line;                                           ///< Line where the loop is in the source code.
 };
 
 #endif

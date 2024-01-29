@@ -153,7 +153,7 @@ bool InstrumentationVisitor::VisitFunctionDecl(FunctionDecl* funcDecl) {
     // AST and output it
     NodeCounterVisitor countVisitor;
     countVisitor.TraverseDecl(funcDecl);
-    outs() << countVisitor.nodeCount << '\n';
+    outs() << "Number of AST nodes: " << countVisitor.nodeCount << '\n';
 
     // We also use an auxiliary class to get all variables that reference
     // function params
@@ -187,7 +187,7 @@ bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
 
   SourceLocation bodyLoc = whileStmt->getBody()->getBeginLoc();
   bool isValidLoop = this->createAndInstrumentLoop(whileStmt, bodyLoc);
-  if (this->ignoreNonNewton && !isValidLoop)
+  if (this->ignoreNonScp && !isValidLoop)
     return false;
 
   auto loopPtr = this->loopMap[whileStmt];
@@ -196,6 +196,9 @@ bool InstrumentationVisitor::VisitWhileStmt(WhileStmt* whileStmt) {
   loopPtr->verifyAndSetIsConstantLoop();
   loopPtr->computeNestingDepth();
   loopPtr->takeParentControlVars();
+
+  if (this->countNonNewton && loopPtr->controlVariables.size() > 1)
+    this->nonNewtonLoops.insert(whileStmt);
 
   return true;
 }
@@ -206,7 +209,7 @@ bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
 
   SourceLocation bodyLoc = doStmt->getBody()->getBeginLoc();
   bool isValidLoop = this->createAndInstrumentLoop(doStmt, bodyLoc);
-  if (this->ignoreNonNewton && !isValidLoop)
+  if (this->ignoreNonScp && !isValidLoop)
     return false;
 
   auto loopPtr = this->loopMap[doStmt];
@@ -215,6 +218,9 @@ bool InstrumentationVisitor::VisitDoStmt(DoStmt* doStmt) {
   loopPtr->verifyAndSetIsConstantLoop();
   loopPtr->computeNestingDepth();
   loopPtr->takeParentControlVars();
+
+  if (this->countNonNewton && loopPtr->controlVariables.size() > 1)
+    this->nonNewtonLoops.insert(doStmt);
 
   return true;
 }
@@ -225,7 +231,7 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
 
   SourceLocation bodyLoc = forStmt->getBody()->getBeginLoc();
   bool isValidLoop = this->createAndInstrumentLoop(forStmt, bodyLoc);
-  if (this->ignoreNonNewton && !isValidLoop)
+  if (this->ignoreNonScp && !isValidLoop)
     return false;
 
   auto loopPtr = this->loopMap[forStmt];
@@ -238,6 +244,9 @@ bool InstrumentationVisitor::VisitForStmt(ForStmt* forStmt) {
   loopPtr->verifyAndSetIsConstantLoop();
   loopPtr->computeNestingDepth();
   loopPtr->takeParentControlVars();
+
+  if (this->countNonNewton && loopPtr->controlVariables.size() > 1)
+    this->nonNewtonLoops.insert(forStmt);
 
   return true;
 }
@@ -265,7 +274,7 @@ bool InstrumentationVisitor::createAndInstrumentLoop(Stmt* loop, SourceLocation&
     this->insertNewLoop(loop, nullptr);
 
     bool isValidLoop = this->validateLoop(loop, loop);
-    if (this->ignoreNonNewton && !isValidLoop)
+    if (this->ignoreNonScp && !isValidLoop)
       return false;
   }
 
@@ -282,6 +291,8 @@ bool InstrumentationVisitor::createAndInstrumentLoop(Stmt* loop, SourceLocation&
 
 bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop) {
   Stmt* lastLoop = loop;
+  bool isValid = true;
+
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
@@ -292,17 +303,20 @@ bool InstrumentationVisitor::validateLoop(clang::Stmt* stmt, Stmt* loop) {
       lastLoop = child;
     }
 
-    if (this->ignoreNonNewton && isa<ReturnStmt>(child))
-      return false;
+    if (!this->validateLoop(child, lastLoop) || isa<ReturnStmt>(child)) {
+      if (this->ignoreNonScp)
+        return false;
 
-    bool childIsValid = this->validateLoop(child, lastLoop);
-    if (this->ignoreNonNewton && !childIsValid)
-      return false;
+      if (this->countNonNewton) {
+        this->nonNewtonLoops.insert(loop);
+        isValid = false;
+      }
+    }
 
     lastLoop = loop;
   }
 
-  return true;
+  return isValid;
 }
 
 bool InstrumentationVisitor::isLoop(clang::Stmt* stmt) {
@@ -313,15 +327,22 @@ bool InstrumentationVisitor::VisitIfStmt(IfStmt* ifStmt) {
   if (this->currFunc == nullptr || this->currFunc->getNameAsString() != this->functionName)
     return true;
 
-  if (!this->ignoreNonNewton || this->visitedIfs.contains(ifStmt))
+  if ((!this->ignoreNonScp && !this->countNonNewton) || this->visitedIfs.contains(ifStmt))
     return true;
 
   this->visitedIfs.insert(ifStmt);
 
-  return this->validateIf(ifStmt);
+  bool isValidIf = this->validateIf(ifStmt);
+
+  if (this->ignoreNonScp)
+    return isValidIf;
+
+  return true;
 }
 
 bool InstrumentationVisitor::validateIf(Stmt* stmt) {
+  bool isValid = true;
+
   for (auto* child : stmt->children()) {
     if (!child)
       continue;
@@ -329,11 +350,21 @@ bool InstrumentationVisitor::validateIf(Stmt* stmt) {
     if (auto* childIf = dyn_cast<IfStmt>(child))
       this->visitedIfs.insert(childIf);
 
-    if (this->isLoop(child) || !this->validateIf(child))
+    if (this->isLoop(child)) {
+      if (this->ignoreNonScp)
+        return false;
+
+      if (this->countNonNewton) {
+        this->nonNewtonLoops.insert(child);
+        isValid = false;
+      }
+    }
+
+    if (!this->validateIf(child) && this->ignoreNonScp)
       return false;
   }
 
-  return true;
+  return isValid;
 }
 
 void InstrumentationVisitor::insertNewLoop(Stmt* loop, std::shared_ptr<Loop> parent) {
@@ -343,6 +374,8 @@ void InstrumentationVisitor::insertNewLoop(Stmt* loop, std::shared_ptr<Loop> par
   this->loopMap[loop] = loopPtr;
   this->loopVec.push_back(loopPtr);
 }
+
+unsigned InstrumentationVisitor::getNonNewtonCount() { return this->nonNewtonLoops.size(); }
 
 void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
   clang::SourceManager& srcMgr = this->rewriter->getSourceMgr();
@@ -358,20 +391,24 @@ void InstrumentationConsumer::HandleTranslationUnit(ASTContext& Context) {
     this->rewriter->getEditBuffer(srcMgr.getMainFileID()).write(outFile);
     outFile.close();
   } else {
-    outs() << "Unable to instrument the input\n";
+    outs() << "Input is not SCP\n";
   }
+
+  if (this->countNonNewton)
+    outs() << "Number of Non-Newton counters: " << this->visitor.getNonNewtonCount() << '\n';
 
   auto end = std::chrono::system_clock::now();
   if (this->measureTime) {
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    outs() << duration.count() << '\n';
+    outs() << "Instrumentation time: " << duration.count() << "us\n";
   }
 }
 
 std::unique_ptr<ASTConsumer> InstrumentationAction::CreateASTConsumer(CompilerInstance& Compiler, StringRef InFile) {
   this->rewriter.setSourceMgr(Compiler.getSourceManager(), Compiler.getLangOpts());
   return std::make_unique<InstrumentationConsumer>(&Compiler.getASTContext(), &(this->rewriter), this->outputFile,
-                                                   this->targetFunction, this->ignoreNonNewton, this->measureTime);
+                                                   this->targetFunction, this->ignoreNonScp, this->countNonNewton,
+                                                   this->measureTime);
 }
 
 bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const std::vector<std::string>& args) {
@@ -393,19 +430,21 @@ bool InstrumentationAction::ParseArgs(const CompilerInstance& Compiler, const st
 
       ++i;
       this->targetFunction = args[i];
-    } else if (args[i] == "-ignore-nonnewton") {
-      this->ignoreNonNewton = true;
-      ++i;
+    } else if (args[i] == "-ignore-non-scp") {
+      this->ignoreNonScp = true;
     } else if (args[i] == "-measure-time") {
       this->measureTime = true;
-      ++i;
+    } else if (args[i] == "-count-non-newton") {
+      this->countNonNewton = true;
     } else if (args[i] == "-help") {
       errs() << "--- Merlin plugin ---\n";
       errs() << "Arguments:\n";
       errs() << " -output-file         Name of the instrumented output file.\n";
       errs() << " -target-function     Name of the function to be instrumented.\n";
-      errs() << " -ignore-nonnewton    Indicates that Non-Newton programs should be ignored by instrumentation.\n";
+      errs() << " -ignore-non-scp      Indicates that the function must not be instrumented if it is non-SCP.\n";
       errs() << " -measure-time        Indicates that Merlin should measure and output instrumentation time.\n";
+      errs()
+          << " -count-non-newton    Indicates that Merlin should count and output the number of Non-Newton Counters.\n";
     } else {
       unsigned DiagID = diagnostics.getCustomDiagID(DiagnosticsEngine::Error, "Invalid argument '%0'");
       diagnostics.Report(DiagID) << args[i];

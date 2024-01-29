@@ -46,7 +46,7 @@ private:
  */
 class NodeCounterVisitor : public clang::RecursiveASTVisitor<NodeCounterVisitor> {
 public:
-  u_int32_t nodeCount;
+  unsigned nodeCount;
 
   /**
    * \brief Constructor method.
@@ -94,8 +94,9 @@ public:
  */
 class InstrumentationVisitor : public clang::RecursiveASTVisitor<InstrumentationVisitor> {
 public:
-  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter, bool ignoreNonNewton)
-      : context(context), rewriter(rewriter), ignoreNonNewton(ignoreNonNewton) {
+  explicit InstrumentationVisitor(clang::ASTContext* context, clang::Rewriter* rewriter, bool ignoreNonScp,
+                                  bool countNonNewton)
+      : context(context), rewriter(rewriter), ignoreNonScp(ignoreNonScp), countNonNewton(countNonNewton) {
     this->formatSpecifier = {{"char", "%c"},           {"int", "%d"},   {"unsigned int", "%u"}, {"long", "%ld"},
                              {"unsigned long", "%ld"}, {"float", "%f"}, {"double", "%f"}};
   }
@@ -116,13 +117,18 @@ public:
    */
   void addTempVariables();
 
+  /**
+   * \brief Returns the number of Non-Newton counters/loops
+   */
+  unsigned getNonNewtonCount();
+
   std::string functionName; ///< Name of the function to be instrumented.
 
 private:
   clang::ASTContext* context;              ///< ASTContext to be used by the visitor.
   clang::Rewriter* rewriter;               ///< Object used to rewrite the code and add instrumentation.
   clang::FunctionDecl* currFunc = nullptr; ///< Pointer to the function being currently visited.
-  u_int32_t instrumentedLoops;             ///< Counter for the number of instrumented loops.
+  unsigned instrumentedLoops;              ///< Counter for the number of instrumented loops.
 
   /// @brief Map that associates a loop statement node with its Loop object.
   llvm::DenseMap<clang::Stmt*, std::shared_ptr<Loop>> loopMap;
@@ -137,7 +143,11 @@ private:
   /// @brief Map of type names to format specifiers used in printf.
   std::unordered_map<std::string, std::string> formatSpecifier;
 
-  bool ignoreNonNewton; ///< Flag that determines if non-Newton programs are instrumented
+  /// @brief Set of Non-Newton loops in the instrumented function.
+  llvm::SmallSet<clang::Stmt*, 4> nonNewtonLoops;
+
+  bool ignoreNonScp;   ///< Flag that determines if non-SCP functions should be ignored
+  bool countNonNewton; ///< Flag that determines if Merlin should count the number of Newton counters
 
   /**
    * \brief Generate the string with the printf statement to be added to the function.
@@ -204,9 +214,9 @@ private:
 class InstrumentationConsumer : public clang::ASTConsumer {
 public:
   explicit InstrumentationConsumer(clang::ASTContext* Context, clang::Rewriter* rewriter, std::string outputFile,
-                                   std::string targetFunction, bool ignoreNonNewton, bool measureTime)
-      : visitor(Context, rewriter, ignoreNonNewton), rewriter(rewriter), outputFile(outputFile),
-        targetFunction(targetFunction), measureTime(measureTime) {}
+                                   std::string targetFunction, bool ignoreNonScp, bool countNonNewton, bool measureTime)
+      : visitor(Context, rewriter, ignoreNonScp, countNonNewton), rewriter(rewriter), outputFile(outputFile),
+        targetFunction(targetFunction), countNonNewton(countNonNewton), measureTime(measureTime) {}
 
   virtual void HandleTranslationUnit(clang::ASTContext& Context);
 
@@ -215,6 +225,7 @@ private:
   clang::Rewriter* rewriter;
   std::string outputFile;
   std::string targetFunction;
+  bool countNonNewton;
   bool measureTime;
 };
 
@@ -235,7 +246,8 @@ private:
   clang::Rewriter rewriter;
   std::string outputFile = "output.c";
   std::string targetFunction = "main";
-  bool ignoreNonNewton = false;
+  bool ignoreNonScp = false;
+  bool countNonNewton = false;
   bool measureTime = false;
 };
 
