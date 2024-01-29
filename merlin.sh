@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [ $# -lt 3 ]; then
-  echo 'Usage: run.sh <program_file> <target_function> <input_dir>'
+  echo 'Usage: merlin.sh <program_file> <target_function> <input_dir>'
   exit 1
 fi
 
