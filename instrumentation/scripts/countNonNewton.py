@@ -4,7 +4,7 @@ This script instruments programs in a specified directory, utilizing the --count
 It counts the occurrences of non-Newton counters found within the programs from the directory.
 
 Usage:
-    python runInstrumentation.py <directory>
+    python countNonNewton.py <directory>
 
 Arguments:
     directory (str): Path to the directory with the programs to count non-newton counters.

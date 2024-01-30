@@ -13,9 +13,12 @@
 #   input_file: Path to the input file.
 #   output_file: Name of the output file.
 #   target_function: Name of the function that should be instrumented.
-#   ignore_non_newton: Indicates whether non-Newton programs should be ignored
-#                      for instrumentation.
-#   measure_time: Indicates that the instrumentation time should be measured.
+#
+# Options:
+#   -i, --ignore-non-scp    Indicates that the function must not be instrumented if it is non-SCP.
+#   -m, --measure-time      Indicates that Merlin should measure and output instrumentation time.
+#   -c, --count-non-newton  Indicates that Merlin should count and output the number of Non-Newton Counters.
+#   -h, --help              Display this help message and exit
 
 function display_usage {
     echo "\
