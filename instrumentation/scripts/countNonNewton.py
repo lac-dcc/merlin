@@ -1,17 +1,13 @@
-"""Run instrumentation for all benchmarks
+"""Count non-newtons counters for a given directory
 
-This script runs Merlin's instrumentation for all Jotai benchmarks in a given
-directory using the 'run.sh' script. The output for the instrumentation is saved
-in the 'output/' directory.
-
-The script reports any errors that occur during the execution of the
-instrumentation.
+This script instruments programs in a specified directory, utilizing the --count-non-newton flag.
+It counts the occurrences of non-Newton counters found within the programs from the directory.
 
 Usage:
     python runInstrumentation.py <directory>
 
 Arguments:
-    directory (str): Path to the directory with the programs to be instrumented.
+    directory (str): Path to the directory with the programs to count non-newton counters.
 """
 
 from os import listdir

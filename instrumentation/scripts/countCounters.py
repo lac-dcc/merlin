@@ -5,7 +5,7 @@ instrumented Jotai programs and counts the number of counters that were inserted
 by Merlin.
 
 Usage:
-    python countCounters.py <sample_dir>
+    python countCounters.py <input_dir>
 
 Arguments:
     input_dir (str): Path to the directory where programs are.
