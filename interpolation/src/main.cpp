@@ -1,10 +1,17 @@
 #include "interpolator.hpp"
+#include <chrono>
 #include <iostream>
 #include <sstream>
 #include <vector>
 using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
+  bool measureTime = false;
+  if (argc > 1) {
+    if (strcmp(argv[1], "--measure-time") == 0)
+      measureTime = true;
+  }
+
   int numInterp, numPoints;
   cin >> numInterp;
   cin >> numPoints;
@@ -16,6 +23,8 @@ int main() {
   vector<vector<double>> yValues(numInterp); // Y variable
   vector<vector<double>> zValues(numInterp); // Z variable
   vector<vector<double>> fValues(numInterp); // F(x)/F(x,y)/F(x,y,z)
+
+  auto start = std::chrono::system_clock::now();
 
   for (int i = 0; i < numInterp; i++) {
     string varNames;
@@ -73,7 +82,7 @@ int main() {
     int numVars = interpVars[i].size();
     if (numPoints <= numVars) {
       cout << "The number of input points must be greater than the number of variables.\n";
-      return 0;
+      break;
     }
     if (numVars == 0) {
       cout << originLines[i] << endl;
@@ -104,6 +113,14 @@ int main() {
       cout << originLines[i] << endl;
       cout << "At line This tool works with at most 3 variables.\n\n";
     }
+  }
+
+
+  auto end = std::chrono::system_clock::now();
+
+  if (measureTime) {
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    cerr << "Interpolation time: " << duration.count() << "us\n";
   }
 
   return 0;
